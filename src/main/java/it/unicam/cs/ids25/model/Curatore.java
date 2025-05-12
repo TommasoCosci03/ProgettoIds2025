@@ -1,6 +1,4 @@
-package progettoIDS25.src.main.java.it.unicam.cs.ids25.model;
-
-import progettoIDS25.src.main.java.it.unicam.cs.ids25.model.Prodotto;
+package it.unicam.cs.ids25.model;
 
 import java.util.ArrayList;
 

@@ -1,6 +1,4 @@
-package progettoIDS25.src.main.java;
-
-import progettoIDS25.src.main.java.it.unicam.cs.ids25.model.Produttore;
+import it.unicam.cs.ids25.model.Produttore;
 
 import java.util.Scanner;
 
