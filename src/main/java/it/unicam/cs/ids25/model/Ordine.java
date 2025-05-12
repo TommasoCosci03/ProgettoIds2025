@@ -1,5 +1,8 @@
 package it.unicam.cs.ids25.model;
 
+import it.unicam.cs.ids25.model.Prodotti.Prodotto;
+import it.unicam.cs.ids25.model.Utenti.Acquirente;
+
 import java.util.ArrayList;
 
 public class Ordine {

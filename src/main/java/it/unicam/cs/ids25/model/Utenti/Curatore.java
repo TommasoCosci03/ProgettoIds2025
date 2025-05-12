@@ -1,4 +1,6 @@
-package it.unicam.cs.ids25.model;
+package it.unicam.cs.ids25.model.Utenti;
+
+import it.unicam.cs.ids25.model.Prodotti.Prodotto;
 
 import java.util.ArrayList;
 

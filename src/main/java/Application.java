@@ -1,4 +1,4 @@
-import it.unicam.cs.ids25.model.Produttore;
+import it.unicam.cs.ids25.model.Utenti.Produttore;
 
 import java.util.Scanner;
 

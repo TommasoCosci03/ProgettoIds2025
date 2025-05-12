@@ -1,4 +1,7 @@
-package it.unicam.cs.ids25.model;
+package it.unicam.cs.ids25.model.Utenti;
+
+import it.unicam.cs.ids25.model.Carrello;
+import it.unicam.cs.ids25.model.Prodotti.Prodotto;
 
 public class Acquirente {
     private static long contatoreId = 0;

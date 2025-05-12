@@ -1,7 +1,11 @@
-package it.unicam.cs.ids25.model;
+package it.unicam.cs.ids25.model.Prodotti;
+import it.unicam.cs.ids25.model.Utenti.Azienda;
+import it.unicam.cs.ids25.model.Categoria;
+import it.unicam.cs.ids25.model.Certificazioni;
+
 import java.util.ArrayList;
 
-public class Prodotto {
+public abstract class  Prodotto {
     private static long contatoreId = 0;
     private long id;
     private String nome;
@@ -25,39 +29,76 @@ public class Prodotto {
         this.azienda = azienda;
     }
 
+
     public long getId() {
         return id;
     }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public String getNome() {
         return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public String getDescrizione() {
         return descrizione;
     }
 
+    public void setDescrizione(String descrizione) {
+        this.descrizione = descrizione;
+    }
+
     public double getPrezzo() {
         return prezzo;
+    }
+
+    public void setPrezzo(double prezzo) {
+        this.prezzo = prezzo;
     }
 
     public int getQuantita() {
         return quantita;
     }
 
+    public void setQuantita(int quantita) {
+        this.quantita = quantita;
+    }
+
     public Categoria getCategoria() {
         return categoria;
+    }
+
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
     }
 
     public ArrayList<Certificazioni> getCertificazioni() {
         return certificazioni;
     }
 
+    public void setCertificazioni(ArrayList<Certificazioni> certificazioni) {
+        this.certificazioni = certificazioni;
+    }
+
     public boolean isApprovato() {
         return approvato;
+    }
+
+    public void setApprovato(boolean approvato) {
+        this.approvato = approvato;
     }
 
     public Azienda getAzienda() {
         return azienda;
     }
 
+    public void setAzienda(Azienda azienda) {
+        this.azienda = azienda;
+    }
 }
