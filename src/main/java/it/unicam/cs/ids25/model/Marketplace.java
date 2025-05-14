@@ -11,6 +11,7 @@ public class Marketplace {
     private ArrayList<Prodotto> prodottiInVendita; // contenuto
 
 
+
     private Marketplace() {
         prodottiInVendita = new ArrayList<Prodotto>();
     }

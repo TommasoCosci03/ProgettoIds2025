@@ -19,6 +19,7 @@ public abstract class  Prodotto {
     private Azienda azienda;
     private Curatore curatore= Curatore.getInstanzaCuratore();
 
+
     public Prodotto(String nome, String descrizione, double prezzo,
                     int quantita, Categoria categoria, Azienda azienda) {
         this.id = ++contatoreId;

@@ -17,6 +17,7 @@ public class Curatore {
         marketplace = Marketplace.getIstanzaMarketplace();
     }
 
+
     public void approvaProdotto(int idprodotto){
         if(!this.richieste.isEmpty()){
             for (Prodotto prodotto : richieste) {
@@ -31,6 +32,7 @@ public class Curatore {
              }
         }
     }
+
 
 
     public void dimensione(){

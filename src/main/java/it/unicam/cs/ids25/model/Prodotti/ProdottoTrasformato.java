@@ -9,4 +9,5 @@ public class ProdottoTrasformato extends Prodotto {
         super(nome, descrizione, prezzo, quantita, categoria, azienda);
     }
 
+
 }
