@@ -1,9 +1,13 @@
+import it.unicam.cs.ids25.model.Categoria;
+import it.unicam.cs.ids25.model.Marketplace;
+import it.unicam.cs.ids25.model.Utenti.Curatore;
 import it.unicam.cs.ids25.model.Utenti.Produttore;
 
 import java.util.Scanner;
 
 public class Application {
     public static void main(String[] args) {
+        Marketplace marketplace = Marketplace.getIstanzaMarketplace();
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Benvenuto, scrivi il nome dell'azienda: ");
@@ -34,5 +38,21 @@ public class Application {
                     break;
             }
         }while(input != 3);
+
+
+        Curatore curatore= Curatore.getInstanzaCuratore();
+        curatore.stampaRichieste();
+        marketplace.stampaProdottiInVendita();
+
+        curatore.stampaRichieste();
+        curatore.approvaProdotto(1);
+        curatore.approvaProdotto(2);
+
+        curatore.stampaRichieste();
+        marketplace.stampaProdottiInVendita();
+
+
+
     }
+
 }

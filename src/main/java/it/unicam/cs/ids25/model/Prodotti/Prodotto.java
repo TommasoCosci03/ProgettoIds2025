@@ -2,12 +2,13 @@ package it.unicam.cs.ids25.model.Prodotti;
 import it.unicam.cs.ids25.model.Utenti.Azienda;
 import it.unicam.cs.ids25.model.Categoria;
 import it.unicam.cs.ids25.model.Certificazioni;
+import it.unicam.cs.ids25.model.Utenti.Curatore;
 
 import java.util.ArrayList;
 
 public abstract class  Prodotto {
-    private static long contatoreId = 0;
-    private long id;
+    private static int contatoreId = 0;
+    private int id;
     private String nome;
     private String descrizione;
     private double prezzo;
@@ -16,6 +17,7 @@ public abstract class  Prodotto {
     private ArrayList<Certificazioni> certificazioni;
     private boolean approvato;
     private Azienda azienda;
+    private Curatore curatore= Curatore.getInstanzaCuratore();
 
     public Prodotto(String nome, String descrizione, double prezzo,
                     int quantita, Categoria categoria, Azienda azienda) {
@@ -27,14 +29,17 @@ public abstract class  Prodotto {
         this.categoria = categoria;
         this.approvato = false;
         this.azienda = azienda;
+        curatore.addRichiesta(this);
     }
 
+    public void inviaRichiesta() {curatore.addRichiesta(this);}
 
-    public long getId() {
+
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

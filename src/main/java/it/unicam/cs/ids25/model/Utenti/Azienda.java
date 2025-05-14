@@ -54,10 +54,14 @@ public abstract class Azienda {
         System.out.print("Quantita: ");
         int quantita = Integer.parseInt(scanner.nextLine());
 
-
-        System.out.println(Arrays.toString(Categoria.values()));
-        String categoria = scanner.nextLine();
-        Categoria categoriaprodotto = creazioneCategoria(categoria);
+        System.out.println("inserisci il numero della categoria: ");
+        int i=1;
+        for (Categoria cat : Categoria.values()) {
+            System.out.println(i+": "+cat.name());
+            i++;
+        }
+        int numerocategoria =  Integer.parseInt(scanner.nextLine());
+        Categoria categoriaprodotto = creazioneCategoria(numerocategoria);
 
         Prodotto prodotto = creaProdottoAzienda(nome, descrizione,prezzo, quantita, categoriaprodotto);
         System.out.println("Prodotto creato --> " + prodotto.getNome() + " con ID: " + prodotto.getId() +
@@ -75,24 +79,17 @@ public abstract class Azienda {
     }
 
 
-    public Categoria creazioneCategoria(String categoria){
+    public Categoria creazioneCategoria(int categoria){
 
-            switch (categoria.toLowerCase()) {
-                case "carne":
-                    return Categoria.Carne;
-                case "pesce":
-                    return Categoria.Pesce;
-                case "frutta":
-                    return Categoria.Frutta;
-                case "verdura":
-                    return Categoria.Verdura;
-                case "cereali":
-                    return Categoria.Cereali;
-                case "legumi":
-                    return Categoria.Legumi;
-                    default:
-                    throw new IllegalArgumentException("Categoria non valida");
-            }
+        return switch (categoria) {
+            case 1 -> Categoria.Carne;
+            case 2 -> Categoria.Pesce;
+            case 3 -> Categoria.Frutta;
+            case 4 -> Categoria.Verdura;
+            case 5 -> Categoria.Cereali;
+            case 6 -> Categoria.Legumi;
+            default -> throw new IllegalArgumentException("Categoria non valida");
+        };
 
     }
 
