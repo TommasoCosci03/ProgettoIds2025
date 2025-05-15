@@ -28,7 +28,12 @@ public class Marketplace {
     }
 
     public Prodotto getProdotto(int id) {
-        return  prodottiInVendita.get(id);
+        for (Prodotto prodotto : prodottiInVendita) {
+            if (prodotto.getId() == id) {
+                return prodotto;
+            }
+        }
+        throw  new IllegalStateException("indice del prodotto da inserire nel pacchetto non presente nel marketplace");
     }
 
     public void stampaProdottiInVendita() {

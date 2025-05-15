@@ -1,6 +1,7 @@
 package it.unicam.cs.ids25.model.Utenti;
 
 import it.unicam.cs.ids25.model.Categoria;
+import it.unicam.cs.ids25.model.Certificazioni;
 import it.unicam.cs.ids25.model.Prodotti.Prodotto;
 
 import java.util.ArrayList;
@@ -38,7 +39,7 @@ public abstract class Azienda {
         return prodottiCaricati;
     }
 
-    public void creaProdotto(){
+   /* public void creaProdotto(){
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Creazione di un nuovo prodotto:");
@@ -68,10 +69,10 @@ public abstract class Azienda {
                 " e venduto dall'azienda " + prodotto.getAzienda().getNome());
 
         this.getProdottiCaricati().add(prodotto);
-    }
+    }*/
 
     public abstract Prodotto creaProdottoAzienda(String nome, String descrizione, double prezzo, int quantita,
-                                                 Categoria categoria);
+                                                 Categoria categoria, ArrayList<Certificazioni> certificazioni);
     public void vediProdottiCaricati(){}
 
     public void eliminaProdotto(Prodotto prodotto){
@@ -88,6 +89,7 @@ public abstract class Azienda {
             case 4 -> Categoria.Verdura;
             case 5 -> Categoria.Cereali;
             case 6 -> Categoria.Legumi;
+            case 7 -> Categoria.Pacchetto;
             default -> throw new IllegalArgumentException("Categoria non valida");
         };
 

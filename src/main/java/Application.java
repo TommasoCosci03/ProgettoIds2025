@@ -1,13 +1,18 @@
 import it.unicam.cs.ids25.model.Categoria;
+import it.unicam.cs.ids25.model.Certificazioni;
 import it.unicam.cs.ids25.model.Marketplace;
+import it.unicam.cs.ids25.model.Prodotti.Prodotto;
 import it.unicam.cs.ids25.model.Utenti.Curatore;
+import it.unicam.cs.ids25.model.Utenti.Distributore;
 import it.unicam.cs.ids25.model.Utenti.Produttore;
+import it.unicam.cs.ids25.model.Utenti.Trasformatore;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Application {
     public static void main(String[] args) {
-        Marketplace marketplace = Marketplace.getIstanzaMarketplace();
+      /*  Marketplace marketplace = Marketplace.getIstanzaMarketplace();
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Benvenuto, scrivi il nome dell'azienda: ");
@@ -49,7 +54,46 @@ public class Application {
         curatore.approvaProdotto(2);
 
         curatore.stampaRichieste();
+        marketplace.stampaProdottiInVendita();*/
+
+        Marketplace marketplace = Marketplace.getIstanzaMarketplace();
+        Produttore produttore1 = new Produttore("produttore","milano");
+        ArrayList<Certificazioni> certificazioni1 = new ArrayList<>();
+        certificazioni1.add(Certificazioni.DOC);
+        produttore1.creaProdottoAzienda("mele","buone",10,2,Categoria.Frutta,certificazioni1 );
+        produttore1.creaProdottoAzienda("pere","buone",10,2,Categoria.Frutta,certificazioni1 );
+
+        Curatore curatore= Curatore.getInstanzaCuratore();
+        curatore.stampaRichieste();
         marketplace.stampaProdottiInVendita();
+
+        curatore.stampaRichieste();
+        curatore.approvaProdotto(1);
+        curatore.approvaProdotto(2);
+
+        curatore.stampaRichieste();
+        marketplace.stampaProdottiInVendita();
+
+        Trasformatore trasformatore = new Trasformatore("trasformatore","milano");
+        trasformatore.setMateriePrime("mele");
+        trasformatore.creaProdottoAzienda("marmellata","buone",10,2,Categoria.Frutta,certificazioni1 );
+
+        Distributore distributore = new Distributore("distributore","milano");
+        Prodotto prodotto1 = distributore.getProdottoMarketplace(1);
+        Prodotto prodotto2 = distributore.getProdottoMarketplace(2);
+        ArrayList<Prodotto> prodotti = new ArrayList<>();
+        prodotti.add(prodotto1);
+        prodotti.add(prodotto2);
+        distributore.setProdotti(prodotti);
+        System.out.println(prodotti.size());
+        distributore.creaProdottoAzienda("pacchetto","buone",10,2,Categoria.Frutta, certificazioni1 );
+
+        curatore.stampaRichieste();
+        curatore.approvaProdotto(3);
+        curatore.approvaProdotto(4);
+        curatore.stampaRichieste();
+        marketplace.stampaProdottiInVendita();
+
 
 
 

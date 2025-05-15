@@ -21,7 +21,7 @@ public abstract class  Prodotto {
 
 
     public Prodotto(String nome, String descrizione, double prezzo,
-                    int quantita, Categoria categoria, Azienda azienda) {
+                    int quantita, Categoria categoria, Azienda azienda, ArrayList<Certificazioni> certificazioni) {
         this.id = ++contatoreId;
         this.nome = nome;
         this.descrizione = descrizione;
@@ -30,6 +30,7 @@ public abstract class  Prodotto {
         this.categoria = categoria;
         this.approvato = false;
         this.azienda = azienda;
+        this.certificazioni = certificazioni;
         curatore.addRichiesta(this);
     }
 

@@ -26,6 +26,7 @@ public class Acquirente {
     public Carrello getCarrello() {
         return carrello;
     }
+
     public void aggiungiAlCarrello(Prodotto prodotto){
         carrello.getProdottiDaAcquistare().add(prodotto);
     }

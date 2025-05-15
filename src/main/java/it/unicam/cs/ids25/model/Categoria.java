@@ -6,5 +6,6 @@ public enum Categoria {
     Frutta,
     Verdura,
     Cereali,
-    Legumi
+    Legumi,
+    Pacchetto
 }

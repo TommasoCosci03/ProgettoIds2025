@@ -2,8 +2,12 @@ package it.unicam.cs.ids25.model.Utenti;
 
 
 import it.unicam.cs.ids25.model.Categoria;
+import it.unicam.cs.ids25.model.Certificazioni;
+import it.unicam.cs.ids25.model.Prodotti.BuilderProdottoSingolo;
 import it.unicam.cs.ids25.model.Prodotti.Prodotto;
 import it.unicam.cs.ids25.model.Prodotti.ProdottoSingolo;
+
+import java.util.ArrayList;
 
 public class Produttore extends Azienda {
 
@@ -13,8 +17,16 @@ public class Produttore extends Azienda {
 
     @Override
     public Prodotto creaProdottoAzienda(String nome, String descrizione, double prezzo, int quantita,
-                                        Categoria categoria) {
-        return new ProdottoSingolo(nome,descrizione,prezzo,quantita,categoria, this);
+                                        Categoria categoria,  ArrayList<Certificazioni> certificazioni) {
+        BuilderProdottoSingolo prodottobuilder = new BuilderProdottoSingolo();
+        prodottobuilder.setNome(nome);
+        prodottobuilder.setDescrizione(descrizione);
+        prodottobuilder.setPrezzo(prezzo);
+        prodottobuilder.setAzienda(this);
+        prodottobuilder.setQuantita(quantita);
+        prodottobuilder.setCategoria(categoria);
+        prodottobuilder.setCertificazioni(certificazioni);
+        return prodottobuilder.buildProdottoSingolo();
     }
 
     @Override
