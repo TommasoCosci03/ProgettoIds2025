@@ -43,6 +43,7 @@ public class Distributore extends Azienda {
 
     @Override
     public void update(Ordine ordine) {
-
+        System.out.println("--- L'azienda " + this.getNome()+  " ha ricevuto l'ordine ricevuto da "
+                + ordine.getAcquirente().getNome() + " ---");
     }
 }

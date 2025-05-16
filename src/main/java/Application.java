@@ -2,10 +2,7 @@ import it.unicam.cs.ids25.model.Prodotti.Categoria;
 import it.unicam.cs.ids25.model.Prodotti.Certificazioni;
 import it.unicam.cs.ids25.model.Marketplace;
 import it.unicam.cs.ids25.model.Prodotti.Prodotto;
-import it.unicam.cs.ids25.model.Utenti.Curatore;
-import it.unicam.cs.ids25.model.Utenti.Distributore;
-import it.unicam.cs.ids25.model.Utenti.Produttore;
-import it.unicam.cs.ids25.model.Utenti.Trasformatore;
+import it.unicam.cs.ids25.model.Utenti.*;
 
 import java.util.ArrayList;
 
@@ -55,6 +52,7 @@ public class Application {
         curatore.stampaRichieste();
         marketplace.stampaProdottiInVendita();*/
 
+        //prova creazione prodotti e approvazione curatore e materiePrime
         Marketplace marketplace = Marketplace.getIstanzaMarketplace();
         Produttore produttore1 = new Produttore("produttore","milano");
         ArrayList<Certificazioni> certificazioni1 = new ArrayList<>();
@@ -97,8 +95,63 @@ public class Application {
         curatore.stampaRichieste();
         marketplace.stampaProdottiInVendita();
 
+        //controllo creazione pacchetto
+        produttore1.creaProdottoAzienda("banane","buone",10,2,Categoria.Frutta,certificazioni1 );
+        produttore1.creaProdottoAzienda("arance","buone",10,2,Categoria.Frutta,certificazioni1 );
 
+        curatore.approvaProdotto(5);
+        curatore.approvaProdotto(6);
+        marketplace.stampaProdottiInVendita();
 
+        ArrayList<Prodotto> prodotti2 = new ArrayList<>();
+        prodotti2.add(marketplace.getProdotto(5));
+        prodotti2.add(marketplace.getProdotto(6));
+
+        distributore.setProdotti(prodotti2);
+        distributore.creaProdottoAzienda("pacchettoBanane","buone",10,2,Categoria.Pacchetto,certificazioni1 );
+
+        curatore.approvaProdotto(7);
+
+        marketplace.stampaProdottiInVendita();
+
+        marketplace.getProdottiPacchetto(4);
+        marketplace.getProdottiPacchetto(7);
+
+        //test errore lista vuota creazione pacchetto
+        /*ArrayList<Prodotto> prodotti3 = new ArrayList<>();
+        prodotti3.add(marketplace.getProdotto(5));
+        distributore.setProdotti(prodotti3);
+        distributore.creaProdottoAzienda("pacchettoErrore","buone",10,2,Categoria.Pacchetto,certificazioni1 );
+
+        //campo nulla pacchettoSingolo
+        produttore1.creaProdottoAzienda("carne","buone",10,2,null,certificazioni1);*/
+
+        //TODO SCENARIO ACQUISTO
+        Acquirente acquirente = new Acquirente("Cosci");
+        acquirente.aggiungiAlCarrello(prodotto2,2);
+        acquirente.aggiungiAlCarrello(prodotto1,1);
+
+        Acquirente acquirente1 = new Acquirente("Elia");
+        acquirente1.aggiungiAlCarrello(prodotto2,1);
+
+        System.out.println("Cosci = " + acquirente.getCarrello().prezzoTotale());
+        System.out.println("Elia = " + acquirente1.getCarrello().prezzoTotale());
+
+        /*//togli dal carrello
+        acquirente1.togliDalCarrello(prodotto2);
+        acquirente.togliDalCarrello(prodotto1);
+        System.out.println("Cosci = " + acquirente.getCarrello().prezzoTotale());
+        System.out.println("Elia = " + acquirente1.getCarrello().prezzoTotale());
+
+        //cancella carrello
+        acquirente.cancellaCarrello();
+        acquirente1.cancellaCarrello();
+        System.out.println("Cosci = " + acquirente.getCarrello().prezzoTotale());
+        System.out.println("Elia = " + acquirente1.getCarrello().prezzoTotale());*/
+
+        //prova acquisto FUNZIONA GODOOOOO
+        acquirente.acquista();
+        marketplace.stampaProdottiInVendita();
 
     }
 

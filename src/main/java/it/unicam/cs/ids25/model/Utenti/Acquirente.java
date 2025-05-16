@@ -1,6 +1,8 @@
 package it.unicam.cs.ids25.model.Utenti;
 
 import it.unicam.cs.ids25.model.Carrello;
+import it.unicam.cs.ids25.model.Marketplace;
+import it.unicam.cs.ids25.model.Ordine;
 import it.unicam.cs.ids25.model.Prodotti.Prodotto;
 
 public class Acquirente {
@@ -8,6 +10,7 @@ public class Acquirente {
     private long id;
     private String nome;
     private Carrello carrello;
+    private Marketplace marketplace = Marketplace.getIstanzaMarketplace();
 
     public Acquirente(String nome) {
         this.id = ++contatoreId;
@@ -27,8 +30,11 @@ public class Acquirente {
         return carrello;
     }
 
-    public void aggiungiAlCarrello(Prodotto prodotto){
-        carrello.getProdottiDaAcquistare().add(prodotto);
+    public void aggiungiAlCarrello(Prodotto prodotto, int quantita){
+        if(marketplace.getProdottiInVendita().contains(prodotto) && marketplace.controllaQuantita(prodotto, quantita))
+            carrello.getProdottiDaAcquistare().put(prodotto, quantita);
+        else
+            throw new IllegalArgumentException("Prodotto non disponibile nel marketplace");
     }
 
     public void togliDalCarrello(Prodotto prodotto){
@@ -36,6 +42,13 @@ public class Acquirente {
     }
 
     public void cancellaCarrello(){
-        carrello.getProdottiDaAcquistare().removeAll(carrello.getProdottiDaAcquistare());
+        carrello.getProdottiDaAcquistare().clear();
+    }
+
+    public void acquista(){
+        Ordine ordine = new Ordine(this, carrello.getProdottiDaAcquistare(), "via marche");
+        ordine.notifyAziende();
+        marketplace.aggiornaQuantita(carrello);
+        carrello.getProdottiDaAcquistare().clear();
     }
 }

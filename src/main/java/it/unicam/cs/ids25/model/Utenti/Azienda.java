@@ -2,8 +2,8 @@ package it.unicam.cs.ids25.model.Utenti;
 
 import it.unicam.cs.ids25.model.Prodotti.Categoria;
 import it.unicam.cs.ids25.model.Prodotti.Certificazioni;
-import it.unicam.cs.ids25.model.Prodotti.Prodotto;
 import it.unicam.cs.ids25.model.observer.Observer;
+import it.unicam.cs.ids25.model.Prodotti.Prodotto;
 
 import java.util.ArrayList;
 

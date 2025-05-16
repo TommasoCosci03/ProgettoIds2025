@@ -2,9 +2,7 @@ package it.unicam.cs.ids25.model;
 
 import it.unicam.cs.ids25.model.Prodotti.PacchettoDiProdotti;
 import it.unicam.cs.ids25.model.Prodotti.Prodotto;
-import it.unicam.cs.ids25.model.Prodotti.ProdottoSingolo;
 import it.unicam.cs.ids25.model.Prodotti.ProdottoTrasformato;
-import it.unicam.cs.ids25.model.Utenti.Curatore;
 
 import java.util.ArrayList;
 
@@ -73,10 +71,6 @@ public class Marketplace {
         pacchetto.getProd();
     }
 
-
-
-
-
     public void stampaProdottiInVendita() {
         if (prodottiInVendita.isEmpty()) {
             System.out.println("Nessun prodotto attualmente in vendita.");
@@ -110,5 +104,20 @@ public class Marketplace {
             }
         }
         return prodotto;
+    }
+
+    public boolean controllaQuantita(Prodotto prodotto, int quantita) {
+        if(prodotto.getQuantita() >= quantita) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    public void aggiornaQuantita(Carrello carrello) {
+        for (Prodotto p : carrello.getProdottiDaAcquistare().keySet()) {
+            marketplace.getProdotto(p.getId()).setQuantita(p.getQuantita() - carrello.getProdottiDaAcquistare().get(p));
+        }
     }
 }

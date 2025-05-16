@@ -1,28 +1,29 @@
 package it.unicam.cs.ids25.model;
 
-import it.unicam.cs.ids25.model.Prodotti.Prodotto;
-import it.unicam.cs.ids25.model.Utenti.Acquirente;
 import it.unicam.cs.ids25.model.observer.Observer;
 import it.unicam.cs.ids25.model.observer.Subject;
+import it.unicam.cs.ids25.model.Prodotti.Prodotto;
+import it.unicam.cs.ids25.model.Utenti.Acquirente;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Ordine implements Subject {
     private static long contatoreID = 0;
     private long id;
     private Acquirente acquirente;
-    private ArrayList<Prodotto> prodottiAcquistati;
+    private HashMap<Prodotto, Integer> prodottiAcquistati;
     private String indirizzo;
     private ArrayList<Observer> observer = new ArrayList<>();
 
-    public Ordine(Acquirente acquirente, ArrayList<Prodotto> prodottiAcquistati, String indirizzo) {
+    public Ordine(Acquirente acquirente, HashMap<Prodotto, Integer> prodottiAcquistati, String indirizzo) {
         this.id = ++contatoreID;
         this.acquirente = acquirente;
         this.prodottiAcquistati = prodottiAcquistati;
         this.indirizzo = indirizzo;
     }
 
-    public ArrayList<Prodotto> getProdottiAcquistati() {
+    public HashMap<Prodotto, Integer> getProdottiAcquistati() {
         return prodottiAcquistati;
     }
 
@@ -34,7 +35,12 @@ public class Ordine implements Subject {
         return acquirente;
     }
 
-    //Metodi per Observer
+    public void aziendeOrdine(HashMap<Prodotto, Integer> prodottiAcquistati){
+        for(Prodotto p : prodottiAcquistati.keySet()){
+            observer.add(p.getAzienda());
+        }
+    }
+
     @Override
     public void attach(Observer o) {
         observer.add(o);
@@ -46,10 +52,11 @@ public class Ordine implements Subject {
     }
 
     @Override
-    public void notifyAll(Ordine ordine) {
-        for (Observer o : observer)
-            o.update(ordine);
+    public void notifyAziende() {
+        aziendeOrdine(prodottiAcquistati);
 
-        observer.clear();
+        for(Observer o : observer) {
+            o.update(this);
+        }
     }
 }
