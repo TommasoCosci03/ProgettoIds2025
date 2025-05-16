@@ -1,6 +1,9 @@
 package it.unicam.cs.ids25.model;
 
+import it.unicam.cs.ids25.model.Prodotti.PacchettoDiProdotti;
 import it.unicam.cs.ids25.model.Prodotti.Prodotto;
+import it.unicam.cs.ids25.model.Prodotti.ProdottoSingolo;
+import it.unicam.cs.ids25.model.Prodotti.ProdottoTrasformato;
 import it.unicam.cs.ids25.model.Utenti.Curatore;
 
 import java.util.ArrayList;
@@ -30,11 +33,49 @@ public class Marketplace {
     public Prodotto getProdotto(int id) {
         for (Prodotto prodotto : prodottiInVendita) {
             if (prodotto.getId() == id) {
-                return prodotto;
+               return prodotto;
             }
         }
-        throw  new IllegalStateException("indice del prodotto da inserire nel pacchetto non presente nel marketplace");
+        throw new IllegalStateException("Indice del prodotto da inserire nel pacchetto non presente nel marketplace");
     }
+
+
+    public String getMateriePrime(int id) {
+        ProdottoTrasformato prodottoTrasformato = null;
+        for (Prodotto prodotto : prodottiInVendita) {
+            if (prodotto.getId() == id) {
+                if (prodotto instanceof ProdottoTrasformato) {
+                    prodottoTrasformato = (ProdottoTrasformato) prodotto;
+                    break;
+                }
+                else { throw new IllegalStateException("il prodotto non è un prodotto trasformato");}
+            }
+        }
+        assert prodottoTrasformato != null;
+        return prodottoTrasformato.getMateriaPrima();
+    }
+
+
+
+
+    public void getProdottiPacchetto(int id) {
+        PacchettoDiProdotti pacchetto = null;
+        for (Prodotto prodotto : prodottiInVendita) {
+            if (prodotto.getId() == id) {
+                if (prodotto instanceof PacchettoDiProdotti) {
+                    pacchetto = (PacchettoDiProdotti) prodotto;
+                    break;
+                }
+                else { throw new IllegalStateException("il prodotto non è un prodotto trasformato");}
+            }
+        }
+        assert pacchetto != null;
+        pacchetto.getProd();
+    }
+
+
+
+
 
     public void stampaProdottiInVendita() {
         if (prodottiInVendita.isEmpty()) {
@@ -53,9 +94,13 @@ public class Marketplace {
         }
     }
 
+
+
     public ArrayList<Prodotto> getProdottiInVendita() {
         return prodottiInVendita;
     }
+
+
 
     public Prodotto get(int idProdotto) {
         Prodotto prodotto = null;

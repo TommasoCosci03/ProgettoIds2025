@@ -15,5 +15,7 @@ public class ProdottoTrasformato extends Prodotto {
         this.materiaPrima = materiaPrima;
     }
 
-
+    public String getMateriaPrima() {
+        return materiaPrima;
+    }
 }

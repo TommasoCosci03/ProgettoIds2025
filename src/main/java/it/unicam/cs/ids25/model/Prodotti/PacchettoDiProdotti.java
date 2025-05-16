@@ -24,4 +24,14 @@ public class PacchettoDiProdotti extends Prodotto {
         this.pacchetto = pacchetto;
     }
 
+    public ArrayList<Prodotto> getPacchetto() {
+        return pacchetto;
+    }
+
+    public void getProd() {
+        for (Prodotto p : pacchetto) {
+         System.out.println(p.getNome() + " " + p.getDescrizione());
+        }
+    }
+
 }

@@ -2,6 +2,7 @@ import it.unicam.cs.ids25.model.Categoria;
 import it.unicam.cs.ids25.model.Certificazioni;
 import it.unicam.cs.ids25.model.Marketplace;
 import it.unicam.cs.ids25.model.Prodotti.Prodotto;
+import it.unicam.cs.ids25.model.Prodotti.ProdottoTrasformato;
 import it.unicam.cs.ids25.model.Utenti.Curatore;
 import it.unicam.cs.ids25.model.Utenti.Distributore;
 import it.unicam.cs.ids25.model.Utenti.Produttore;
@@ -76,7 +77,7 @@ public class Application {
 
         Trasformatore trasformatore = new Trasformatore("trasformatore","milano");
         trasformatore.setMateriePrime("mele");
-        trasformatore.creaProdottoAzienda("marmellata","buone",10,2,Categoria.Frutta,certificazioni1 );
+        trasformatore.creaProdottoAzienda("marmellata","buone",10,2,Categoria.Frutta,certificazioni1);
 
         Distributore distributore = new Distributore("distributore","milano");
         Prodotto prodotto1 = distributore.getProdottoMarketplace(1);
@@ -91,6 +92,10 @@ public class Application {
         curatore.stampaRichieste();
         curatore.approvaProdotto(3);
         curatore.approvaProdotto(4);
+        marketplace.getProdotto(3);
+        System.out.println(marketplace.getMateriePrime(3));
+
+
         curatore.stampaRichieste();
         marketplace.stampaProdottiInVendita();
 
