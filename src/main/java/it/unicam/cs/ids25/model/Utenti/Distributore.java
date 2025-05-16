@@ -1,8 +1,9 @@
 package it.unicam.cs.ids25.model.Utenti;
 
-import it.unicam.cs.ids25.model.Categoria;
-import it.unicam.cs.ids25.model.Certificazioni;
+import it.unicam.cs.ids25.model.Prodotti.Categoria;
+import it.unicam.cs.ids25.model.Prodotti.Certificazioni;
 import it.unicam.cs.ids25.model.Marketplace;
+import it.unicam.cs.ids25.model.Ordine;
 import it.unicam.cs.ids25.model.Prodotti.BuilderPacchetti;
 import it.unicam.cs.ids25.model.Prodotti.Prodotto;
 
@@ -38,5 +39,10 @@ public class Distributore extends Azienda {
 
     public Prodotto getProdottoMarketplace(int id) {
         return marketplace.getProdotto(id);
+    }
+
+    @Override
+    public void update(Ordine ordine) {
+
     }
 }

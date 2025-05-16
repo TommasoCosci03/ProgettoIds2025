@@ -1,14 +1,13 @@
 package it.unicam.cs.ids25.model.Utenti;
 
-import it.unicam.cs.ids25.model.Categoria;
-import it.unicam.cs.ids25.model.Certificazioni;
+import it.unicam.cs.ids25.model.Prodotti.Categoria;
+import it.unicam.cs.ids25.model.Prodotti.Certificazioni;
 import it.unicam.cs.ids25.model.Prodotti.Prodotto;
+import it.unicam.cs.ids25.model.observer.Observer;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Scanner;
 
-public abstract class Azienda {
+public abstract class Azienda implements Observer {
     private static long contatoreID = 0;
     private long id;
     private String nome;

@@ -1,11 +1,11 @@
 package it.unicam.cs.ids25.model.Utenti;
 
 
-import it.unicam.cs.ids25.model.Categoria;
-import it.unicam.cs.ids25.model.Certificazioni;
+import it.unicam.cs.ids25.model.Prodotti.Categoria;
+import it.unicam.cs.ids25.model.Prodotti.Certificazioni;
+import it.unicam.cs.ids25.model.Ordine;
 import it.unicam.cs.ids25.model.Prodotti.BuilderProdottoSingolo;
 import it.unicam.cs.ids25.model.Prodotti.Prodotto;
-import it.unicam.cs.ids25.model.Prodotti.ProdottoSingolo;
 
 import java.util.ArrayList;
 
@@ -38,4 +38,8 @@ public class Produttore extends Azienda {
         }
     }
 
+    @Override
+    public void update(Ordine ordine) {
+
+    }
 }

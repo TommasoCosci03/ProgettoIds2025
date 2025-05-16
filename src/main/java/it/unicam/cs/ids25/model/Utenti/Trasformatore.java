@@ -1,11 +1,11 @@
 package it.unicam.cs.ids25.model.Utenti;
 
 
-import it.unicam.cs.ids25.model.Categoria;
-import it.unicam.cs.ids25.model.Certificazioni;
+import it.unicam.cs.ids25.model.Prodotti.Categoria;
+import it.unicam.cs.ids25.model.Prodotti.Certificazioni;
+import it.unicam.cs.ids25.model.Ordine;
 import it.unicam.cs.ids25.model.Prodotti.BuilderProdottoTrasformato;
 import it.unicam.cs.ids25.model.Prodotti.Prodotto;
-import it.unicam.cs.ids25.model.Prodotti.ProdottoTrasformato;
 
 import java.util.ArrayList;
 
@@ -46,7 +46,10 @@ public class Trasformatore extends Azienda {
     }
 
 
+    @Override
+    public void update(Ordine ordine) {
 
+    }
 }
 
 

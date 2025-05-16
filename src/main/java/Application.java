@@ -1,15 +1,13 @@
-import it.unicam.cs.ids25.model.Categoria;
-import it.unicam.cs.ids25.model.Certificazioni;
+import it.unicam.cs.ids25.model.Prodotti.Categoria;
+import it.unicam.cs.ids25.model.Prodotti.Certificazioni;
 import it.unicam.cs.ids25.model.Marketplace;
 import it.unicam.cs.ids25.model.Prodotti.Prodotto;
-import it.unicam.cs.ids25.model.Prodotti.ProdottoTrasformato;
 import it.unicam.cs.ids25.model.Utenti.Curatore;
 import it.unicam.cs.ids25.model.Utenti.Distributore;
 import it.unicam.cs.ids25.model.Utenti.Produttore;
 import it.unicam.cs.ids25.model.Utenti.Trasformatore;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Application {
     public static void main(String[] args) {
