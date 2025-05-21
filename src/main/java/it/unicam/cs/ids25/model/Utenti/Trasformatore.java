@@ -6,14 +6,25 @@ import it.unicam.cs.ids25.model.Prodotti.Certificazioni;
 import it.unicam.cs.ids25.model.Ordine;
 import it.unicam.cs.ids25.model.Prodotti.BuilderProdottoTrasformato;
 import it.unicam.cs.ids25.model.Prodotti.Prodotto;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Transient;
 
 import java.util.ArrayList;
 
+@Entity
+@DiscriminatorValue("trasformatore")
 public class Trasformatore extends Azienda {
+    @Transient
     private String materiePrime;
+
     public Trasformatore(String nome, String sede) {
         super(nome, sede);
     }
+
+
+    protected Trasformatore() {super();}
+
 
     @Override
     public Prodotto creaProdottoAzienda(String nome, String descrizione, double prezzo, int quantita,

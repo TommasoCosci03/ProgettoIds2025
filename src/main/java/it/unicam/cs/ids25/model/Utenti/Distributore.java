@@ -6,15 +6,24 @@ import it.unicam.cs.ids25.model.Marketplace;
 import it.unicam.cs.ids25.model.Ordine;
 import it.unicam.cs.ids25.model.Prodotti.BuilderPacchetti;
 import it.unicam.cs.ids25.model.Prodotti.Prodotto;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Transient;
 
 import java.util.ArrayList;
 
-
+@Entity
+@DiscriminatorValue("distributore")
 public class Distributore extends Azienda {
+    @Transient
     Marketplace marketplace = Marketplace.getIstanzaMarketplace();
+    @Transient
     ArrayList<Prodotto> prodotti;
+
     public Distributore(String nome, String sede) {super(nome, sede);
     }
+
+    protected Distributore() {super();}
 
     @Override
     public Prodotto creaProdottoAzienda(String nome, String descrizione, double prezzo, int quantita, Categoria categoria,  ArrayList<Certificazioni> certificazioni) {

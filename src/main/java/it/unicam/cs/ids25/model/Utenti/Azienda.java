@@ -2,25 +2,32 @@ package it.unicam.cs.ids25.model.Utenti;
 
 import it.unicam.cs.ids25.model.Prodotti.Categoria;
 import it.unicam.cs.ids25.model.Prodotti.Certificazioni;
-import it.unicam.cs.ids25.model.observer.Observer;
+import it.unicam.cs.ids25.model.Observer.Observer;
 import it.unicam.cs.ids25.model.Prodotti.Prodotto;
+import jakarta.persistence.*;
 
 import java.util.ArrayList;
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name="tipo_azienda")
 
 public abstract class Azienda implements Observer {
-    private static long contatoreID = 0;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String nome;
     private String sede;
+    @Transient
     private ArrayList<Prodotto> prodottiCaricati;
 
+    protected Azienda() {}
 
     public Azienda(String nome, String sede) {
-        this.id = ++contatoreID;
         this.nome = nome;
         this.sede = sede;
         this.prodottiCaricati = new ArrayList<>();
     }
+
 
     public long getId() {
         return id;
@@ -38,37 +45,7 @@ public abstract class Azienda implements Observer {
         return prodottiCaricati;
     }
 
-   /* public void creaProdotto(){
-        Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Creazione di un nuovo prodotto:");
-        System.out.print("Nome prodotto: ");
-        String nome = scanner.nextLine();
-
-        System.out.print("Descrizione: ");
-        String descrizione = scanner.nextLine();
-
-        System.out.print("Prezzo: ");
-        double prezzo = Double.parseDouble(scanner.nextLine());
-
-        System.out.print("Quantita: ");
-        int quantita = Integer.parseInt(scanner.nextLine());
-
-        System.out.println("inserisci il numero della categoria: ");
-        int i=1;
-        for (Categoria cat : Categoria.values()) {
-            System.out.println(i+": "+cat.name());
-            i++;
-        }
-        int numerocategoria =  Integer.parseInt(scanner.nextLine());
-        Categoria categoriaprodotto = creazioneCategoria(numerocategoria);
-
-        Prodotto prodotto = creaProdottoAzienda(nome, descrizione,prezzo, quantita, categoriaprodotto);
-        System.out.println("Prodotto creato --> " + prodotto.getNome() + " con ID: " + prodotto.getId() +
-                " e venduto dall'azienda " + prodotto.getAzienda().getNome());
-
-        this.getProdottiCaricati().add(prodotto);
-    }*/
 
     public abstract Prodotto creaProdottoAzienda(String nome, String descrizione, double prezzo, int quantita,
                                                  Categoria categoria, ArrayList<Certificazioni> certificazioni);

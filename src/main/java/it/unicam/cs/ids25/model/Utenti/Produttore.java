@@ -6,14 +6,21 @@ import it.unicam.cs.ids25.model.Prodotti.Certificazioni;
 import it.unicam.cs.ids25.model.Ordine;
 import it.unicam.cs.ids25.model.Prodotti.BuilderProdottoSingolo;
 import it.unicam.cs.ids25.model.Prodotti.Prodotto;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
 
 import java.util.ArrayList;
 
+
+@Entity
+@DiscriminatorValue("produttore")
 public class Produttore extends Azienda {
 
     public Produttore(String nome, String sede) {
         super(nome, sede);
     }
+
+    protected Produttore() {super();}
 
     @Override
     public Prodotto creaProdottoAzienda(String nome, String descrizione, double prezzo, int quantita,
@@ -28,6 +35,8 @@ public class Produttore extends Azienda {
         prodottobuilder.setCertificazioni(certificazioni);
         return prodottobuilder.buildProdottoSingolo();
     }
+
+
 
     @Override
     public void vediProdottiCaricati() {

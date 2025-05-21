@@ -1,7 +1,7 @@
 package it.unicam.cs.ids25.model;
 
-import it.unicam.cs.ids25.model.observer.Observer;
-import it.unicam.cs.ids25.model.observer.Subject;
+import it.unicam.cs.ids25.model.Observer.Observer;
+import it.unicam.cs.ids25.model.Observer.Subject;
 import it.unicam.cs.ids25.model.Prodotti.Prodotto;
 import it.unicam.cs.ids25.model.Utenti.Acquirente;
 

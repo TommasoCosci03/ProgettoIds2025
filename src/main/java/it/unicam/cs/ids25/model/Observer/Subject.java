@@ -1,5 +1,4 @@
-package it.unicam.cs.ids25.model.observer;
-import it.unicam.cs.ids25.model.Ordine;
+package it.unicam.cs.ids25.model.Observer;
 
 public interface Subject {
     void attach(Observer o);
