@@ -13,7 +13,7 @@ public class BuilderProdottoTrasformato {
     private Categoria categoria;
     private List<Certificazioni> certificazioni;
     private double prezzo;
-    private String materiaPrima;
+    private String materiePrime;
 
     public void setPrezzo(double prezzo) {
         this.prezzo = prezzo;
@@ -46,15 +46,15 @@ public class BuilderProdottoTrasformato {
         this.certificazioni = certificazioni;
     }
 
-    public void setMateriaPrima(String materiaPrima) {
-        this.materiaPrima = materiaPrima;
+    public void setMateriaPrima(String materiePrime) {
+        this.materiePrime = materiePrime;
     }
 
     public ProdottoTrasformato buildProdottoTrasformato() {
         if (nome == null || descrizione == null || categoria == null || azienda == null) {
             throw new IllegalStateException("Campi obbligatori mancanti");
         }
-        return new ProdottoTrasformato(nome, descrizione, prezzo, quantita, categoria, azienda, materiaPrima, certificazioni);
+        return new ProdottoTrasformato(nome, descrizione, prezzo, quantita, categoria, azienda, materiePrime, certificazioni);
 
     }
 }

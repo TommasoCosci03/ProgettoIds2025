@@ -1,9 +1,7 @@
 package it.unicam.cs.ids25.model.Prodotti;
 
 import it.unicam.cs.ids25.model.Utenti.Azienda;
-import jakarta.persistence.DiscriminatorValue;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Transient;
+import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +10,12 @@ import java.util.List;
 @DiscriminatorValue("pacchetto")
 public class PacchettoDiProdotti extends Prodotto {
 
-    @Transient
+    @ManyToMany
+    @JoinTable(
+            name = "pacchetto_prodotto",
+            joinColumns = @JoinColumn(name = "pacchetto_id"),
+            inverseJoinColumns = @JoinColumn(name = "prodotto_id")
+    )
     private List<Prodotto> pacchetto;
 
 

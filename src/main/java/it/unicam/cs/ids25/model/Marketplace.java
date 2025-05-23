@@ -50,7 +50,7 @@ public class Marketplace {
             }
         }
         assert prodottoTrasformato != null;
-        return prodottoTrasformato.getMateriaPrima();
+        return prodottoTrasformato.getMateriePrime();
     }
 
 

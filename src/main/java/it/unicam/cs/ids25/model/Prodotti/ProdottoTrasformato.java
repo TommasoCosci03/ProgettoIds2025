@@ -12,20 +12,22 @@ import java.util.List;
 @DiscriminatorValue("trasformato")
 public class ProdottoTrasformato extends Prodotto {
 
-    @Transient
-    private String materiaPrima;
+
+    private String materiePrime;
 
     public ProdottoTrasformato() {
         super();
-        this.materiaPrima = null;
+        this.materiePrime = null;
     }
 
-    protected ProdottoTrasformato(String nome, String descrizione, double prezzo, int quantita, Categoria categoria, Azienda azienda, String materiaPrima, List<Certificazioni> certificazioni) {
+    protected ProdottoTrasformato(String nome, String descrizione, double prezzo, int quantita, Categoria categoria,
+                                  Azienda azienda, String materiePrime, List<Certificazioni> certificazioni) {
+
         super(nome, descrizione, prezzo, quantita, categoria, azienda, certificazioni);
-        this.materiaPrima = materiaPrima;
+        this.materiePrime = materiePrime;
     }
 
-    public String getMateriaPrima() {
-        return materiaPrima;
+    public String getMateriePrime() {
+        return materiePrime;
     }
 }

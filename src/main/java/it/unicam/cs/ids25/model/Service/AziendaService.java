@@ -28,6 +28,7 @@ public class AziendaService {
         }
         else if (dto.getTipoAzienda().equals("trasformatore")){
             azienda = new Trasformatore(dto.getNome(), dto.getSede());
+
         }
         else if (dto.getTipoAzienda().equals("distributore")){
             azienda = new Distributore(dto.getNome(), dto.getSede());
