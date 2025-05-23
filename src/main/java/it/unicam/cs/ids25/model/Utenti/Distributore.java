@@ -11,6 +11,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Transient;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @DiscriminatorValue("distributore")
@@ -18,7 +19,7 @@ public class Distributore extends Azienda {
     @Transient
     Marketplace marketplace = Marketplace.getIstanzaMarketplace();
     @Transient
-    ArrayList<Prodotto> prodotti;
+    List<Prodotto> prodotti;
 
     public Distributore(String nome, String sede) {super(nome, sede);
     }
@@ -26,7 +27,7 @@ public class Distributore extends Azienda {
     protected Distributore() {super();}
 
     @Override
-    public Prodotto creaProdottoAzienda(String nome, String descrizione, double prezzo, int quantita, Categoria categoria,  ArrayList<Certificazioni> certificazioni) {
+    public Prodotto creaProdottoAzienda(String nome, String descrizione, double prezzo, int quantita, Categoria categoria,  List<Certificazioni> certificazioni) {
         if (prodotti.size() < 2) { throw new IllegalStateException("il pacchetto deve essere composto da almeno due prodotti");}
         BuilderPacchetti builderPacchetti = new BuilderPacchetti();
         builderPacchetti.setPrezzo(prezzo);
@@ -42,7 +43,7 @@ public class Distributore extends Azienda {
 
     }
 
-    public void setProdotti(ArrayList<Prodotto> prodotti) {
+    public void setProdotti(List<Prodotto> prodotti) {
         this.prodotti = prodotti;
     }
 

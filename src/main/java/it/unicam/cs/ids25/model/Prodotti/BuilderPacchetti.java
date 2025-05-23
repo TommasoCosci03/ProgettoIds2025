@@ -3,15 +3,16 @@ package it.unicam.cs.ids25.model.Prodotti;
 import it.unicam.cs.ids25.model.Utenti.Azienda;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class BuilderPacchetti {
     private int quantita;
     private String descrizione;
     private String nome;
     private Azienda azienda;
-    private ArrayList<Prodotto> prodotti = new ArrayList<>();
+    private List<Prodotto> prodotti = new ArrayList<>();
     private Categoria categoria;
-    private ArrayList<Certificazioni> certificazioni;
+    private List<Certificazioni> certificazioni;
     private double prezzo;
 
 
@@ -36,7 +37,7 @@ public class BuilderPacchetti {
         this.nome = nome;
     }
 
-    public void setProdotti(ArrayList<Prodotto> prodotti) {
+    public void setProdotti(List<Prodotto> prodotti) {
         this.prodotti = prodotti;
     }
 
@@ -44,7 +45,7 @@ public class BuilderPacchetti {
         this.categoria = categoria;
     }
 
-    public void setCertificazioni(ArrayList<Certificazioni> certificazioni) {
+    public void setCertificazioni(List<Certificazioni> certificazioni) {
         this.certificazioni = certificazioni;
     }
 

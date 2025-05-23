@@ -3,6 +3,7 @@ package it.unicam.cs.ids25.model.Prodotti;
 import it.unicam.cs.ids25.model.Utenti.Azienda;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class BuilderProdottoSingolo {
     private int quantita;
@@ -10,7 +11,7 @@ public class BuilderProdottoSingolo {
     private String nome;
     private Azienda azienda;
     private Categoria categoria;
-    private ArrayList<Certificazioni> certificazioni;
+    private List<Certificazioni> certificazioni;
     private double prezzo;
 
     public void setPrezzo(double prezzo) {
@@ -40,14 +41,14 @@ public class BuilderProdottoSingolo {
         this.categoria = categoria;
     }
 
-    public void setCertificazioni(ArrayList<Certificazioni> certificazioni) {
+    public void setCertificazioni(List<Certificazioni> certificazioni) {
         this.certificazioni = certificazioni;
     }
 
     public ProdottoSingolo buildProdottoSingolo() {
-        if (nome == null || descrizione == null || categoria == null || azienda == null) {
+        /*if (nome == null || descrizione == null || categoria == null || azienda == null) {
             throw new IllegalStateException("Campi obbligatori mancanti");
-        }
+        }*/
         return new ProdottoSingolo(nome, descrizione, prezzo, quantita, categoria, azienda, certificazioni);
     }
 }

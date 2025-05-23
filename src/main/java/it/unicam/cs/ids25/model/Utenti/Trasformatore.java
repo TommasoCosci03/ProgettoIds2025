@@ -11,6 +11,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Transient;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @DiscriminatorValue("trasformatore")
@@ -28,7 +29,7 @@ public class Trasformatore extends Azienda {
 
     @Override
     public Prodotto creaProdottoAzienda(String nome, String descrizione, double prezzo, int quantita,
-                                        Categoria categoria, ArrayList<Certificazioni> certificazioni) {
+                                        Categoria categoria, List<Certificazioni> certificazioni) {
         if (materiePrime == null) { throw new IllegalStateException("materie prime mancanti");}
         BuilderProdottoTrasformato builderProdottoTrasformato = new BuilderProdottoTrasformato();
         builderProdottoTrasformato.setNome(nome);

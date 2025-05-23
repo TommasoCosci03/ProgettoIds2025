@@ -10,6 +10,7 @@ import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
@@ -24,7 +25,7 @@ public class Produttore extends Azienda {
 
     @Override
     public Prodotto creaProdottoAzienda(String nome, String descrizione, double prezzo, int quantita,
-                                        Categoria categoria,  ArrayList<Certificazioni> certificazioni) {
+                                        Categoria categoria,  List<Certificazioni> certificazioni) {
         BuilderProdottoSingolo prodottobuilder = new BuilderProdottoSingolo();
         prodottobuilder.setNome(nome);
         prodottobuilder.setDescrizione(descrizione);

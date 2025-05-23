@@ -28,7 +28,7 @@ public class Marketplace {
         prodottiInVendita.add(prodotto);
     }
 
-    public Prodotto getProdotto(int id) {
+    public Prodotto getProdotto(long id) {
         for (Prodotto prodotto : prodottiInVendita) {
             if (prodotto.getId() == id) {
                return prodotto;

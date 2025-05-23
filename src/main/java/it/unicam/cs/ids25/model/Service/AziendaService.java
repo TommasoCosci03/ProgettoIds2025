@@ -40,6 +40,10 @@ public class AziendaService {
         return repo.findAll();
     }
 
+    public Azienda trova(Long id) {
+        return repo.findById(id).orElse(null);
+    }
+
     public void elimina(Long id) {
         repo.deleteById(id);
     }

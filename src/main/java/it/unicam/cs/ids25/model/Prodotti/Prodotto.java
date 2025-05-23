@@ -1,26 +1,42 @@
 package it.unicam.cs.ids25.model.Prodotti;
+
 import it.unicam.cs.ids25.model.Utenti.Azienda;
 import it.unicam.cs.ids25.model.Utenti.Curatore;
+import jakarta.persistence.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name="tipo_prodotto")
 public abstract class  Prodotto {
-    private static int contatoreId = 0;
-    private int id;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
     private String nome;
     private String descrizione;
     private double prezzo;
     private int quantita;
+    @Enumerated(EnumType.STRING)
     private Categoria categoria;
-    private ArrayList<Certificazioni> certificazioni;
+    @ElementCollection(targetClass = Certificazioni.class)
+    @Enumerated(EnumType.STRING)
+    @CollectionTable(name = "prodotto_certificazioni", joinColumns = @JoinColumn(name = "prodotto_id"))
+    @Column(name = "certificazione")
+    private List<Certificazioni> certificazioni;
     private boolean approvato;
+    @ManyToOne
+    @JoinColumn(name = "azienda_id")
     private Azienda azienda;
+    @Transient
     private Curatore curatore= Curatore.getInstanzaCuratore();
 
+    public Prodotto() {}
 
     public Prodotto(String nome, String descrizione, double prezzo,
-                    int quantita, Categoria categoria, Azienda azienda, ArrayList<Certificazioni> certificazioni) {
-        this.id = ++contatoreId;
+                    int quantita, Categoria categoria, Azienda azienda, List<Certificazioni> certificazioni) {
         this.nome = nome;
         this.descrizione = descrizione;
         this.prezzo = prezzo;
@@ -35,7 +51,7 @@ public abstract class  Prodotto {
     public void inviaRichiesta() {curatore.addRichiesta(this);}
 
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -83,7 +99,7 @@ public abstract class  Prodotto {
         this.categoria = categoria;
     }
 
-    public ArrayList<Certificazioni> getCertificazioni() {
+    public List<Certificazioni> getCertificazioni() {
         return certificazioni;
     }
 
