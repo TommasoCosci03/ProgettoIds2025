@@ -2,7 +2,6 @@ package it.unicam.cs.ids25.model.Utenti;
 
 import it.unicam.cs.ids25.model.Prodotti.Categoria;
 import it.unicam.cs.ids25.model.Prodotti.Certificazioni;
-import it.unicam.cs.ids25.model.Marketplace;
 import it.unicam.cs.ids25.model.Ordine;
 import it.unicam.cs.ids25.model.Prodotti.BuilderPacchetti;
 import it.unicam.cs.ids25.model.Prodotti.Prodotto;
@@ -10,14 +9,11 @@ import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Transient;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @DiscriminatorValue("distributore")
 public class Distributore extends Azienda {
-    @Transient
-    Marketplace marketplace = Marketplace.getIstanzaMarketplace();
     @Transient
     List<Prodotto> prodotti;
 
@@ -45,10 +41,6 @@ public class Distributore extends Azienda {
 
     public void setProdotti(List<Prodotto> prodotti) {
         this.prodotti = prodotti;
-    }
-
-    public Prodotto getProdottoMarketplace(int id) {
-        return marketplace.getProdotto(id);
     }
 
     @Override

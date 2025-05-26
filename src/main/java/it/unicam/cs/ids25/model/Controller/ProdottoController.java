@@ -1,6 +1,7 @@
 package it.unicam.cs.ids25.model.Controller;
 
 import it.unicam.cs.ids25.model.Dto.PacchettoProdottiDTO;
+import it.unicam.cs.ids25.model.Dto.ProdottoDTO;
 import it.unicam.cs.ids25.model.Dto.ProdottoSingoloDTO;
 import it.unicam.cs.ids25.model.Dto.ProdottoTrasformatoDTO;
 import it.unicam.cs.ids25.model.Prodotti.Prodotto;
@@ -58,8 +59,8 @@ public class ProdottoController {
 
 
     @GetMapping
-    public ResponseEntity<List<Prodotto>>trovaTutti(){
-        return ResponseEntity.ok(service.trovaTutti());
+    public List<ProdottoDTO> trovaTutti(){
+        return service.trovaTutti().stream().map(ProdottoDTO::fromEntity).toList();
     }
 
     @DeleteMapping("/{id}")

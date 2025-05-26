@@ -40,7 +40,7 @@ public class ProdottoService {
     public Prodotto creaProdottoTrasformato(ProdottoTrasformatoDTO dto) {
 
         Trasformatore t = (Trasformatore) repoAzienda.findById(dto.getIdAzienda()).get();
-        t.setMateriePrime( dto.getMateriePrime());
+        t.setMateriePrime(dto.getMateriePrime());
         Prodotto prodotto = t.creaProdottoAzienda(dto.getNome(), dto.getDescrizione(), dto.getPrezzo(),
                 dto.getQuantita(), dto.getCategoria(), dto.getCertificazioni());
         return repoProdotto.save(prodotto);

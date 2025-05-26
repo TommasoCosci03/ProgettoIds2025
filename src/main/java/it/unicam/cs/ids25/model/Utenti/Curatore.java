@@ -1,6 +1,5 @@
 package it.unicam.cs.ids25.model.Utenti;
 
-import it.unicam.cs.ids25.model.Marketplace;
 import it.unicam.cs.ids25.model.Prodotti.Prodotto;
 
 import java.util.ArrayList;
@@ -9,30 +8,11 @@ public class Curatore {
     private static Curatore curatore;
     private String nome;
     private ArrayList<Prodotto> richieste;
-    private final Marketplace marketplace;
 
     private Curatore(){
         this.nome = "Curatore";
         this.richieste = new ArrayList<>();
-        marketplace = Marketplace.getIstanzaMarketplace();
     }
-
-
-    public void approvaProdotto(int idprodotto){
-        if(!this.richieste.isEmpty()){
-            for (Prodotto prodotto : richieste) {
-            if (prodotto.getId() == idprodotto) {
-                prodotto.setApprovato(true);
-                richieste.remove(prodotto);
-                marketplace.addProdottoToMarket(prodotto);
-                break;
-            }else {
-                System.out.println("Prodotto non presente nelle richieste.");
-                 }
-             }
-        }
-    }
-
 
 
     public void dimensione(){

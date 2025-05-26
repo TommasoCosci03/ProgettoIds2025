@@ -1,5 +1,8 @@
 package it.unicam.cs.ids25.model.Utenti;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import it.unicam.cs.ids25.model.Prodotti.Categoria;
 import it.unicam.cs.ids25.model.Prodotti.Certificazioni;
 import it.unicam.cs.ids25.model.Observer.Observer;
@@ -16,10 +19,11 @@ import java.util.List;
 public abstract class Azienda implements Observer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     private String nome;
     private String sede;
     @OneToMany(mappedBy = "azienda", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Prodotto> prodottiCaricati = new ArrayList<>();
 
     protected Azienda() {}
@@ -29,8 +33,7 @@ public abstract class Azienda implements Observer {
         this.sede = sede;
     }
 
-
-    public long getId() {
+    public Long getId() {
         return id;
 }
 
@@ -42,11 +45,10 @@ public abstract class Azienda implements Observer {
         return sede;
     }
 
-    public List<Prodotto> getProdottiCaricati() {
-        return prodottiCaricati;
+    @JsonProperty("prodottiCaricati")
+    public List<Long> getProdottiCaricati(){
+        return prodottiCaricati.stream().map(Prodotto::getId).toList();
     }
-
-
 
     public abstract Prodotto creaProdottoAzienda(String nome, String descrizione, double prezzo, int quantita,
                                                  Categoria categoria, List<Certificazioni> certificazioni);

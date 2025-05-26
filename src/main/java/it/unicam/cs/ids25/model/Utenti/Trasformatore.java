@@ -50,11 +50,7 @@ public class Trasformatore extends Azienda {
 
     @Override
     public void vediProdottiCaricati() {
-        System.out.println("--- Lista di prodotti caricati da " + this.getNome() + " ---");
-
-        for(Prodotto prodotto : this.getProdottiCaricati()) {
-            System.out.println(prodotto.getNome() + " - Approvato : " + prodotto.isApprovato());
-        }
+        System.out.println("--- Lista di prodotti caricati da " + this.getNome() + " ---\n" + this.getProdottiCaricati());
     }
 
 

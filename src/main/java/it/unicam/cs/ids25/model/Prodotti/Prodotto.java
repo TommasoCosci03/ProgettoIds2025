@@ -1,5 +1,7 @@
 package it.unicam.cs.ids25.model.Prodotti;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import it.unicam.cs.ids25.model.Utenti.Azienda;
 import it.unicam.cs.ids25.model.Utenti.Curatore;
 import jakarta.persistence.*;
@@ -29,6 +31,7 @@ public abstract class  Prodotto {
     private boolean approvato;
     @ManyToOne
     @JoinColumn(name = "azienda_id")
+    @JsonIgnoreProperties("prodotti")
     private Azienda azienda;
     @Transient
     private Curatore curatore= Curatore.getInstanzaCuratore();
@@ -111,8 +114,8 @@ public abstract class  Prodotto {
         return approvato;
     }
 
-    public void setApprovato(boolean approvato) {
-        this.approvato = approvato;
+    public void setApprovato() {
+        this.approvato = true;
     }
 
     public Azienda getAzienda() {
