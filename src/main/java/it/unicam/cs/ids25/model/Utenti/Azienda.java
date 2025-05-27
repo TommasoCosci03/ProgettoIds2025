@@ -3,6 +3,7 @@ package it.unicam.cs.ids25.model.Utenti;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import it.unicam.cs.ids25.model.Evento;
 import it.unicam.cs.ids25.model.Prodotti.Categoria;
 import it.unicam.cs.ids25.model.Prodotti.Certificazioni;
 import it.unicam.cs.ids25.model.Observer.Observer;
@@ -25,8 +26,9 @@ public abstract class Azienda implements Observer {
     @OneToMany(mappedBy = "azienda", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<Prodotto> prodottiCaricati = new ArrayList<>();
-
-    protected Azienda() {}
+    @ManyToMany(mappedBy = "invitati")
+    private List<Evento> eventi = new ArrayList<>() ;
+    protected Azienda() {};
 
     public Azienda(String nome, String sede) {
         this.nome = nome;
@@ -75,5 +77,12 @@ public abstract class Azienda implements Observer {
     }
 
 
+    public List<Evento> getEventi() {
+        return eventi;
+    }
+
+    public void setEventi(List<Evento> eventi) {
+        this.eventi = eventi;
+    }
 }
 
