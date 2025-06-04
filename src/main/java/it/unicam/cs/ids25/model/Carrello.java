@@ -1,8 +1,11 @@
 package it.unicam.cs.ids25.model;
 
 import it.unicam.cs.ids25.model.Prodotti.Prodotto;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
 
 import java.util.HashMap;
+
 
 public class Carrello {
     private HashMap<Prodotto, Integer> prodottiDaAcquistare;
@@ -15,6 +18,10 @@ public class Carrello {
         return prodottiDaAcquistare;
     }
 
+    public void setProdottiDaAcquistare(Prodotto p, int q) {
+        this.prodottiDaAcquistare.put(p, q);
+    }
+
     public double prezzoTotale(){
         double somma = 0;
         for(Prodotto p : prodottiDaAcquistare.keySet()){
@@ -22,4 +29,5 @@ public class Carrello {
         }
         return somma;
     }
+
 }

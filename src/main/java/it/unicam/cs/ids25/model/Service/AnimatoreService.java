@@ -12,27 +12,29 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @Transactional
 public class AnimatoreService {
-   private final AnimatoreRepository repo;
-   private final EventoRepository eventoRepository;
-   private final AziendaRepository aziendaRepository;
+    private final AnimatoreRepository repo;
+    private final EventoRepository eventoRepository;
+    private final AziendaRepository aziendaRepository;
 
-   public AnimatoreService(AnimatoreRepository repo, EventoRepository eventoRepository, AziendaRepository aziendaRepository) {
-       this.repo = repo;
-       this.eventoRepository = eventoRepository;
-       this.aziendaRepository = aziendaRepository;
-   }
-    public void creaAnimatore(AnimatoreDTO dto){
-       Animatore animatore = new Animatore(dto.getNome());
-       repo.save(animatore);
+    public AnimatoreService(AnimatoreRepository repo, EventoRepository eventoRepository, AziendaRepository aziendaRepository) {
+        this.repo = repo;
+        this.eventoRepository = eventoRepository;
+        this.aziendaRepository = aziendaRepository;
+    }
+
+    public void creaAnimatore(AnimatoreDTO dto) {
+        Animatore animatore = new Animatore(dto.getNome());
+        repo.save(animatore);
     }
 
 
-    public void creaEvento(EventoDTO dto){
+    public void creaEvento(EventoDTO dto) {
         // Recupera l'ID dell'animatore dal corpo JSON
         Long animatoreId = dto.getIdAnimatore();
         if (animatoreId == null) {
@@ -56,12 +58,26 @@ public class AnimatoreService {
     }
 
 
-    public Animatore trova(Long id){
+    public Animatore trova(Long id) {
         return repo.findById(id).orElse(null);
     }
 
-    public List<Evento> trovaEventi(){
-       return eventoRepository.findAll();}
+    public List<EventoDTO> trovaEventi() {
+        List<EventoDTO> eventi = new ArrayList<>();
+        for (Animatore animatore : repo.findAll()) {
+            for (Evento evento : animatore.getEventi()) {
+                EventoDTO dto = new EventoDTO();
+                dto.setIdAnimatore(animatore.getId());
+                dto.setNome(animatore.getNome());
+                dto.setDescrizione(evento.getDescrizione());
+                dto.setLuogo(evento.getLuogo());
+                dto.setDataEvento(evento.getDataEvento());
+                //dto.setAziendeInvitateId(evento.getPartecipanti());
+                eventi.add(dto);
+            }
+        }
+        return eventi;
+    }
 
     public void elimina(Long id){
         repo.deleteById(id);

@@ -55,7 +55,7 @@ public class AnimatoreController {
     }
 
     @GetMapping("/trovaTutti")
-    public ResponseEntity<List<Evento>> trovaTutti(){
+    public ResponseEntity<List<EventoDTO>> trovaTutti(){
         return ResponseEntity.ok(service.trovaEventi());
     }
 

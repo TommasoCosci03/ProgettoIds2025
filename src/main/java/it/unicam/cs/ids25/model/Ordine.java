@@ -4,23 +4,40 @@ import it.unicam.cs.ids25.model.Observer.Observer;
 import it.unicam.cs.ids25.model.Observer.Subject;
 import it.unicam.cs.ids25.model.Prodotti.Prodotto;
 import it.unicam.cs.ids25.model.Utenti.Acquirente;
+import jakarta.persistence.*;
+
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
+@Entity
 public class Ordine implements Subject {
-    private static long contatoreID = 0;
-    private long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @ManyToOne
+    @JoinColumn(name = "acquirenteId")
     private Acquirente acquirente;
+    @ElementCollection
+    @CollectionTable(
+            name = "carrello_prodotti",
+            joinColumns = @JoinColumn(name = "carrello_id")
+    )
+    @MapKeyJoinColumn(name = "prodotto_id")
+    @Column(name = "quantita")
     private HashMap<Prodotto, Integer> prodottiAcquistati;
     private String indirizzo;
+    @Transient
     private ArrayList<Observer> observer = new ArrayList<>();
 
     public Ordine(Acquirente acquirente, HashMap<Prodotto, Integer> prodottiAcquistati, String indirizzo) {
-        this.id = ++contatoreID;
         this.acquirente = acquirente;
         this.prodottiAcquistati = prodottiAcquistati;
         this.indirizzo = indirizzo;
+    }
+
+    public Ordine() {
+
     }
 
     public HashMap<Prodotto, Integer> getProdottiAcquistati() {
@@ -59,4 +76,5 @@ public class Ordine implements Subject {
             o.update(this);
         }
     }
+
 }

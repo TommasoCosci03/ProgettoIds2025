@@ -1,5 +1,6 @@
 package it.unicam.cs.ids25.model.Controller;
 
+import it.unicam.cs.ids25.model.Dto.ProdottoDTO;
 import it.unicam.cs.ids25.model.Repository.ProdottoRepository;
 import it.unicam.cs.ids25.model.Service.MarketplaceService;
 import it.unicam.cs.ids25.model.Prodotti.Prodotto;
@@ -21,8 +22,8 @@ public class MarketplaceController {
     }
 
     @GetMapping("/prodottiInVendita")
-    public List<Prodotto> getProdottiInVendita(){
-        return service.getProdottiInVendita().stream().toList();
+    public List<ProdottoDTO> getProdottiInVendita(){
+        return service.getProdottiInVendita();
     }
 
     @GetMapping("/prodotto/{id}")

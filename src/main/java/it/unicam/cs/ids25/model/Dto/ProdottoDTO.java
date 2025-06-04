@@ -1,8 +1,10 @@
 package it.unicam.cs.ids25.model.Dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import it.unicam.cs.ids25.model.Prodotti.Prodotto;
 
 public class ProdottoDTO {
+
     private Long id;
     private String nome;
     private String descrizione;

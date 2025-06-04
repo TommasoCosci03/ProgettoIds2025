@@ -12,7 +12,7 @@ import java.util.List;
 public class Animatore {
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     private String nome;
     @OneToMany(mappedBy = "animatore", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Evento> eventicrati;
@@ -24,9 +24,9 @@ public class Animatore {
     }
     public Animatore() {}
 
-    public long getId(){return id;}
+    public Long getId(){return id;}
 
-    public void setId(long id) {this.id = id;}
+    public void setId(Long id) {this.id = id;}
 
     public String getNome() {return nome;}
 
