@@ -1,8 +1,6 @@
 package it.unicam.cs.ids25.model.Utenti;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.*;
 import it.unicam.cs.ids25.model.Evento;
 import it.unicam.cs.ids25.model.Prodotti.Categoria;
 import it.unicam.cs.ids25.model.Prodotti.Certificazioni;
@@ -26,7 +24,12 @@ public abstract class Azienda implements Observer {
     @OneToMany(mappedBy = "azienda", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<Prodotto> prodottiCaricati = new ArrayList<>();
-    @ManyToMany(mappedBy = "invitati")
+    @ManyToMany//(mappedBy = "invitati")
+    @JoinTable(
+            name = "evento_invitati",
+            joinColumns = @JoinColumn(name = "evento_id"),
+            inverseJoinColumns = @JoinColumn(name = "azienda_id")
+    )
     private List<Evento> eventi = new ArrayList<>() ;
     protected Azienda() {};
 

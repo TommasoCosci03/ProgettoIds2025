@@ -30,8 +30,8 @@ public class AnimatoreService {
        Animatore animatore = new Animatore(dto.getNome());
        repo.save(animatore);
     }
-/*TODO il metodo l'ho implementato con l'IA di intellij per quello è commentato, la struttura base l'ho fatta io, lei mi ha implementato solo il metodo per invitare le persone
-  */
+
+
     public void creaEvento(EventoDTO dto){
         // Recupera l'ID dell'animatore dal corpo JSON
         Long animatoreId = dto.getIdAnimatore();
@@ -44,25 +44,14 @@ public class AnimatoreService {
                 .orElseThrow(() -> new IllegalArgumentException("Animatore non trovato con ID: " + animatoreId));
 
         // Creazione del nuovo evento
-        Evento evento = new Evento();
-        evento.setNome(dto.getNome());
-        evento.setDescrizione(dto.getDescrizione());
-        evento.setLuogo(dto.getLuogo());
-        evento.setDataEvento(String.valueOf(LocalDate.parse(dto.getDataEvento()))); // Parsing da String a LocalDate
-        evento.setAnimatore(animatore);
+        Evento evento = animatore.creaEvento(
+                dto.getNome(),
+                dto.getDescrizione(),
+                dto.getLuogo(),
+                dto.getDataEvento(),
+                aziendaRepository.findAllById(dto.getAziendeInvitateId())
+        );
 
-        // Recupera le aziende da invitare
-        List<Long> aziendeId = dto.getAziendeInvitateId();
-        if (aziendeId != null && !aziendeId.isEmpty()) {
-            List<Azienda> aziende = aziendaRepository.findAllById(aziendeId);
-            if (aziende.size() != aziendeId.size()) {
-                throw new IllegalArgumentException("Una o più aziende specificate non esistono.");
-            }
-            // Associa le aziende all'evento
-            evento.getInvitati().addAll(aziende);
-        }
-
-        // Salva l'evento nel repository
         eventoRepository.save(evento);
     }
 
@@ -71,7 +60,8 @@ public class AnimatoreService {
         return repo.findById(id).orElse(null);
     }
 
-    public List<Evento> trovaEventi(){return eventoRepository.findAll();}
+    public List<Evento> trovaEventi(){
+       return eventoRepository.findAll();}
 
     public void elimina(Long id){
         repo.deleteById(id);

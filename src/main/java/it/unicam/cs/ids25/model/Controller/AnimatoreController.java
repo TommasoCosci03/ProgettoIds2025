@@ -39,15 +39,18 @@ public class AnimatoreController {
     @PostMapping("/creaEvento")
     public ResponseEntity<String> creaEvento(@RequestBody EventoDTO dto)
     {
-        service.creaEvento(dto);
-            return ResponseEntity.status(200).body(" Evento creato con successo ");
+       if(!(dto.getAziendeInvitateId() == null || dto.getAziendeInvitateId().isEmpty())) {
+           service.creaEvento(dto);
+           return ResponseEntity.status(200).body(" Evento creato con successo ");
+       } else return ResponseEntity.status(500).body("Devi selezionare almeno una azienda");
+
 
     }
 
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<Animatore> trovaById(Long idAnimatore) {
+    public ResponseEntity<Animatore> trovaById(@PathVariable("id") Long idAnimatore) {
         return ResponseEntity.ok(service.trova(idAnimatore));
     }
 

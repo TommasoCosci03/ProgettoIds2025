@@ -1,5 +1,9 @@
 package it.unicam.cs.ids25.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import it.unicam.cs.ids25.model.Utenti.Acquirente;
 import it.unicam.cs.ids25.model.Utenti.Animatore;
 import it.unicam.cs.ids25.model.Utenti.Azienda;
@@ -11,6 +15,7 @@ import java.util.List;
 
 @Entity
 @DiscriminatorValue( "evento")
+@JsonIgnoreProperties("invitati")
 public class Evento {
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,13 +25,14 @@ public class Evento {
     private String luogo;
     private String dataEvento;
 
-    @ManyToMany
+   /* @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinTable(
             name = "evento_invitati",
             joinColumns = @JoinColumn(name = "evento_id"),
             inverseJoinColumns = @JoinColumn(name = "azienda_id")
     )
-    private List<Azienda> invitati;
+
+    private List<Azienda> invitati;*/
 
     @ManyToMany
     @JoinTable(
@@ -40,12 +46,12 @@ public class Evento {
     @JoinColumn(name = "animatore_id", nullable = false)
     private Animatore animatore;
 
-    public Evento(String nome, String descrizione, String luogo, String dataEvento, Animatore animatore) {
+    public Evento(String nome, String descrizione, String luogo, String dataEvento,List<Azienda> invitati , Animatore animatore) {
         this.nome = nome;
         this.descrizione = descrizione;
         this.luogo = luogo;
         this.dataEvento = dataEvento;
-        this.invitati = new ArrayList<>();
+        //this.invitati = invitati;
         this.partecipanti = new ArrayList<>();
         this.animatore = animatore;
     }
@@ -63,7 +69,7 @@ public class Evento {
 
     public String getDataEvento() {return dataEvento;}
 
-    public List<Azienda> getInvitati() {return invitati;}
+    //public List<Azienda> getInvitati() {return invitati;}
 
     public List<Acquirente> getPartecipanti() {return partecipanti;}
 
@@ -78,10 +84,7 @@ public class Evento {
 
     public void setDataEvento(String dataEvento) {this.dataEvento = dataEvento;}
 
+    public void setAnimatore(Animatore animatore) {this.animatore = animatore;}
 
-    public void setAnimatore(Animatore animatore) {
-        this.animatore = animatore;
-    }
-
-    public void aggiungiInvitato(Azienda a){invitati.add(a);}
+    //public void setInvitati(List<Azienda> invitati) {this.invitati = invitati;}
 }
