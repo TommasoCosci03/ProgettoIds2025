@@ -1,7 +1,7 @@
 package it.unicam.cs.ids25.model.Utenti;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import it.unicam.cs.ids25.model.Carrello;
+import it.unicam.cs.ids25.model.OrderItem;
 import it.unicam.cs.ids25.model.Prodotti.Prodotto;
 import jakarta.persistence.*;
 
@@ -12,17 +12,16 @@ public class Acquirente {
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
-    @Transient
+    @OneToOne(cascade = CascadeType.ALL)
     private Carrello carrello;
 
     public Acquirente(String nome) {
         this.nome = nome;
-      //  this.carrello = new Carrello();
+        this.carrello = new Carrello();
+        this.carrello.setAcquirente(this);
     }
 
-    public Acquirente() {
-    this.carrello = new Carrello();
-    }
+    public Acquirente() {}
     public Long getId() {
         return id;
     }
@@ -35,12 +34,11 @@ public class Acquirente {
         return carrello;
     }
 
-    public void togliDalCarrello(Prodotto prodotto){
-        carrello.getProdottiDaAcquistare().remove(prodotto);
-    }
+
 
     public void aggiungiAlCarrello(Prodotto prodotto, int quantita){
-        carrello.setProdottiDaAcquistare(prodotto, quantita);
+        OrderItem order = new OrderItem(prodotto, quantita);
+        carrello.setProdottiDaAcquistare(order);
     }
 
     public void cancellaCarrello(){

@@ -37,19 +37,28 @@ public class OrdineService {
         if (dto.getQuantita() > prodotto.getQuantita()){
             return ResponseEntity.status(404).body("Quantità non disponibile");
         }
+        else if (!prodottoRepository.existsById(dto.getIdProdotto())){
+            return ResponseEntity.status(404).body("Prodotto non esistente");
+        }
         acquirente.aggiungiAlCarrello(prodotto, dto.getQuantita());
         return ResponseEntity.status(200).body(prodotto.getNome() + " Aggiunto al carrello");
     }
 
     public ResponseEntity<String> cancella(Long id) {
+        if(!acquirenteRepository.existsById(id)){
+            return ResponseEntity.status(404).body("Aquirente non esistente");
+        }
         Acquirente acquirente= acquirenteRepository.findById(id).get();
         acquirente.cancellaCarrello();
         return ResponseEntity.status(200).body(acquirente.getNome()+"carrello cancellato");
     }
 
     public ResponseEntity<String> carrello(Long id) {
+        if(!acquirenteRepository.existsById(id)){
+            return ResponseEntity.status(404).body("Aquirente non esistente");
+        }
         Acquirente acquirente= acquirenteRepository.findById(id).get();
-        return ResponseEntity.status(200).body(acquirente.getCarrello().getProdottiDaAcquistare().toString());
+        return ResponseEntity.status(200).body(acquirente.getCarrello().toString());
     }
 
 }
