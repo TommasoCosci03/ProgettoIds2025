@@ -43,5 +43,6 @@ public class Acquirente {
 
     public void cancellaCarrello(){
         carrello.getProdottiDaAcquistare().clear();
+
     }
 }

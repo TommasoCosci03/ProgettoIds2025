@@ -2,8 +2,10 @@ package it.unicam.cs.ids25.model.Controller;
 
 
 import it.unicam.cs.ids25.model.Carrello;
+import it.unicam.cs.ids25.model.Dto.OrdineDTO;
 import it.unicam.cs.ids25.model.Dto.ProdottoOrdineDTO;
 import it.unicam.cs.ids25.model.Ordine;
+import it.unicam.cs.ids25.model.Repository.ProdottoRepository;
 import it.unicam.cs.ids25.model.Service.OrdineService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 public class OrdineController {
 
     private final OrdineService ordineService;
+    ProdottoRepository prodottoRepository;
 
 
     public OrdineController(OrdineService ordineService) {
@@ -32,6 +35,12 @@ public class OrdineController {
     @GetMapping("/getCarrello/{id}")
     public ResponseEntity<String> getCarrello(@PathVariable("id") Long id) {
         return ordineService.carrello(id);
+    }
+
+    @PostMapping("/effettuaOrdine")
+    public ResponseEntity<String> effettuaOrdine(@RequestBody OrdineDTO dto) {
+        return ordineService.effettua(dto);
+
     }
 
 }

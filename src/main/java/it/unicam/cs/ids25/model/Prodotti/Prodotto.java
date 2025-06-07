@@ -2,6 +2,7 @@ package it.unicam.cs.ids25.model.Prodotti;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import it.unicam.cs.ids25.model.Observer.Observer;
 import it.unicam.cs.ids25.model.Utenti.Azienda;
 import it.unicam.cs.ids25.model.Utenti.Curatore;
 import jakarta.persistence.*;
@@ -12,7 +13,7 @@ import java.util.List;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="tipo_prodotto")
-public abstract class  Prodotto {
+public abstract class  Prodotto  {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
