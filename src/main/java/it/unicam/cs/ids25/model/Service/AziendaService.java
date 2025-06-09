@@ -1,12 +1,15 @@
 package it.unicam.cs.ids25.model.Service;
 
 import it.unicam.cs.ids25.model.Dto.AziendaDTO;;
+import it.unicam.cs.ids25.model.Notifiche;
 import it.unicam.cs.ids25.model.Repository.AziendaRepository;
+import it.unicam.cs.ids25.model.Repository.NotificheRepository;
 import it.unicam.cs.ids25.model.Utenti.Azienda;
 import it.unicam.cs.ids25.model.Utenti.Distributore;
 import it.unicam.cs.ids25.model.Utenti.Produttore;
 import it.unicam.cs.ids25.model.Utenti.Trasformatore;
 import jakarta.transaction.Transactional;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,9 +18,12 @@ import java.util.List;
 @Transactional
 public class AziendaService {
     private final AziendaRepository repo;
+    private final NotificheRepository notificheRepo;
 
-    public AziendaService(AziendaRepository repo) {
+    public AziendaService(AziendaRepository repo, NotificheRepository notificheRepo) {
         this.repo = repo;
+        this.notificheRepo = notificheRepo;
+
     }
 
     public Azienda crea(AziendaDTO dto) {
@@ -47,5 +53,15 @@ public class AziendaService {
 
     public void elimina(Long id) {
         repo.deleteById(id);
+    }
+
+    public ResponseEntity<StringBuilder> notificheById(Long id) {
+        StringBuilder notifiche = new StringBuilder();
+        Azienda azienda = repo.findById(id).orElse(null);
+        if (azienda != null) {
+            //notifiche.append(notificheRepo.findAllById(id));
+            return ResponseEntity.ok().body(notifiche);
+        }
+        return ResponseEntity.notFound().build();
     }
 }

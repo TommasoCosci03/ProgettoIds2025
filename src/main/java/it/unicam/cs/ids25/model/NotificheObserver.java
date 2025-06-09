@@ -22,6 +22,7 @@ public class NotificheObserver implements Observer {
             notifica.setIndirizzo(ordine.getIndirizzo());
             notifica.setProdotto(item.getProdotto());
             notifica.setAzienda(item.getProdotto().getAzienda());
+            notifica.setQuantita(item.getQuantita());
             notificheRepository.save(notifica);
         }
     }

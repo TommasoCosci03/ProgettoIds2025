@@ -35,4 +35,9 @@ public class AziendaController {
         service.elimina(id);
         return ResponseEntity.status(200).body("Azienda eliminata con successo");
     }
+
+    @GetMapping("/getNotifiche/{id}")
+    public ResponseEntity<StringBuilder> getNotifiche(@PathVariable Long id) {
+        return service.notificheById(id);
+    }
 }

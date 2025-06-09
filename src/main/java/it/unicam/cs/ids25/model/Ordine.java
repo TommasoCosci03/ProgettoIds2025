@@ -60,9 +60,7 @@ public class Ordine implements Subject {
     }
 
     @Override
-    public void notifyAziende(Acquirente acquirente) {
-
-
+    public void notifyAziende() {
         for(Observer o : observer) {
             o.update(this);
         }

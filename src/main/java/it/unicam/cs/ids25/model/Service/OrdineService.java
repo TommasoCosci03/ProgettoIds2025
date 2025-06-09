@@ -46,6 +46,7 @@ public class OrdineService {
         Acquirente acquirente = acquirenteRepository.findById(dto.getIdAcquirente()).get();
         Prodotto prodotto =prodottoRepository.findById(dto.getIdProdotto()).get();
 
+        if (!prodotto.isApprovato()){ return ResponseEntity.status(404).body("Prodotto non esistente");}
         if (dto.getQuantita() > prodotto.getQuantita()){
             return ResponseEntity.status(404).body("Quantità non disponibile");
         }
@@ -86,7 +87,7 @@ public class OrdineService {
         aggiornaQuantita(acquirente.getCarrello());
         ordineRepository.save(o);
         o.attach(notificheObserver);  // <- ATTACCHI L'OBSERVER
-        o.notifyAziende(acquirente); // <- LO NOTIFICHI
+        o.notifyAziende(); // <- LO NOTIFICHI
         o.detach(notificheObserver);
 
         String prodCarrello = acquirente.getCarrello().toString();

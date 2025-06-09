@@ -20,6 +20,7 @@ public class Notifiche {
     @ManyToOne
     private Acquirente acquirente;
     private String indirizzo;
+    private int quantita;
 
     public Notifiche() {
     }
@@ -50,5 +51,13 @@ public class Notifiche {
 
     public void setIndirizzo(String indirizzo) {
         this.indirizzo = indirizzo;
+    }
+
+    public int getQuantita() {
+        return quantita;
+    }
+
+    public void setQuantita(int quantita) {
+        this.quantita = quantita;
     }
 }
