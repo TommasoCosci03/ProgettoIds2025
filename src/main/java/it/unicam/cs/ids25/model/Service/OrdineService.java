@@ -85,6 +85,7 @@ public class OrdineService {
         }
         Ordine o = new Ordine(acquirente, ordine.getIndirizzo());
         aggiornaQuantita(acquirente.getCarrello());
+        o.setProdottiList(o.getAcquirente().getCarrello().toString());
         ordineRepository.save(o);
         o.attach(notificheObserver);  // <- ATTACCHI L'OBSERVER
         o.notifyAziende(); // <- LO NOTIFICHI

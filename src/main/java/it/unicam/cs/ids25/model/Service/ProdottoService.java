@@ -7,12 +7,14 @@ import it.unicam.cs.ids25.model.Dto.ProdottoTrasformatoDTO;
 import it.unicam.cs.ids25.model.Prodotti.Prodotto;
 import it.unicam.cs.ids25.model.Prodotti.ProdottoSingolo;
 import it.unicam.cs.ids25.model.Repository.AziendaRepository;
+import it.unicam.cs.ids25.model.Repository.NotificheRepository;
 import it.unicam.cs.ids25.model.Repository.ProdottoRepository;
 import it.unicam.cs.ids25.model.Utenti.Azienda;
 import it.unicam.cs.ids25.model.Utenti.Distributore;
 import it.unicam.cs.ids25.model.Utenti.Trasformatore;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,11 +25,13 @@ public class ProdottoService {
 
     private final ProdottoRepository repoProdotto;
     private final AziendaRepository repoAzienda;
+    private final NotificheRepository repoNotifiche;
 
     @Autowired
-    public ProdottoService(ProdottoRepository repo, ProdottoRepository repoProdotto, AziendaRepository repoAzienda) {
+    public ProdottoService(ProdottoRepository repo, ProdottoRepository repoProdotto, AziendaRepository repoAzienda, NotificheRepository repoNotifiche) {
         this.repoProdotto = repoProdotto;
         this.repoAzienda = repoAzienda;
+        this.repoNotifiche = repoNotifiche;
     }
 
     public Prodotto creaProdottoSingolo(ProdottoSingoloDTO dto) {
@@ -46,7 +50,7 @@ public class ProdottoService {
         return repoProdotto.save(prodotto);
     }
 
-    public Prodotto creaPacchetto(PacchettoProdottiDTO dto){
+    public Prodotto creaPacchetto(PacchettoProdottiDTO dto) {
         Distributore d = (Distributore) repoAzienda.findById(dto.getIdAzienda()).get();
         d.setProdotti(repoProdotto.findAllById(dto.getPacchetto()));
         Prodotto prodotto = d.creaProdottoAzienda(dto.getNome(), dto.getDescrizione(), dto.getPrezzo(),
@@ -62,7 +66,25 @@ public class ProdottoService {
         return repoProdotto.findById(id).orElse(null);
     }
 
-    public void elimina(Long id) {
-        repoProdotto.deleteById(id);
+    public ResponseEntity<String> eliminaProdotto(Long idProdotto, Long idAzienda) {
+            if (!(repoProdotto.existsById(idProdotto) && repoAzienda.existsById(idAzienda))) {
+                return ResponseEntity.status(404).body("Prodotto azienda non esistente");
+            }
+
+        Azienda azienda = repoAzienda.findById(idAzienda).get();
+        Prodotto prodotto = repoProdotto.findById(idProdotto).get();
+
+            if (!azienda.getProdottiCaricati().contains(prodotto)) {
+                return ResponseEntity.status(404).body("Non puoi eliminare un prodotto che non hai caricato tu");
+            }
+
+            if (!repoNotifiche.findAllByProdotto_Id(idProdotto)) {
+                return ResponseEntity.status(404).body("Il prodotto e' presente in un ordine, spediscilo prima di eliminarlo");
+            }
+
+        repoProdotto.deleteById(idProdotto);
+        return ResponseEntity.status(200).body("Prodotto eliminato");
+
     }
+
 }

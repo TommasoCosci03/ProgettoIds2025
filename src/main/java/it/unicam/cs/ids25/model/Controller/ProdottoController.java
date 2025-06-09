@@ -63,9 +63,9 @@ public class ProdottoController {
         return service.trovaTutti().stream().map(ProdottoDTO::fromEntity).toList();
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> elimina(@PathVariable Long id){
-        service.elimina(id);
-        return ResponseEntity.status(200).body("Prodotto eliminato con successo");
+    @DeleteMapping("/eliminaProdotto/{idProdotto}/{idAzienda}")
+    public ResponseEntity<String> eliminaProdotto(@PathVariable Long idProdotto, @PathVariable Long idAzienda){
+        return service.eliminaProdotto(idProdotto, idAzienda);
+
     }
 }

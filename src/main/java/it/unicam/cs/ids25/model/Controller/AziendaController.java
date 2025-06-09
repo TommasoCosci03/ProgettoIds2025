@@ -30,10 +30,16 @@ public class AziendaController {
         return ResponseEntity.ok(service.trovaTutte());
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> elimina(@PathVariable Long id) {
-        service.elimina(id);
+    @DeleteMapping("/eliminaAzienda/{id}")
+    public ResponseEntity<String> eliminaAzienda(@PathVariable Long id) {
+        service.eliminaAzienda(id);
         return ResponseEntity.status(200).body("Azienda eliminata con successo");
+    }
+
+    @PostMapping("/spedisci/{id}")
+    public ResponseEntity<String> spedisci (@PathVariable Long id) {
+        return service.effettuaSpedizione(id);
+
     }
 
     @GetMapping("/getNotifiche/{id}")

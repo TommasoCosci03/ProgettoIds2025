@@ -12,7 +12,7 @@ public class Notifiche {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Prodotto prodotto;
 
     @ManyToOne
@@ -21,6 +21,7 @@ public class Notifiche {
     private Acquirente acquirente;
     private String indirizzo;
     private int quantita;
+
 
     public Notifiche() {
     }
@@ -59,5 +60,17 @@ public class Notifiche {
 
     public void setQuantita(int quantita) {
         this.quantita = quantita;
+    }
+
+    @Override
+    public String toString() {
+
+        return "---------Ordine----------\n" +
+                //"id=" + id +
+                " prodotto=" + (prodotto != null ? prodotto.getNome() : "null") +
+                //", azienda=" + (azienda != null ? azienda.getNome() : "null") +
+                ", \nacquirente=" + (acquirente != null ? acquirente.getNome() : "null") +
+                ", \nindirizzo='" + indirizzo +
+                ", \nquantita=" + quantita + "\n\n\n";
     }
 }

@@ -51,17 +51,29 @@ public class AziendaService {
         return repo.findById(id).orElse(null);
     }
 
-    public void elimina(Long id) {
+    public void eliminaAzienda(Long id) {
+
         repo.deleteById(id);
     }
 
     public ResponseEntity<StringBuilder> notificheById(Long id) {
-        StringBuilder notifiche = new StringBuilder();
+        List<Notifiche> notifiche = notificheRepo.findByAzienda_Id(id);
         Azienda azienda = repo.findById(id).orElse(null);
         if (azienda != null) {
-            //notifiche.append(notificheRepo.findAllById(id));
-            return ResponseEntity.ok().body(notifiche);
+            StringBuilder msg = new StringBuilder();
+            for(Notifiche notifica: notifiche){
+                msg.append(notifica.toString()).append("\n");
+            }
+            return ResponseEntity.ok().body(msg);
         }
         return ResponseEntity.notFound().build();
+    }
+
+    public ResponseEntity<String> effettuaSpedizione(Long id) {
+        if(notificheRepo.existsById(id)){
+            notificheRepo.deleteById(id);
+            return ResponseEntity.ok().body("Spedizione effettuata");
+        }
+        return ResponseEntity.status(404).body("Ordine non trovato");
     }
 }

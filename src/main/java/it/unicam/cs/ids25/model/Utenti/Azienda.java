@@ -24,7 +24,7 @@ public abstract class Azienda implements Observer {
     @OneToMany(mappedBy = "azienda", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<Prodotto> prodottiCaricati = new ArrayList<>();
-    @ManyToMany//(mappedBy = "invitati")
+    @ManyToMany
     @JoinTable(
             name = "evento_invitati",
             joinColumns = @JoinColumn(name = "evento_id"),

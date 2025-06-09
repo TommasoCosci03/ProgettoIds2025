@@ -10,7 +10,7 @@ import java.util.List;
 @DiscriminatorValue("pacchetto")
 public class PacchettoDiProdotti extends Prodotto {
 
-    @ManyToMany
+    @ManyToMany (cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "pacchetto_prodotto",
             joinColumns = @JoinColumn(name = "pacchetto_id"),

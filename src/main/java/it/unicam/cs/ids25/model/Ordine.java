@@ -25,6 +25,7 @@ public class Ordine implements Subject {
     private String indirizzo;
     @Transient
     private ArrayList<Observer> observer = new ArrayList<>();
+    private String prodottiList;
 
     public Ordine(Acquirente acquirente, String indirizzo) {
         this.acquirente = acquirente;
@@ -68,5 +69,13 @@ public class Ordine implements Subject {
 
     public ArrayList<Observer> getObserver() {
         return observer;
+    }
+
+    public String getProdottiList() {
+        return prodottiList;
+    }
+
+    public void setProdottiList(String prodottiList) {
+        this.prodottiList = prodottiList;
     }
 }
