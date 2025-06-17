@@ -56,10 +56,8 @@ public class AnimatoreController {
 
     }
 
-
-
-
-
-
-
+    @PostMapping("/invitaAzienda/{idEvento}/{idAzienda}")
+    public ResponseEntity<String> invitaAdEvento(@PathVariable ("idEvento") Long idEvento, @PathVariable ("idAzienda") Long idAzienda){
+        return service.invitaAzienda(idEvento, idAzienda);
+    }
 }

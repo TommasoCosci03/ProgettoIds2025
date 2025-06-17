@@ -14,7 +14,7 @@ public class EventoDTO {
     private String dataEvento;
     private Long idAnimatore;
     private List<Long> aziendeInvitateId;
-
+    private List<Long> partecipantiId;
 
 
     public String getNome() {
@@ -64,5 +64,13 @@ public class EventoDTO {
 
     public void setAziendeInvitateId(List<Long> aziendeInvitateId) {
         this.aziendeInvitateId = aziendeInvitateId;
+    }
+
+    public List<Long> getPartecipantiId() {
+        return partecipantiId;
+    }
+
+    public void setPartecipantiId(List<Long> partecipantiId) {
+        this.partecipantiId = partecipantiId;
     }
 }

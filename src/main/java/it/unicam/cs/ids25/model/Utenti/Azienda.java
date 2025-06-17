@@ -24,13 +24,8 @@ public abstract class Azienda implements Observer {
     @OneToMany(mappedBy = "azienda", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<Prodotto> prodottiCaricati = new ArrayList<>();
-    @ManyToMany
-    @JoinTable(
-            name = "evento_invitati",
-            joinColumns = @JoinColumn(name = "evento_id"),
-            inverseJoinColumns = @JoinColumn(name = "azienda_id")
-    )
-    private List<Evento> eventi = new ArrayList<>() ;
+    @ManyToMany(mappedBy = "invitati")
+    private List<Evento> eventi;
     protected Azienda() {};
 
     public Azienda(String nome, String sede) {

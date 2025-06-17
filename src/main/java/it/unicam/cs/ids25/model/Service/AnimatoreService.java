@@ -7,6 +7,7 @@ import it.unicam.cs.ids25.model.Repository.AnimatoreRepository;
 import it.unicam.cs.ids25.model.Repository.AziendaRepository;
 import it.unicam.cs.ids25.model.Repository.EventoRepository;
 import it.unicam.cs.ids25.model.Utenti.Animatore;
+import it.unicam.cs.ids25.model.Utenti.Azienda;
 import jakarta.transaction.Transactional;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -55,11 +56,22 @@ public class AnimatoreService {
                 dto.getDescrizione(),
                 dto.getLuogo(),
                 dto.getDataEvento(),
-                aziendaRepository.findAllById(dto.getAziendeInvitateId())
+                getInvitati(dto)
         );
 
         eventoRepository.save(evento);
         return ResponseEntity.status(200).body(evento.getNome() + " creato con successo");
+    }
+
+    private List<Azienda> getInvitati(EventoDTO dto) {
+        List<Azienda> AziendeInvitate = new ArrayList<>();
+
+        for(Long id : dto.getAziendeInvitateId()){
+            Azienda azienda = aziendaRepository.findById(id).get();
+            AziendeInvitate.add(azienda);
+        }
+
+        return AziendeInvitate;
     }
 
 
@@ -73,11 +85,12 @@ public class AnimatoreService {
             for (Evento evento : animatore.getEventi()) {
                 EventoDTO dto = new EventoDTO();
                 dto.setIdAnimatore(animatore.getId());
-                dto.setNome(animatore.getNome());
+                dto.setNome(evento.getNome());
                 dto.setDescrizione(evento.getDescrizione());
                 dto.setLuogo(evento.getLuogo());
                 dto.setDataEvento(evento.getDataEvento());
-                //dto.setAziendeInvitateId(evento.getPartecipanti());
+                dto.setAziendeInvitateId(evento.getInvitatiId());
+                dto.setPartecipantiId(evento.getPartecipantiId());
                 eventi.add(dto);
             }
         }
@@ -90,5 +103,21 @@ public class AnimatoreService {
         }
         animatoreRepository.deleteById(id);
         return ResponseEntity.ok("Animatore eliminato con successo");
+    }
+
+    public ResponseEntity<String> invitaAzienda(Long idEvento, Long idAzienda) {
+        if(!eventoRepository.existsById(idEvento)) {
+            return ResponseEntity.status(404).body("Evento non trovato");
+        }
+
+        if(!aziendaRepository.existsById(idAzienda)) {
+            return ResponseEntity.status(404).body("Azienda non trovata");
+        }
+
+        Evento evento = eventoRepository.findById(idEvento).get();
+        Azienda azienda = aziendaRepository.findById(idAzienda).get();
+        evento.getInvitati().add(azienda);
+
+        return ResponseEntity.ok("Azienda " + azienda.getNome() + " invitata con successo all'evento " + evento.getNome());
     }
 }

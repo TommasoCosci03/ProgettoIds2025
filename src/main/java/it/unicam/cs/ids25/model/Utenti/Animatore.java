@@ -34,9 +34,9 @@ public class Animatore {
 
     public List<Evento> getEventi() {return eventicrati;}
 
-    public Evento creaEvento(String nome, String descrizione, String luogo, String dataEvento, List<Azienda> allById){
+    public Evento creaEvento(String nome, String descrizione, String luogo, String dataEvento, List<Azienda> invitati){
 
-         Evento evento = new Evento(nome, descrizione, luogo, dataEvento, allById, this);
+         Evento evento = new Evento(nome, descrizione, luogo, dataEvento, invitati, this);
          eventicrati.add(evento);
          return evento;
 
