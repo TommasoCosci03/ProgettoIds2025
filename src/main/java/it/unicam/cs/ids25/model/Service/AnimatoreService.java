@@ -7,45 +7,49 @@ import it.unicam.cs.ids25.model.Repository.AnimatoreRepository;
 import it.unicam.cs.ids25.model.Repository.AziendaRepository;
 import it.unicam.cs.ids25.model.Repository.EventoRepository;
 import it.unicam.cs.ids25.model.Utenti.Animatore;
-import it.unicam.cs.ids25.model.Utenti.Azienda;
 import jakarta.transaction.Transactional;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @Transactional
 public class AnimatoreService {
-    private final AnimatoreRepository repo;
+    private final AnimatoreRepository animatoreRepository;
     private final EventoRepository eventoRepository;
     private final AziendaRepository aziendaRepository;
 
     public AnimatoreService(AnimatoreRepository repo, EventoRepository eventoRepository, AziendaRepository aziendaRepository) {
-        this.repo = repo;
+        this.animatoreRepository = repo;
         this.eventoRepository = eventoRepository;
         this.aziendaRepository = aziendaRepository;
     }
 
-    public void creaAnimatore(AnimatoreDTO dto) {
+    public ResponseEntity<String> creaAnimatore(AnimatoreDTO dto) {
         Animatore animatore = new Animatore(dto.getNome());
-        repo.save(animatore);
+        animatoreRepository.save(animatore);
+        return ResponseEntity.ok( animatore.getNome() + " animatore creato");
     }
 
 
-    public void creaEvento(EventoDTO dto) {
+    public ResponseEntity<String> creaEvento(EventoDTO dto) {
         // Recupera l'ID dell'animatore dal corpo JSON
         Long animatoreId = dto.getIdAnimatore();
-        if (animatoreId == null) {
-            throw new IllegalArgumentException("L'ID dell'animatore è obbligatorio.");
+        if (animatoreId == null || !(animatoreRepository.existsById(animatoreId))) {
+            return ResponseEntity.status(404).body("Id animatore non trovato");
         }
 
-        // Verifica che l'animatore esista
-        Animatore animatore = repo.findById(animatoreId)
-                .orElseThrow(() -> new IllegalArgumentException("Animatore non trovato con ID: " + animatoreId));
+        for(Long id : dto.getAziendeInvitateId()) {
+            if(!aziendaRepository.existsById(id)) {
+                return ResponseEntity.status(404).body("Azienda/e invitate non trovate");
+            }
+        }
 
+        Animatore animatore = animatoreRepository.findById(animatoreId).get();
         // Creazione del nuovo evento
+
         Evento evento = animatore.creaEvento(
                 dto.getNome(),
                 dto.getDescrizione(),
@@ -55,16 +59,17 @@ public class AnimatoreService {
         );
 
         eventoRepository.save(evento);
+        return ResponseEntity.status(200).body(evento.getNome() + " creato con successo");
     }
 
 
     public Animatore trova(Long id) {
-        return repo.findById(id).orElse(null);
+        return animatoreRepository.findById(id).orElse(null);
     }
 
     public List<EventoDTO> trovaEventi() {
         List<EventoDTO> eventi = new ArrayList<>();
-        for (Animatore animatore : repo.findAll()) {
+        for (Animatore animatore : animatoreRepository.findAll()) {
             for (Evento evento : animatore.getEventi()) {
                 EventoDTO dto = new EventoDTO();
                 dto.setIdAnimatore(animatore.getId());
@@ -79,7 +84,11 @@ public class AnimatoreService {
         return eventi;
     }
 
-    public void elimina(Long id){
-        repo.deleteById(id);
+    public ResponseEntity<String> elimina(Long id){
+        if(!animatoreRepository.existsById(id)) {
+          return ResponseEntity.status(404).body("Id animatore non trovato");
+        }
+        animatoreRepository.deleteById(id);
+        return ResponseEntity.ok("Animatore eliminato con successo");
     }
 }

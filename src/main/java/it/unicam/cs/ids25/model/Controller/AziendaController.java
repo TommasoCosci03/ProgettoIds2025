@@ -31,9 +31,9 @@ public class AziendaController {
     }
 
     @DeleteMapping("/eliminaAzienda/{id}")
-    public ResponseEntity<String> eliminaAzienda(@PathVariable Long id) {
-        service.eliminaAzienda(id);
-        return ResponseEntity.status(200).body("Azienda eliminata con successo");
+    public ResponseEntity<String> eliminaAzienda(@PathVariable("id") Long id) {
+        return service.eliminaAzienda(id);
+
     }
 
     @PostMapping("/spedisci/{id}")

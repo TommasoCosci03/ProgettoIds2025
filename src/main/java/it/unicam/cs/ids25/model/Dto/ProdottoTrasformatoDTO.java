@@ -1,11 +1,5 @@
 package it.unicam.cs.ids25.model.Dto;
 
-import it.unicam.cs.ids25.model.Prodotti.Categoria;
-import it.unicam.cs.ids25.model.Prodotti.Certificazioni;
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class ProdottoTrasformatoDTO extends ProdottoSingoloDTO{
 
     String materiePrime;

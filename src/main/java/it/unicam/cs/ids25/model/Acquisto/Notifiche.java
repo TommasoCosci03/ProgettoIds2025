@@ -1,4 +1,4 @@
-package it.unicam.cs.ids25.model;
+package it.unicam.cs.ids25.model.Acquisto;
 
 import it.unicam.cs.ids25.model.Prodotti.Prodotto;
 import it.unicam.cs.ids25.model.Utenti.Acquirente;

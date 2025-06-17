@@ -1,8 +1,8 @@
 package it.unicam.cs.ids25.model.Utenti;
 
-import it.unicam.cs.ids25.model.Prodotti.Categoria;
-import it.unicam.cs.ids25.model.Prodotti.Certificazioni;
-import it.unicam.cs.ids25.model.Ordine;
+import it.unicam.cs.ids25.model.Prodotti.Enum.Categoria;
+import it.unicam.cs.ids25.model.Prodotti.Enum.Certificazioni;
+import it.unicam.cs.ids25.model.Acquisto.Ordine;
 import it.unicam.cs.ids25.model.Prodotti.BuilderPacchetti;
 import it.unicam.cs.ids25.model.Prodotti.Prodotto;
 import jakarta.persistence.DiscriminatorValue;

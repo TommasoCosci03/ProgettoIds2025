@@ -1,8 +1,8 @@
 package it.unicam.cs.ids25.model.Prodotti;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import it.unicam.cs.ids25.model.Observer.Observer;
+import it.unicam.cs.ids25.model.Prodotti.Enum.Categoria;
+import it.unicam.cs.ids25.model.Prodotti.Enum.Certificazioni;
 import it.unicam.cs.ids25.model.Utenti.Azienda;
 import it.unicam.cs.ids25.model.Utenti.Curatore;
 import jakarta.persistence.*;

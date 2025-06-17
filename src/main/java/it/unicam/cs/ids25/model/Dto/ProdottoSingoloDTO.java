@@ -1,7 +1,7 @@
 package it.unicam.cs.ids25.model.Dto;
 
-import it.unicam.cs.ids25.model.Prodotti.Categoria;
-import it.unicam.cs.ids25.model.Prodotti.Certificazioni;
+import it.unicam.cs.ids25.model.Prodotti.Enum.Categoria;
+import it.unicam.cs.ids25.model.Prodotti.Enum.Certificazioni;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -20,8 +20,8 @@ public class AcquirenteController {
 
     @PostMapping("/creaAcquirente")
     public ResponseEntity<String> crea(@RequestBody AcquirenteDTO dto){
-        service.creaAcquirente(dto);
-        return ResponseEntity.status(200).body(dto.getNome() + " creato con successo");
+        return service.creaAcquirente(dto);
+
     }
 
     @GetMapping("/{id}")
@@ -31,8 +31,8 @@ public class AcquirenteController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> elimina(@PathVariable Long id){
-        service.elimina(id);
-        return ResponseEntity.status(200).body("Acquirente eliminato con successo");
+        return service.elimina(id);
+
     }
 
 

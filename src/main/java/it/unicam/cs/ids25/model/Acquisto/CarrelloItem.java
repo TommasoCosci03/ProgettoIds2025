@@ -1,10 +1,10 @@
-package it.unicam.cs.ids25.model;
+package it.unicam.cs.ids25.model.Acquisto;
 
 import it.unicam.cs.ids25.model.Prodotti.Prodotto;
 import jakarta.persistence.*;
 
 @Entity
-public class OrderItem {
+public class CarrelloItem {
 
 
     @Id
@@ -14,12 +14,12 @@ public class OrderItem {
     private Prodotto prodotto;
     private int quantita;
 
-    public OrderItem(Prodotto prodotto, int quantita) {
+    public CarrelloItem(Prodotto prodotto, int quantita) {
         this.prodotto = prodotto;
         this.quantita = quantita;
     }
 
-    public OrderItem() {
+    public CarrelloItem() {
 
     }
 

@@ -1,16 +1,15 @@
 package it.unicam.cs.ids25.model.Utenti;
 
 
-import it.unicam.cs.ids25.model.Prodotti.Categoria;
-import it.unicam.cs.ids25.model.Prodotti.Certificazioni;
-import it.unicam.cs.ids25.model.Ordine;
+import it.unicam.cs.ids25.model.Prodotti.Enum.Categoria;
+import it.unicam.cs.ids25.model.Prodotti.Enum.Certificazioni;
+import it.unicam.cs.ids25.model.Acquisto.Ordine;
 import it.unicam.cs.ids25.model.Prodotti.BuilderProdottoTrasformato;
 import it.unicam.cs.ids25.model.Prodotti.Prodotto;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Transient;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -50,7 +49,7 @@ public class Trasformatore extends Azienda {
 
     @Override
     public void vediProdottiCaricati() {
-        System.out.println("--- Lista di prodotti caricati da " + this.getNome() + " ---\n" + this.getProdottiCaricati());
+        System.out.println("--- Lista di prodotti caricati da " + this.getNome() + " ---\n" + this.getIdProdottiCaricati());
     }
 
 

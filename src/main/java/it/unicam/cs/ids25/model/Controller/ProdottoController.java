@@ -20,41 +20,32 @@ import java.util.List;
 @RequestMapping("/api/prodotti")
 public class ProdottoController {
     private final ProdottoService service;
-    private final AziendaRepository repo;
-    public ProdottoController(ProdottoService service, AziendaRepository repo) {
+
+    public ProdottoController(ProdottoService service) {
         this.service = service;
-        this.repo = repo;
+
     }
 
     @PostMapping("/prodottoSingolo")
     public ResponseEntity<String>creaProdottoSingolo(@RequestBody ProdottoSingoloDTO dto) {
-        if(repo.findById(dto.getIdAzienda()).get() instanceof Produttore) {
-            service.creaProdottoSingolo(dto);
-            return ResponseEntity.status(200).body(dto.getNome() + " creato con successo");
-        }else
-            return ResponseEntity.status(500).body(repo.findById(dto.getIdAzienda()).get().getNome() +
-                    " Non puo' creare prodotti singoli perche' non e' un produttore");
+
+        return service.creaProdottoSingolo(dto);
+
     }
 
 
     @PostMapping("/prodottoTrasformato")
     public ResponseEntity<String>creaProdottoTrasformato(@RequestBody ProdottoTrasformatoDTO dto) {
-        if (repo.findById(dto.getIdAzienda()).get() instanceof Trasformatore) {
-            service.creaProdottoTrasformato(dto);
-            return ResponseEntity.status(200).body(dto.getNome() + " creato con successo");
-        } else
-            return ResponseEntity.status(500).body(repo.findById(dto.getIdAzienda()).get().getNome() +
-                    " Non puo' creare prodotti trasformati perche' non e' un trasformatore");
+
+            return service.creaProdottoTrasformato(dto);
+
     }
 
     @PostMapping("/pacchetto")
     public ResponseEntity<String>creaPacchetto(@RequestBody PacchettoProdottiDTO dto){
-        if(repo.findById(dto.getIdAzienda()).get() instanceof Distributore) {
-            service.creaPacchetto(dto);
-            return ResponseEntity.status(200).body(dto.getNome() + " creato con successo");
-        }else
-            return ResponseEntity.status(500).body(repo.findById(dto.getIdAzienda()).get().getNome() +
-                    " Non puo' creare pacchetti perche' non e' un distributore");
+
+        return service.creaPacchetto(dto);
+
     }
 
 

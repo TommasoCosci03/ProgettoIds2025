@@ -2,8 +2,8 @@ package it.unicam.cs.ids25.model.Utenti;
 
 import com.fasterxml.jackson.annotation.*;
 import it.unicam.cs.ids25.model.Evento;
-import it.unicam.cs.ids25.model.Prodotti.Categoria;
-import it.unicam.cs.ids25.model.Prodotti.Certificazioni;
+import it.unicam.cs.ids25.model.Prodotti.Enum.Categoria;
+import it.unicam.cs.ids25.model.Prodotti.Enum.Certificazioni;
 import it.unicam.cs.ids25.model.Observer.Observer;
 import it.unicam.cs.ids25.model.Prodotti.Prodotto;
 import jakarta.persistence.*;
@@ -50,8 +50,12 @@ public abstract class Azienda implements Observer {
         return sede;
     }
 
+    public List<Prodotto> getListaProdotti(){
+        return prodottiCaricati;
+    }
+
     @JsonProperty("prodottiCaricati")
-    public List<Long> getProdottiCaricati(){
+    public List<Long> getIdProdottiCaricati(){
         return prodottiCaricati.stream().map(Prodotto::getId).toList();
     }
 

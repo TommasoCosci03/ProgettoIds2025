@@ -1,7 +1,7 @@
 package it.unicam.cs.ids25.model.Utenti;
 
-import it.unicam.cs.ids25.model.Carrello;
-import it.unicam.cs.ids25.model.OrderItem;
+import it.unicam.cs.ids25.model.Acquisto.Carrello;
+import it.unicam.cs.ids25.model.Acquisto.CarrelloItem;
 import it.unicam.cs.ids25.model.Prodotti.Prodotto;
 import jakarta.persistence.*;
 
@@ -37,7 +37,7 @@ public class Acquirente {
 
 
     public void aggiungiAlCarrello(Prodotto prodotto, int quantita){
-        OrderItem order = new OrderItem(prodotto, quantita);
+        CarrelloItem order = new CarrelloItem(prodotto, quantita);
         carrello.setProdottiDaAcquistare(order);
     }
 

@@ -1,11 +1,11 @@
 package it.unicam.cs.ids25.model.Prodotti;
 
+import it.unicam.cs.ids25.model.Prodotti.Enum.Categoria;
+import it.unicam.cs.ids25.model.Prodotti.Enum.Certificazioni;
 import it.unicam.cs.ids25.model.Utenti.Azienda;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Transient;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity

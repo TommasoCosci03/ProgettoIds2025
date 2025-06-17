@@ -11,6 +11,7 @@ import it.unicam.cs.ids25.model.Repository.NotificheRepository;
 import it.unicam.cs.ids25.model.Repository.ProdottoRepository;
 import it.unicam.cs.ids25.model.Utenti.Azienda;
 import it.unicam.cs.ids25.model.Utenti.Distributore;
+import it.unicam.cs.ids25.model.Utenti.Produttore;
 import it.unicam.cs.ids25.model.Utenti.Trasformatore;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,36 +27,60 @@ public class ProdottoService {
     private final ProdottoRepository repoProdotto;
     private final AziendaRepository repoAzienda;
     private final NotificheRepository repoNotifiche;
+    private final ProdottoRepository pacchettoRepository;
 
     @Autowired
-    public ProdottoService(ProdottoRepository repo, ProdottoRepository repoProdotto, AziendaRepository repoAzienda, NotificheRepository repoNotifiche) {
+    public ProdottoService(ProdottoRepository repo, ProdottoRepository repoProdotto, AziendaRepository repoAzienda, NotificheRepository repoNotifiche, ProdottoRepository pacchettoRepository) {
         this.repoProdotto = repoProdotto;
         this.repoAzienda = repoAzienda;
         this.repoNotifiche = repoNotifiche;
+        this.pacchettoRepository = pacchettoRepository;
     }
 
-    public Prodotto creaProdottoSingolo(ProdottoSingoloDTO dto) {
+    public ResponseEntity<String> creaProdottoSingolo(ProdottoSingoloDTO dto) {
+        if(!(repoAzienda.findById(dto.getIdAzienda()).get() instanceof Produttore)) {
+            return ResponseEntity.status(500).body(repoAzienda.findById(dto.getIdAzienda()).get().getNome() +
+                    " Non puo' creare prodotti singoli perche' non e' un produttore");
+        }
+
         Azienda azienda = repoAzienda.findById(dto.getIdAzienda()).get();
         Prodotto prodotto = azienda.creaProdottoAzienda(dto.getNome(), dto.getDescrizione(), dto.getPrezzo(),
                 dto.getQuantita(), dto.getCategoria(), dto.getCertificazioni());
-        return repoProdotto.save(prodotto);
+        repoProdotto.save(prodotto);
+
+        return ResponseEntity.ok( prodotto.getNome() + " creato con successo");
     }
 
-    public Prodotto creaProdottoTrasformato(ProdottoTrasformatoDTO dto) {
+    public ResponseEntity<String> creaProdottoTrasformato(ProdottoTrasformatoDTO dto) {
+
+        if(!(repoAzienda.findById(dto.getIdAzienda()).get() instanceof Trasformatore)) {
+            return ResponseEntity.status(500).body(repoAzienda.findById(dto.getIdAzienda()).get().getNome() +
+                    " Non puo' creare prodotti singoli perche' non e' un produttore");
+        }
 
         Trasformatore t = (Trasformatore) repoAzienda.findById(dto.getIdAzienda()).get();
         t.setMateriePrime(dto.getMateriePrime());
         Prodotto prodotto = t.creaProdottoAzienda(dto.getNome(), dto.getDescrizione(), dto.getPrezzo(),
                 dto.getQuantita(), dto.getCategoria(), dto.getCertificazioni());
-        return repoProdotto.save(prodotto);
+         repoProdotto.save(prodotto);
+
+         return ResponseEntity.ok( prodotto.getNome() + " creato con successo");
     }
 
-    public Prodotto creaPacchetto(PacchettoProdottiDTO dto) {
+    public ResponseEntity<String> creaPacchetto(PacchettoProdottiDTO dto) {
+
+        if(!(repoAzienda.findById(dto.getIdAzienda()).get() instanceof Distributore)) {
+            return ResponseEntity.status(500).body(repoAzienda.findById(dto.getIdAzienda()).get().getNome() +
+                    " Non puo' creare prodotti singoli perche' non e' un produttore");
+        }
+
         Distributore d = (Distributore) repoAzienda.findById(dto.getIdAzienda()).get();
         d.setProdotti(repoProdotto.findAllById(dto.getPacchetto()));
         Prodotto prodotto = d.creaProdottoAzienda(dto.getNome(), dto.getDescrizione(), dto.getPrezzo(),
                 dto.getQuantita(), dto.getCategoria(), dto.getCertificazioni());
-        return repoProdotto.save(prodotto);
+        repoProdotto.save(prodotto);
+
+        return ResponseEntity.ok( prodotto.getNome() + " creato con successo");
     }
 
     public List<Prodotto> trovaTutti() {
@@ -66,6 +91,7 @@ public class ProdottoService {
         return repoProdotto.findById(id).orElse(null);
     }
 
+
     public ResponseEntity<String> eliminaProdotto(Long idProdotto, Long idAzienda) {
             if (!(repoProdotto.existsById(idProdotto) && repoAzienda.existsById(idAzienda))) {
                 return ResponseEntity.status(404).body("Prodotto azienda non esistente");
@@ -74,16 +100,30 @@ public class ProdottoService {
         Azienda azienda = repoAzienda.findById(idAzienda).get();
         Prodotto prodotto = repoProdotto.findById(idProdotto).get();
 
-            if (!azienda.getProdottiCaricati().contains(prodotto)) {
-                return ResponseEntity.status(404).body("Non puoi eliminare un prodotto che non hai caricato tu");
+            if (!azienda.getListaProdotti().contains(prodotto)) {
+                return ResponseEntity.status(500).body("Non puoi eliminare un prodotto che non hai caricato tu");
             }
 
-            if (!repoNotifiche.findAllByProdotto_Id(idProdotto)) {
-                return ResponseEntity.status(404).body("Il prodotto e' presente in un ordine, spediscilo prima di eliminarlo");
+            if (pacchettoRepository.countPacchettiConProdotto(idProdotto) > 0) {
+                return ResponseEntity.status(500).body("Impossibile eliminare il prodotto: è presente in uno o più pacchetti.");
             }
 
-        repoProdotto.deleteById(idProdotto);
-        return ResponseEntity.status(200).body("Prodotto eliminato");
+
+            if(repoAzienda.countProdottiNelCarrello(idProdotto) > 0){
+                return ResponseEntity.status(500).body(
+                        "Prodotto presente in un carrello, aspetta che l'acquirente effettui l'ordine");
+            }
+
+
+
+            if (!repoNotifiche.findAllByProdotto_Id(idProdotto).isEmpty()) {
+                return ResponseEntity.status(500).body("Il prodotto e' presente in un ordine, spediscilo prima di eliminarlo");
+            }
+
+        azienda.getListaProdotti().remove(prodotto);
+        repoAzienda.save(azienda); // aggiorna lo stato
+        repoProdotto.delete(prodotto);
+        return ResponseEntity.status(200).body("Prodotto eliminato con successo");
 
     }
 

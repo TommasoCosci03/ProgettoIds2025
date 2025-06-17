@@ -1,12 +1,12 @@
 package it.unicam.cs.ids25.model.Service;
 
 
-import it.unicam.cs.ids25.model.Carrello;
+import it.unicam.cs.ids25.model.Acquisto.Carrello;
 import it.unicam.cs.ids25.model.Dto.OrdineDTO;
 import it.unicam.cs.ids25.model.Dto.ProdottoOrdineDTO;
-import it.unicam.cs.ids25.model.NotificheObserver;
-import it.unicam.cs.ids25.model.OrderItem;
-import it.unicam.cs.ids25.model.Ordine;
+import it.unicam.cs.ids25.model.Acquisto.NotificheObserver;
+import it.unicam.cs.ids25.model.Acquisto.CarrelloItem;
+import it.unicam.cs.ids25.model.Acquisto.Ordine;
 import it.unicam.cs.ids25.model.Prodotti.Prodotto;
 import it.unicam.cs.ids25.model.Repository.AcquirenteRepository;
 import it.unicam.cs.ids25.model.Repository.NotificheRepository;
@@ -99,7 +99,7 @@ public class OrdineService {
 
 
     public void aggiornaQuantita(Carrello carrello) {
-        for (OrderItem o : carrello.getProdottiDaAcquistare()) {
+        for (CarrelloItem o : carrello.getProdottiDaAcquistare()) {
             Prodotto p= o.getProdotto();
             p.setQuantita(p.getQuantita() - o.getQuantita());
             prodottoRepository.save(p);

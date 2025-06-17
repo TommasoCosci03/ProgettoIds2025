@@ -1,7 +1,8 @@
 package it.unicam.cs.ids25.model.Service;
 
 import it.unicam.cs.ids25.model.Dto.AziendaDTO;;
-import it.unicam.cs.ids25.model.Notifiche;
+import it.unicam.cs.ids25.model.Acquisto.Notifiche;
+import it.unicam.cs.ids25.model.Prodotti.Prodotto;
 import it.unicam.cs.ids25.model.Repository.AziendaRepository;
 import it.unicam.cs.ids25.model.Repository.NotificheRepository;
 import it.unicam.cs.ids25.model.Utenti.Azienda;
@@ -19,6 +20,7 @@ import java.util.List;
 public class AziendaService {
     private final AziendaRepository repo;
     private final NotificheRepository notificheRepo;
+
 
     public AziendaService(AziendaRepository repo, NotificheRepository notificheRepo) {
         this.repo = repo;
@@ -51,9 +53,27 @@ public class AziendaService {
         return repo.findById(id).orElse(null);
     }
 
-    public void eliminaAzienda(Long id) {
+    public ResponseEntity<String> eliminaAzienda(Long id) {
+        if(repo.existsById(id) == false){return ResponseEntity.status(404).body("Azienda non trovata");}
+
+        Azienda azienda = repo.findById(id).orElse(null);
+        List<Long> listaIdProdotti = azienda.getIdProdottiCaricati();
+
+            for(Long idProdotto : listaIdProdotti){
+                if(repo.countProdottiNelCarrello(idProdotto) > 0){
+                    return ResponseEntity.status(500).body(
+                            "Prodotto/i dell'azienda presenti in un carrello, aspetta che l'acquirente effettui l'ordine");
+                }
+
+            }
+        for(Long idProdotto : listaIdProdotti) {
+            if (!notificheRepo.findAllByProdotto_Id(idProdotto).isEmpty()) {
+                return ResponseEntity.status(500).body("L'azienda deve effettuare tutti gli ordini prima di essere eliminata");
+            }
+        }
 
         repo.deleteById(id);
+        return ResponseEntity.status(200).body("Azienda eliminata con successo");
     }
 
     public ResponseEntity<StringBuilder> notificheById(Long id) {

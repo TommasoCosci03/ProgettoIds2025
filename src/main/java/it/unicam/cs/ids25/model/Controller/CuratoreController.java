@@ -14,29 +14,29 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/curatore")
 public class CuratoreController {
     private final CuratoreService service;
-    private final ProdottoRepository repo;
 
-    public CuratoreController(CuratoreService service, ProdottoRepository repo) {
+
+    public CuratoreController(CuratoreService service) {
         this.service = service;
-        this.repo = repo;
+
     }
 
     @PostMapping("/approva/{id}")
     public ResponseEntity<String> approva(@PathVariable("id")  Long id){
-        if(repo.existsById(id)){
-            service.approva(id);
-            return ResponseEntity.ok("Richiesta approvata con successo");
-        }else
-            return ResponseEntity.status(404).body("Prodotto non trovato");
+
+            return service.approva(id);
+
+    }
+
+    @PostMapping("/approvaTutti")
+    public ResponseEntity<String> approvaTutti(){
+        return service.approvaTutti();
     }
 
     @DeleteMapping("/rifiuta/{id}")
     public ResponseEntity<String> rifiuta(@PathVariable("id")  Long id){
-        if(repo.existsById(id)){
-            service.rifiuta(id);
-            return ResponseEntity.ok("Richiesta rifiutata con successo");
-        }else
-            return ResponseEntity.status(404).body("Prodotto non trovato");
+
+            return service.rifiuta(id);
 
     }
 
