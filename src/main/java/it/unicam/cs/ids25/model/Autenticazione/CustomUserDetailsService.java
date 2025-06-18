@@ -19,23 +19,15 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        // Admin hardcoded
-        if (username.equals("admin")) {
-            return User.builder()
-                    .username("admin")
-                    .password("{bcrypt}...") // password già codificata
-                    .roles("ADMIN")
-                    .build();
-        }
-
-        Utente utente = utenteRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("Utente non trovato"));
+        Utente utente = utenteRepository.findByUsername(username);
 
         String ruolo = switch (utente) {
             case Produttore p -> "PRODUTTORE";
             case Trasformatore t -> "TRASFORMATORE";
             case Distributore d -> "DISTRIBUTORE";
             case Acquirente a -> "ACQUIRENTE";
+            case Curatore c -> "CURATORE";
+            case Gestore g -> "GESTORE";
             default -> throw new IllegalStateException("Ruolo sconosciuto");
         };
 

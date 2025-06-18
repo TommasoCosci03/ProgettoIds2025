@@ -3,6 +3,7 @@ package it.unicam.cs.ids25.model.Autenticazione;
 import it.unicam.cs.ids25.model.Repository.UtenteRepository;
 import it.unicam.cs.ids25.model.Utenti.Acquirente;
 import it.unicam.cs.ids25.model.Utenti.Azienda;
+import it.unicam.cs.ids25.model.Utenti.Curatore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,8 +21,7 @@ public class SecurityService {
     public Azienda getAziendaCorrente()  {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
-        Utente utente = utenteRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("Utente non trovato"));
+        Utente utente = utenteRepository.findByUsername(username);
 
         if (utente instanceof Azienda azienda) {
             return azienda;
@@ -30,13 +30,22 @@ public class SecurityService {
         }
     }
 
-
-
-    public Acquirente getAcquirenteCorrente()  {
+    public Curatore getCuratoreCorrente() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
-        Utente utente = utenteRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("Utente non trovato"));
+        Utente utente = utenteRepository.findByUsername(username);
+
+        if (utente instanceof Curatore curatore) {
+            return curatore;
+        } else {
+            return null;
+        }
+    }
+
+    public Acquirente getAcquirenteCorrente()  {
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    String username = auth.getName();
+    Utente utente = utenteRepository.findByUsername(username);
 
         if (utente instanceof Acquirente acquirente) {
             return acquirente;

@@ -6,6 +6,7 @@
 /.idea/
 /*.iml
 /out/
+/*.xml
 
 # OS
 .DS_Store

@@ -38,13 +38,6 @@ public class AnimatoreController {
            return service.creaEvento(dto);
     }
 
-
-
-    @GetMapping("/trovaAnimatoreById/{id}")
-    public ResponseEntity<Animatore> trovaById(@PathVariable("id") Long idAnimatore) {
-        return ResponseEntity.ok(service.trova(idAnimatore));
-    }
-
     @GetMapping("/trovaTuttiEventi")
     public ResponseEntity<List<EventoDTO>> trovaTutti(){
         return ResponseEntity.ok(service.trovaEventi());

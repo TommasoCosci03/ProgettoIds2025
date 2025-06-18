@@ -34,8 +34,6 @@ public abstract class  Prodotto  {
     @JoinColumn(name = "azienda_id")
     @JsonIgnoreProperties("prodotti")
     private Azienda azienda;
-    @Transient
-    private Curatore curatore= Curatore.getInstanzaCuratore();
 
     public Prodotto() {}
 
@@ -49,10 +47,9 @@ public abstract class  Prodotto  {
         this.approvato = false;
         this.azienda = azienda;
         this.certificazioni = certificazioni;
-        curatore.addRichiesta(this);
     }
 
-    public void inviaRichiesta() {curatore.addRichiesta(this);}
+    //public void inviaRichiesta() {curatore.addRichiesta(this);}
 
 
     public long getId() {

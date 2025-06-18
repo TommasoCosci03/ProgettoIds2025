@@ -27,11 +27,6 @@ public class AcquirenteController {
 
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Acquirente> trovaById(Long idAcquirente) {
-        return ResponseEntity.ok(service.trova(idAcquirente));
-    }
-
 //    @DeleteMapping("/eliminaAcquirente")
 //    public ResponseEntity<String> elimina(){
 //        return service.elimina();

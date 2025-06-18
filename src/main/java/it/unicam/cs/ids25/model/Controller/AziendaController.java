@@ -25,11 +25,6 @@ public class AziendaController {
         return service.crea(dto);
     }
 
-    @GetMapping
-    public ResponseEntity<List<Azienda>> trovaTutti() {
-        return ResponseEntity.ok(service.trovaTutte());
-    }
-
     @DeleteMapping("/eliminaAzienda")
     public ResponseEntity<String> eliminaAzienda(){
         return service.eliminaAzienda();

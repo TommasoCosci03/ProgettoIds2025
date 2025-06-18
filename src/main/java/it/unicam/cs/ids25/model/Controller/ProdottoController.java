@@ -24,40 +24,33 @@ public class ProdottoController {
 
     public ProdottoController(ProdottoService service) {
         this.service = service;
-
     }
 
     @PostMapping("/prodottoSingolo")
     public ResponseEntity<String>creaProdottoSingolo(@RequestBody ProdottoSingoloDTO dto)  {
-
-        return service.creaProdottoSingolo(dto);
-
+            return service.creaProdottoSingolo(dto);
     }
 
 
     @PostMapping("/prodottoTrasformato")
     public ResponseEntity<String>creaProdottoTrasformato(@RequestBody ProdottoTrasformatoDTO dto)  {
-
             return service.creaProdottoTrasformato(dto);
-
     }
 
     @PostMapping("/pacchetto")
     public ResponseEntity<String>creaPacchetto(@RequestBody PacchettoProdottiDTO dto)  {
-
-        return service.creaPacchetto(dto);
-
+            return service.creaPacchetto(dto);
     }
 
 
     @GetMapping
     public List<ProdottoDTO> trovaTutti(){
-        return service.trovaTutti().stream().map(ProdottoDTO::fromEntity).toList();
+            return service.trovaTutti().stream().map(ProdottoDTO::fromEntity).toList();
     }
 
     @DeleteMapping("/eliminaProdotto/{idProdotto}")
     public ResponseEntity<String> eliminaProdotto(@PathVariable Long idProdotto)  {
-        return service.eliminaProdotto(idProdotto);
+            return service.eliminaProdotto(idProdotto);
 
     }
 }

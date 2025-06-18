@@ -1,57 +1,23 @@
 package it.unicam.cs.ids25.model.Utenti;
 
+import it.unicam.cs.ids25.model.Autenticazione.Utente;
 import it.unicam.cs.ids25.model.Prodotti.Prodotto;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 
 import java.util.ArrayList;
 
-public class Curatore {
-    private static Curatore curatore;
-    private String nome;
-    private ArrayList<Prodotto> richieste;
+@Entity
+@DiscriminatorValue("curatore")
+public class Curatore extends Utente {
 
-    private Curatore(){
-        this.nome = "Curatore";
-        this.richieste = new ArrayList<>();
+    protected Curatore(){
+        super();
     }
 
-
-    public void dimensione(){
-        System.out.println(this.richieste.size());
+    public Curatore(String username, String password) {
+        super(username, password);
     }
-
-
-    public static Curatore getInstanzaCuratore() {
-        if (curatore == null) {
-            curatore = new Curatore(); // oppure recupera da config
-        }
-        return curatore;
-    }
-
-
-
-    public ArrayList<Prodotto> getRichieste() {
-        return richieste;
-    }
-
-    public void addRichiesta(Prodotto prodottorichiesta) {
-        this.richieste.add(prodottorichiesta);
-    }
-
-    public void stampaRichieste() {
-        if (richieste.isEmpty()) {
-            System.out.println("Nessuna richiesta in attesa di approvazione.");
-            return;
-        }
-
-        System.out.println("Prodotti in attesa di approvazione:");
-        for (Prodotto p : richieste) {
-            System.out.println("ID: " + p.getId()
-                    + ", Nome: " + p.getNome()
-                    + ", Descrizione: " + p.getDescrizione()
-                    + ", Prezzo: " + p.getPrezzo()
-                    + ", Quantità: " + p.getQuantita());
-        }
-    }
-
 
 }

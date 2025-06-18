@@ -19,9 +19,10 @@ public class MarketplaceService {
 
     public List<ProdottoDTO> getProdottiInVendita() {
         List<ProdottoDTO> prodottiDTO = new ArrayList<>();
-        ProdottoDTO prodottoDTO = new ProdottoDTO();
+
         for (Prodotto prodotto : prodottoRepository.findAll()) {
             if (prodotto.isApprovato()) {
+                ProdottoDTO prodottoDTO = new ProdottoDTO();
                 prodottoDTO.setNome(prodotto.getNome());
                 prodottoDTO.setAziendaId(prodotto.getAzienda().getId());
                 prodottoDTO.setId(prodotto.getId());

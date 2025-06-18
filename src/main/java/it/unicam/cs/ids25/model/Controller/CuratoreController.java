@@ -4,6 +4,7 @@ import it.unicam.cs.ids25.model.Dto.ProdottoDTO;
 import it.unicam.cs.ids25.model.Prodotti.Prodotto;
 import it.unicam.cs.ids25.model.Repository.ProdottoRepository;
 import it.unicam.cs.ids25.model.Service.CuratoreService;
+import it.unicam.cs.ids25.model.Utenti.Curatore;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,17 +16,13 @@ import java.util.stream.Collectors;
 public class CuratoreController {
     private final CuratoreService service;
 
-
     public CuratoreController(CuratoreService service) {
         this.service = service;
-
     }
 
     @PostMapping("/approva/{id}")
     public ResponseEntity<String> approva(@PathVariable("id")  Long id){
-
             return service.approva(id);
-
     }
 
     @PostMapping("/approvaTutti")
@@ -35,9 +32,7 @@ public class CuratoreController {
 
     @DeleteMapping("/rifiuta/{id}")
     public ResponseEntity<String> rifiuta(@PathVariable("id")  Long id){
-
             return service.rifiuta(id);
-
     }
 
     @GetMapping("/richieste")

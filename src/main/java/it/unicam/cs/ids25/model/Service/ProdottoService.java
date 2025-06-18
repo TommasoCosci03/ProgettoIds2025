@@ -7,6 +7,7 @@ import it.unicam.cs.ids25.model.Dto.ProdottoTrasformatoDTO;
 //import it.unicam.cs.ids25.model.Eccezioni.CreazioneProdottoException;
 import it.unicam.cs.ids25.model.Prodotti.Prodotto;
 import it.unicam.cs.ids25.model.Repository.AziendaRepository;
+import it.unicam.cs.ids25.model.Repository.CuratoreRepository;
 import it.unicam.cs.ids25.model.Repository.NotificheRepository;
 import it.unicam.cs.ids25.model.Repository.ProdottoRepository;
 import it.unicam.cs.ids25.model.Utenti.Azienda;
@@ -32,14 +33,19 @@ public class ProdottoService {
     private final ProdottoRepository pacchettoRepository;
 
     private final SecurityService securityService;
+    private final CuratoreService curatoreService;
 
     @Autowired
-    public ProdottoService(ProdottoRepository repo, ProdottoRepository repoProdotto, AziendaRepository repoAzienda, NotificheRepository repoNotifiche, ProdottoRepository pacchettoRepository, SecurityService securityService) {
+    private CuratoreRepository curatoreRepository;
+
+    @Autowired
+    public ProdottoService(ProdottoRepository repo, ProdottoRepository repoProdotto, AziendaRepository repoAzienda, NotificheRepository repoNotifiche, ProdottoRepository pacchettoRepository, SecurityService securityService, CuratoreService curatoreService) {
         this.repoProdotto = repoProdotto;
         this.repoAzienda = repoAzienda;
         this.repoNotifiche = repoNotifiche;
         this.pacchettoRepository = pacchettoRepository;
         this.securityService = securityService;
+        this.curatoreService = curatoreService;
     }
 
 
