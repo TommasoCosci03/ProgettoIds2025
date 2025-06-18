@@ -14,6 +14,7 @@ import it.unicam.cs.ids25.model.Utenti.Trasformatore;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 @RestController
@@ -27,7 +28,7 @@ public class ProdottoController {
     }
 
     @PostMapping("/prodottoSingolo")
-    public ResponseEntity<String>creaProdottoSingolo(@RequestBody ProdottoSingoloDTO dto) {
+    public ResponseEntity<String>creaProdottoSingolo(@RequestBody ProdottoSingoloDTO dto)  {
 
         return service.creaProdottoSingolo(dto);
 
@@ -35,14 +36,14 @@ public class ProdottoController {
 
 
     @PostMapping("/prodottoTrasformato")
-    public ResponseEntity<String>creaProdottoTrasformato(@RequestBody ProdottoTrasformatoDTO dto) {
+    public ResponseEntity<String>creaProdottoTrasformato(@RequestBody ProdottoTrasformatoDTO dto)  {
 
             return service.creaProdottoTrasformato(dto);
 
     }
 
     @PostMapping("/pacchetto")
-    public ResponseEntity<String>creaPacchetto(@RequestBody PacchettoProdottiDTO dto){
+    public ResponseEntity<String>creaPacchetto(@RequestBody PacchettoProdottiDTO dto)  {
 
         return service.creaPacchetto(dto);
 
@@ -54,9 +55,9 @@ public class ProdottoController {
         return service.trovaTutti().stream().map(ProdottoDTO::fromEntity).toList();
     }
 
-    @DeleteMapping("/eliminaProdotto/{idProdotto}/{idAzienda}")
-    public ResponseEntity<String> eliminaProdotto(@PathVariable Long idProdotto, @PathVariable Long idAzienda){
-        return service.eliminaProdotto(idProdotto, idAzienda);
+    @DeleteMapping("/eliminaProdotto/{idProdotto}")
+    public ResponseEntity<String> eliminaProdotto(@PathVariable Long idProdotto)  {
+        return service.eliminaProdotto(idProdotto);
 
     }
 }

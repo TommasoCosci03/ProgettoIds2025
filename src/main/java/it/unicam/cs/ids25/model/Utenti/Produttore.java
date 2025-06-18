@@ -16,8 +16,8 @@ import java.util.List;
 @DiscriminatorValue("produttore")
 public class Produttore extends Azienda {
 
-    public Produttore(String nome, String sede) {
-        super(nome, sede);
+    public Produttore(String nome, String sede,String email, String password) {
+        super(nome, sede,email, password);
     }
 
     protected Produttore() {super();}

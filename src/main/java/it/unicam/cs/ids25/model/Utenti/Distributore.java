@@ -17,7 +17,7 @@ public class Distributore extends Azienda {
     @Transient
     List<Prodotto> prodotti;
 
-    public Distributore(String nome, String sede) {super(nome, sede);
+    public Distributore(String nome, String sede, String email, String password) {super(nome, sede, email, password);
     }
 
     protected Distributore() {super();}

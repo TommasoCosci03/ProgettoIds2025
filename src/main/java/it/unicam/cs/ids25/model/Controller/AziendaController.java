@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 @RestController
@@ -21,8 +22,7 @@ public class AziendaController {
 
     @PostMapping
     public ResponseEntity<String> crea(@RequestBody AziendaDTO dto) {
-        service.crea(dto);
-        return ResponseEntity.status(200).body(dto.getNome() + " creato con successo");
+        return service.crea(dto);
     }
 
     @GetMapping
@@ -30,9 +30,9 @@ public class AziendaController {
         return ResponseEntity.ok(service.trovaTutte());
     }
 
-    @DeleteMapping("/eliminaAzienda/{id}")
-    public ResponseEntity<String> eliminaAzienda(@PathVariable("id") Long id) {
-        return service.eliminaAzienda(id);
+    @DeleteMapping("/eliminaAzienda")
+    public ResponseEntity<String> eliminaAzienda(){
+        return service.eliminaAzienda();
 
     }
 

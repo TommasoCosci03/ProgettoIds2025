@@ -2,12 +2,13 @@ package it.unicam.cs.ids25.model.Utenti;
 
 import it.unicam.cs.ids25.model.Acquisto.Carrello;
 import it.unicam.cs.ids25.model.Acquisto.CarrelloItem;
+import it.unicam.cs.ids25.model.Autenticazione.Utente;
 import it.unicam.cs.ids25.model.Prodotti.Prodotto;
 import jakarta.persistence.*;
 
 @Entity
 @DiscriminatorValue("acquirente")
-public class Acquirente {
+public class Acquirente extends Utente {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long id;

@@ -18,8 +18,8 @@ public class Trasformatore extends Azienda {
     @Transient
     private String materiePrime;
 
-    public Trasformatore(String nome, String sede) {
-        super(nome, sede);
+    public Trasformatore(String nome, String sede, String email, String password) {
+        super(nome, sede, email, password);
     }
 
 

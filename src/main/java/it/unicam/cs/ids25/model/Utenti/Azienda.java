@@ -1,6 +1,7 @@
 package it.unicam.cs.ids25.model.Utenti;
 
 import com.fasterxml.jackson.annotation.*;
+import it.unicam.cs.ids25.model.Autenticazione.Utente;
 import it.unicam.cs.ids25.model.Evento;
 import it.unicam.cs.ids25.model.Prodotti.Enum.Categoria;
 import it.unicam.cs.ids25.model.Prodotti.Enum.Certificazioni;
@@ -15,7 +16,7 @@ import java.util.List;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="tipo_azienda")
 
-public abstract class Azienda implements Observer {
+public abstract class Azienda extends Utente implements Observer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,11 +27,16 @@ public abstract class Azienda implements Observer {
     private List<Prodotto> prodottiCaricati = new ArrayList<>();
     @ManyToMany(mappedBy = "invitati")
     private List<Evento> eventi;
-    protected Azienda() {};
 
-    public Azienda(String nome, String sede) {
+    protected Azienda() {
+        super();
+    };
+
+    public Azienda(String nome, String sede,String email, String password) {
+        super(email, password);
         this.nome = nome;
         this.sede = sede;
+
     }
 
     public Long getId() {

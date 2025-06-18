@@ -12,7 +12,7 @@ public class ProdottoSingoloDTO {
     double prezzo;
     int quantita;
     Categoria categoria;
-    long idAzienda;
+   // long idAzienda;
     List<Certificazioni> certificazioni;
 
     public String getNome() {
@@ -55,13 +55,13 @@ public class ProdottoSingoloDTO {
         this.categoria = categoria;
     }
 
-    public long getIdAzienda() {
-        return idAzienda;
-    }
-
-    public void setIdAzienda(long idAzienda) {
-        this.idAzienda = idAzienda;
-    }
+//    public long getIdAzienda() {
+//        return idAzienda;
+//    }
+//
+//    public void setIdAzienda(long idAzienda) {
+//        this.idAzienda = idAzienda;
+//    }
 
     public List<Certificazioni> getCertificazioni() {
         return certificazioni;

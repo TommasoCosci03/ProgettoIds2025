@@ -1,18 +1,19 @@
 package it.unicam.cs.ids25.model.Service;
 
-import it.unicam.cs.ids25.model.Dto.AziendaDTO;;
+import it.unicam.cs.ids25.model.Autenticazione.SecurityService;
+import it.unicam.cs.ids25.model.Dto.AziendaDTO;
 import it.unicam.cs.ids25.model.Acquisto.Notifiche;
-import it.unicam.cs.ids25.model.Prodotti.Prodotto;
 import it.unicam.cs.ids25.model.Repository.AziendaRepository;
 import it.unicam.cs.ids25.model.Repository.NotificheRepository;
-import it.unicam.cs.ids25.model.Utenti.Azienda;
-import it.unicam.cs.ids25.model.Utenti.Distributore;
-import it.unicam.cs.ids25.model.Utenti.Produttore;
-import it.unicam.cs.ids25.model.Utenti.Trasformatore;
+import it.unicam.cs.ids25.model.Repository.UtenteRepository;
+import it.unicam.cs.ids25.model.Utenti.*;
 import jakarta.transaction.Transactional;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 @Service
@@ -20,29 +21,48 @@ import java.util.List;
 public class AziendaService {
     private final AziendaRepository repo;
     private final NotificheRepository notificheRepo;
+    private final UtenteRepository utenteRepo;
+    private final PasswordEncoder passwordEncoder;
+
+    private final SecurityService serviceUtente;
 
 
-    public AziendaService(AziendaRepository repo, NotificheRepository notificheRepo) {
+    public AziendaService(AziendaRepository repo, NotificheRepository notificheRepo, UtenteRepository utenteRepo, PasswordEncoder passwordEncoder, SecurityService serviceUtente) {
         this.repo = repo;
         this.notificheRepo = notificheRepo;
-
+        this.utenteRepo = utenteRepo;
+        this.passwordEncoder = passwordEncoder;
+        this.serviceUtente = serviceUtente;
     }
 
-    public Azienda crea(AziendaDTO dto) {
+    public ResponseEntity<String> crea(AziendaDTO dto) {
         Azienda azienda = null;
 
+        if (dto.getUsername().isEmpty() || dto.getPassword().isEmpty()) {
+            return ResponseEntity.badRequest().body("Email e Password non valido");
+        }
+
+        if(dto.getNome().isEmpty() || dto.getTipoAzienda().isEmpty() || dto.getSede().isEmpty()) {
+            return ResponseEntity.badRequest().body("nome, tipologia azienda o sede non valide");
+        }
+
         if (dto.getTipoAzienda().equals("produttore")) {
-            azienda = new Produttore(dto.getNome(), dto.getSede());
+            azienda = new Produttore(dto.getNome(), dto.getSede(), dto.getUsername(), dto.getPassword());
         }
         else if (dto.getTipoAzienda().equals("trasformatore")){
-            azienda = new Trasformatore(dto.getNome(), dto.getSede());
-
+            azienda = new Trasformatore(dto.getNome(), dto.getSede(),dto.getUsername(), dto.getPassword());
         }
         else if (dto.getTipoAzienda().equals("distributore")){
-            azienda = new Distributore(dto.getNome(), dto.getSede());
+            azienda = new Distributore(dto.getNome(), dto.getSede(),dto.getUsername(), dto.getPassword());
         }
 
-        return repo.save(azienda);
+        if (repo.existsByUsername(dto.getUsername()))
+        {return ResponseEntity.status(HttpStatus.CONFLICT).body("Username: " + dto.getUsername() + " già in uso");}
+
+        azienda.setUsername(dto.getUsername());
+        azienda.setPassword(passwordEncoder.encode(dto.getPassword()));
+        repo.save(azienda);
+        return ResponseEntity.status(200).body(dto.getNome() + " creato con successo");
     }
 
     public List<Azienda> trovaTutte() {
@@ -53,10 +73,14 @@ public class AziendaService {
         return repo.findById(id).orElse(null);
     }
 
-    public ResponseEntity<String> eliminaAzienda(Long id) {
-        if(repo.existsById(id) == false){return ResponseEntity.status(404).body("Azienda non trovata");}
 
-        Azienda azienda = repo.findById(id).orElse(null);
+    public ResponseEntity<String> eliminaAzienda() {
+        if(serviceUtente.getAziendaCorrente()== null){
+            return ResponseEntity.badRequest().body("l'utente autenticato non è un azienda");
+        }
+        if(!repo.existsById(serviceUtente.getAziendaCorrente().getId())){return ResponseEntity.status(404).body("Azienda non trovata");}
+
+         Azienda azienda = repo.findById(serviceUtente.getAziendaCorrente().getId()).orElse(null);
         List<Long> listaIdProdotti = azienda.getIdProdottiCaricati();
 
             for(Long idProdotto : listaIdProdotti){
@@ -72,7 +96,7 @@ public class AziendaService {
             }
         }
 
-        repo.deleteById(id);
+        repo.deleteById(serviceUtente.getAziendaCorrente().getId());
         return ResponseEntity.status(200).body("Azienda eliminata con successo");
     }
 

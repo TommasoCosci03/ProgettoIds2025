@@ -32,11 +32,11 @@ public class AcquirenteController {
         return ResponseEntity.ok(service.trova(idAcquirente));
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> elimina(@PathVariable Long id){
-        return service.elimina(id);
-
-    }
+//    @DeleteMapping("/eliminaAcquirente")
+//    public ResponseEntity<String> elimina(){
+//        return service.elimina();
+//
+//    }
 
     @PostMapping("/prenotaEvento/{idEvento}/{idAcquirente}")
     public ResponseEntity<String> prenotaEvento(@PathVariable ("idEvento") Long idEvento, @PathVariable ("idAcquirente") Long idAcquirente){
