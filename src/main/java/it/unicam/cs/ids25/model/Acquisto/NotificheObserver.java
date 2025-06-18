@@ -14,12 +14,13 @@ public class NotificheObserver implements Observer {
     @Override
     public void update(Ordine ordine) {
         for (CarrelloItem item : ordine.getAcquirente().getCarrello().getProdottiDaAcquistare()) {
-            Notifiche notifica = new Notifiche();
+            Notifica notifica = new Notifica();
             notifica.setAcquirente(ordine.getAcquirente());
             notifica.setIndirizzo(ordine.getIndirizzo());
             notifica.setProdotto(item.getProdotto());
             notifica.setAzienda(item.getProdotto().getAzienda());
             notifica.setQuantita(item.getQuantita());
+            notifica.setIdOrdine(ordine.getId());
             notificheRepository.save(notifica);
         }
     }

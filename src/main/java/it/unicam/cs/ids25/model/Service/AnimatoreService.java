@@ -17,6 +17,7 @@ import java.util.List;
 
 @Service
 @Transactional
+// IMPLEMENTARE LA PERTE DEGLI EVENTI COLLEGATA AL LOGIN
 public class AnimatoreService {
     private final AnimatoreRepository animatoreRepository;
     private final EventoRepository eventoRepository;

@@ -6,7 +6,7 @@ import it.unicam.cs.ids25.model.Utenti.Azienda;
 import jakarta.persistence.*;
 
 @Entity
-public class Notifiche {
+public class Notifica {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,9 +21,10 @@ public class Notifiche {
     private Acquirente acquirente;
     private String indirizzo;
     private int quantita;
+    private Long idOrdine;
 
 
-    public Notifiche() {
+    public Notifica() {
     }
 
     public Long getId() {
@@ -61,6 +62,10 @@ public class Notifiche {
     public void setQuantita(int quantita) {
         this.quantita = quantita;
     }
+
+    public Long getIdOrdine() {return idOrdine;}
+
+    public void setIdOrdine(Long idOrdine) {this.idOrdine = idOrdine;}
 
     @Override
     public String toString() {

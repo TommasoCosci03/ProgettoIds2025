@@ -48,10 +48,10 @@ public class Carrello {
         StringBuilder ret = new StringBuilder();
        for (CarrelloItem p : prodottiDaAcquistare) {
            ret.append(p.getProdotto().getNome() + " " + p.getProdotto().getCategoria());
-           ret.append(": quantità= ").append(p.getQuantita());
+           ret.append(": quantità = ").append(p.getQuantita());
            ret.append("\n");
        }
-       ret.append("prezzo totale= ").append(prezzoTotale());
+       ret.append("prezzo totale = ").append(prezzoTotale()).append("€");
        return ret != null ? ret.toString() : "null";
     }
 

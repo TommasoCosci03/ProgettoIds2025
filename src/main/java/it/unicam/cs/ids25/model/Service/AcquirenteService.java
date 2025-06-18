@@ -25,6 +25,8 @@ public class AcquirenteService {
     private final AcquirenteRepository repoAcquirente;
     private final EventoRepository eventoRepo;
     private final AnimatoreRepository animatoreRepository;
+
+
     private final PasswordEncoder passwordEncoder;
 
     private final SecurityService securityService;
@@ -61,7 +63,7 @@ public class AcquirenteService {
     public Acquirente trova(Long id){
         return repoAcquirente.findById(id).orElse(null);
     }
-
+//LO IMPLEMENTEREMO NEL PROSSIMO AGGIORNAMENTO DEL PROGRAMMA
 //    public ResponseEntity<String> elimina(){
 //        if(securityService.getAcquirenteCorrente() == null ){ return ResponseEntity.badRequest().body("l'utente autenticato non è un acquirente");}
 //        if(!repoAcquirente.existsById(securityService.getAcquirenteCorrente().getId())){
@@ -71,6 +73,7 @@ public class AcquirenteService {
 //        return ResponseEntity.ok("acquirente eliminato");
 //    }
 
+//IMPLEMENTARE LA PERTE DEGLI EVENTI COLLEGATA AL LOGIN
     public ResponseEntity<String> prenotaEvento(Long idEvento, Long idAcquirente){
         if(!eventoRepo.existsById(idEvento)){
             return ResponseEntity.status(404).body("Evento non trovato");
@@ -95,7 +98,7 @@ public class AcquirenteService {
 
         return ResponseEntity.status(200).body("Prenotazione avvenuta con successo all'evento " + evento.getNome());
     }
-
+    // IMPLEMENTARE LA PERTE DEGLI EVENTI COLLEGATA AL LOGIN
     public ResponseEntity<List<EventoDTO>> trovaEventi() {
         List<EventoDTO> eventi = new ArrayList<>();
         for (Animatore animatore : animatoreRepository.findAll()) {

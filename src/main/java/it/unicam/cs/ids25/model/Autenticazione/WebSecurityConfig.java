@@ -32,6 +32,7 @@ import org.springframework.security.web.SecurityFilterChain;
                             .requestMatchers("/api/prodotti/**").authenticated()
                             .requestMatchers("/h2-console/**").permitAll()
                             .requestMatchers(HttpMethod.POST,"/api/acquirenti/creaAcquirente").permitAll()
+                            .requestMatchers("/api/ordine/**").authenticated()
                             .requestMatchers(HttpMethod.GET,"/api/marketplace/**").permitAll()
                             .requestMatchers("/api/gestore/**").authenticated()
                             .requestMatchers("/api/curatore/**").authenticated()

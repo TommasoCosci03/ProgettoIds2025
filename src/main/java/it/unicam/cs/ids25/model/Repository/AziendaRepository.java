@@ -16,4 +16,6 @@ public interface AziendaRepository extends JpaRepository<Azienda, Long> {
     Optional<Azienda> findByUsername(String username);
 
     boolean existsByUsername(String username);
+
+
 }

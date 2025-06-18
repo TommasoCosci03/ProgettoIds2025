@@ -2,6 +2,7 @@ package it.unicam.cs.ids25.model.Service;
 
 
 import it.unicam.cs.ids25.model.Acquisto.Carrello;
+import it.unicam.cs.ids25.model.Autenticazione.SecurityService;
 import it.unicam.cs.ids25.model.Dto.OrdineDTO;
 import it.unicam.cs.ids25.model.Dto.ProdottoOrdineDTO;
 import it.unicam.cs.ids25.model.Acquisto.NotificheObserver;
@@ -20,33 +21,40 @@ import org.springframework.stereotype.Service;
 @Service
 @Transactional
 public class OrdineService {
-
-    public OrdineService(AcquirenteRepository acquirenteRepository, ProdottoRepository prodottoRepository, OrdineRepository ordineRepository, NotificheObserver notificheObserver) {
-        this.acquirenteRepository = acquirenteRepository;
-        this.prodottoRepository = prodottoRepository;
-        this.ordineRepository = ordineRepository;
-        this.notificheObserver = notificheObserver;
-    }
-
+    //Repository
     private AcquirenteRepository acquirenteRepository;
     private ProdottoRepository prodottoRepository;
     private OrdineRepository ordineRepository;
     private NotificheRepository notificheRepository;
     private final NotificheObserver notificheObserver;
+    //Service
+    private final SecurityService securityService;
+
+    public OrdineService(AcquirenteRepository acquirenteRepository, ProdottoRepository prodottoRepository, OrdineRepository ordineRepository, NotificheObserver notificheObserver, SecurityService securityService) {
+        this.acquirenteRepository = acquirenteRepository;
+        this.prodottoRepository = prodottoRepository;
+        this.ordineRepository = ordineRepository;
+        this.notificheObserver = notificheObserver;
+        this.securityService = securityService;
+    }
 
     public ResponseEntity<String> aggiungiAlCarrello(ProdottoOrdineDTO dto) {
 
         if (!prodottoRepository.existsById(dto.getIdProdotto())){
             return ResponseEntity.status(404).body("Prodotto non esistente");
         }
-        if (!acquirenteRepository.existsById(dto.getIdAcquirente())){
-            return ResponseEntity.status(404).body("Acquirente non esistente");
+
+        if (dto.getQuantita()<1){
+            return ResponseEntity.status(404).body("la quantità deve essere maggiore di 0");
         }
-        if (dto.getQuantita()<1){ return ResponseEntity.status(404).body("la quantità deve essere maggiore di 0");}
-        Acquirente acquirente = acquirenteRepository.findById(dto.getIdAcquirente()).get();
+
+        Acquirente acquirente = acquirenteRepository.findById(securityService.getAcquirenteCorrente().getId()).get();
         Prodotto prodotto =prodottoRepository.findById(dto.getIdProdotto()).get();
 
-        if (!prodotto.isApprovato()){ return ResponseEntity.status(404).body("Prodotto non esistente");}
+        if (!prodotto.isApprovato()){
+            return ResponseEntity.status(404).body("Prodotto non esistente");
+        }
+
         if (dto.getQuantita() > prodotto.getQuantita()){
             return ResponseEntity.status(404).body("Quantità non disponibile");
         }
@@ -56,33 +64,28 @@ public class OrdineService {
     }
 
 
+    public ResponseEntity<String> cancellaCarrello() {
 
-    public ResponseEntity<String> cancella(Long id) {
-
-        if(!acquirenteRepository.existsById(id)){
-            return ResponseEntity.status(404).body("Aquirente non esistente");
-        }
-        Acquirente acquirente= acquirenteRepository.findById(id).get();
+        Acquirente acquirente= acquirenteRepository.findById(securityService.getAcquirenteCorrente().getId()).get();
         acquirente.cancellaCarrello();
         return ResponseEntity.status(200).body(acquirente.getNome()+"carrello cancellato");
     }
 
-    public ResponseEntity<String> carrello(Long id) {
-        if(!acquirenteRepository.existsById(id)){
-            return ResponseEntity.status(404).body("Aquirente non esistente");
-        }
-        Acquirente acquirente= acquirenteRepository.findById(id).get();
+
+    public ResponseEntity<String> getCarrello() {
+
+        Acquirente acquirente= acquirenteRepository.findById(securityService.getAcquirenteCorrente().getId()).get();
         return ResponseEntity.status(200).body(acquirente.getCarrello().toString());
     }
 
-    public ResponseEntity<String> effettua(OrdineDTO ordine) {
-        if(!acquirenteRepository.existsById(ordine.getAcquirente())){
-            return ResponseEntity.status(404).body("Aquirente non esistente");
-        }
-        Acquirente acquirente= acquirenteRepository.findById(ordine.getAcquirente()).get();
+    public ResponseEntity<String> effettuaOrdine(OrdineDTO ordine) {
+
+        Acquirente acquirente= acquirenteRepository.findById(securityService.getAcquirenteCorrente().getId()).get();
+
         if (acquirente.getCarrello().getProdottiDaAcquistare().isEmpty()){
             return ResponseEntity.status(404).body("Carrello vuoto");
         }
+
         Ordine o = new Ordine(acquirente, ordine.getIndirizzo());
         aggiornaQuantita(acquirente.getCarrello());
         o.setProdottiList(o.getAcquirente().getCarrello().toString());

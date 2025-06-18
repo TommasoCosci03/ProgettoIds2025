@@ -30,18 +30,6 @@ public class SecurityService {
         }
     }
 
-    public Curatore getCuratoreCorrente() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String username = auth.getName();
-        Utente utente = utenteRepository.findByUsername(username);
-
-        if (utente instanceof Curatore curatore) {
-            return curatore;
-        } else {
-            return null;
-        }
-    }
-
     public Acquirente getAcquirenteCorrente()  {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     String username = auth.getName();

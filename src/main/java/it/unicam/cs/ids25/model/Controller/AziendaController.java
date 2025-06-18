@@ -37,8 +37,8 @@ public class AziendaController {
 
     }
 
-    @GetMapping("/getNotifiche/{id}")
-    public ResponseEntity<StringBuilder> getNotifiche(@PathVariable Long id) {
-        return service.notificheById(id);
+    @GetMapping("/getNotifiche")
+    public ResponseEntity<StringBuilder> getNotifiche() {
+        return service.notificheById();
     }
 }
