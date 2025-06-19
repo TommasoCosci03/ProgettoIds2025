@@ -44,10 +44,10 @@ public class GestoreController {
         return ResponseEntity.ok(acquirenteService.trova(idAcquirente));
     }
 
-    @GetMapping("/trovaAnimatoreById/{id}")
-    public ResponseEntity<Animatore> trovaAnimatoreById(@PathVariable("id") Long idAnimatore) {
-        return ResponseEntity.ok(animatoreService.trova(idAnimatore));
-    }
+//    @GetMapping("/trovaAnimatoreById/{id}")
+//    public ResponseEntity<Animatore> trovaAnimatoreById(@PathVariable("id") Long idAnimatore) {
+//        return ResponseEntity.ok(animatoreService.trova(idAnimatore));
+//    }
 
     @GetMapping("/trovaAziende")
     public ResponseEntity<List<Azienda>> trovaTutti() {

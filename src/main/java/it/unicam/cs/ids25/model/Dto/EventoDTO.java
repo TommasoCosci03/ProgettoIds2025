@@ -12,9 +12,9 @@ public class EventoDTO {
     private String descrizione;
     private String luogo;
     private String dataEvento;
-    private Long idAnimatore;
     private List<Long> aziendeInvitateId;
     private List<Long> partecipantiId;
+
 
 
     public String getNome() {
@@ -49,15 +49,6 @@ public class EventoDTO {
         this.dataEvento = dataEvento;
     }
 
-    public Long getIdAnimatore() {
-        return idAnimatore;
-    }
-
-    public void setIdAnimatore(Long idAnimatore) {
-        this.idAnimatore = idAnimatore;
-    }
-
-
     public List<Long> getAziendeInvitateId() {
         return aziendeInvitateId;
     }
@@ -73,4 +64,6 @@ public class EventoDTO {
     public void setPartecipantiId(List<Long> partecipantiId) {
         this.partecipantiId = partecipantiId;
     }
+
+
 }

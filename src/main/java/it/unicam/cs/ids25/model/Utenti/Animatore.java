@@ -1,6 +1,7 @@
 package it.unicam.cs.ids25.model.Utenti;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import it.unicam.cs.ids25.model.Autenticazione.Utente;
 import it.unicam.cs.ids25.model.Evento;
 import jakarta.persistence.*;
 
@@ -9,7 +10,7 @@ import java.util.List;
 
 @Entity
 @DiscriminatorValue("animatore")
-public class Animatore {
+public class Animatore extends Utente {
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

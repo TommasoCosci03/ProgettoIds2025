@@ -3,10 +3,7 @@ package it.unicam.cs.ids25.model.Service;
 import it.unicam.cs.ids25.model.Autenticazione.SecurityService;
 import it.unicam.cs.ids25.model.Dto.AziendaDTO;
 import it.unicam.cs.ids25.model.Acquisto.Notifica;
-import it.unicam.cs.ids25.model.Repository.AziendaRepository;
-import it.unicam.cs.ids25.model.Repository.NotificheRepository;
-import it.unicam.cs.ids25.model.Repository.OrdineRepository;
-import it.unicam.cs.ids25.model.Repository.UtenteRepository;
+import it.unicam.cs.ids25.model.Repository.*;
 import it.unicam.cs.ids25.model.Utenti.*;
 import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
@@ -28,15 +25,17 @@ public class AziendaService {
     private final PasswordEncoder passwordEncoder;
 
     private final SecurityService serviceUtente;
+    private final EventoRepository eventoRepository;
 
 
-    public AziendaService(AziendaRepository aziendaRepository, NotificheRepository notificheRepo, UtenteRepository utenteRepo, OrdineRepository ordineRepo, PasswordEncoder passwordEncoder, SecurityService serviceUtente) {
+    public AziendaService(AziendaRepository aziendaRepository, NotificheRepository notificheRepo, UtenteRepository utenteRepo, OrdineRepository ordineRepo, PasswordEncoder passwordEncoder, SecurityService serviceUtente, EventoRepository eventoRepository) {
         this.aziendaRepository = aziendaRepository;
         this.notificheRepo = notificheRepo;
         this.utenteRepo = utenteRepo;
         this.ordineRepo = ordineRepo;
         this.passwordEncoder = passwordEncoder;
         this.serviceUtente = serviceUtente;
+        this.eventoRepository = eventoRepository;
     }
 
     public ResponseEntity<String> crea(AziendaDTO dto) {
@@ -77,14 +76,14 @@ public class AziendaService {
         return aziendaRepository.findById(id).orElse(null);
     }
 
+    @Transactional
     public ResponseEntity<String> eliminaAzienda() {
         if(serviceUtente.getAziendaCorrente()== null){
             return ResponseEntity.badRequest().body("l'utente autenticato non è un azienda");
         }
-        if(!aziendaRepository.existsById(serviceUtente.getAziendaCorrente().getId())){return ResponseEntity.status(404).body("Azienda non trovata");}
 
          Azienda azienda = aziendaRepository.findById(serviceUtente.getAziendaCorrente().getId()).orElse(null);
-        List<Long> listaIdProdotti = azienda.getIdProdottiCaricati();
+         List<Long> listaIdProdotti = azienda.getIdProdottiCaricati();
 
             for(Long idProdotto : listaIdProdotti){
                 if(aziendaRepository.countProdottiNelCarrello(idProdotto) > 0){
@@ -100,9 +99,13 @@ public class AziendaService {
             }
         }
 
+        eventoRepository.eliminaAziendaInvitata(azienda.getId());
+
         aziendaRepository.deleteById(serviceUtente.getAziendaCorrente().getId());
         return ResponseEntity.status(200).body("Azienda eliminata con successo");
     }
+
+
 
     public ResponseEntity<StringBuilder> notificheById() {
         List<Notifica> notifiche = notificheRepo.findByAzienda_Id(serviceUtente.getAziendaCorrente().getId());

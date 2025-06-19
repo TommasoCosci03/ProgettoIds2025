@@ -74,17 +74,15 @@ public class AcquirenteService {
 //    }
 
 //IMPLEMENTARE LA PERTE DEGLI EVENTI COLLEGATA AL LOGIN
-    public ResponseEntity<String> prenotaEvento(Long idEvento, Long idAcquirente){
+    public ResponseEntity<String> prenotaEvento(Long idEvento){
+
+        Acquirente acquirente = securityService.getAcquirenteCorrente();
+
         if(!eventoRepo.existsById(idEvento)){
             return ResponseEntity.status(404).body("Evento non trovato");
         }
 
-        if(!repoAcquirente.existsById(idAcquirente)){
-            return ResponseEntity.status(404).body("Acquirente non trovato");
-        }
-
         Evento evento = eventoRepo.findById(idEvento).get();
-        Acquirente acquirente = repoAcquirente.findById(idAcquirente).get();
 
         // Crea un nuova lista con i nuovi partecipanti
         List<Acquirente> partecipanti = evento.getPartecipanti();
@@ -98,18 +96,21 @@ public class AcquirenteService {
 
         return ResponseEntity.status(200).body("Prenotazione avvenuta con successo all'evento " + evento.getNome());
     }
+
+
     // IMPLEMENTARE LA PERTE DEGLI EVENTI COLLEGATA AL LOGIN
     public ResponseEntity<List<EventoDTO>> trovaEventi() {
+       // Acquirente acquirente = securityService.getAcquirenteCorrente();
         List<EventoDTO> eventi = new ArrayList<>();
         for (Animatore animatore : animatoreRepository.findAll()) {
             for (Evento evento : animatore.getEventi()) {
                 EventoDTO dto = new EventoDTO();
-                dto.setIdAnimatore(animatore.getId());
-                dto.setNome(animatore.getNome());
+                dto.setNome(evento.getNome());
                 dto.setDescrizione(evento.getDescrizione());
                 dto.setLuogo(evento.getLuogo());
                 dto.setDataEvento(evento.getDataEvento());
-                //dto.setAziendeInvitateId(evento.getInvitati());
+                dto.setAziendeInvitateId(evento.getInvitatiId());
+                dto.setPartecipantiId(evento.getPartecipantiId());
                 eventi.add(dto);
             }
         }

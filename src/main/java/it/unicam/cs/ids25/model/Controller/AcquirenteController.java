@@ -33,9 +33,9 @@ public class AcquirenteController {
 //
 //    }
 
-    @PostMapping("/prenotaEvento/{idEvento}/{idAcquirente}")
-    public ResponseEntity<String> prenotaEvento(@PathVariable ("idEvento") Long idEvento, @PathVariable ("idAcquirente") Long idAcquirente){
-        return service.prenotaEvento(idEvento, idAcquirente);
+    @PostMapping("/prenotaEvento/{idEvento}")
+    public ResponseEntity<String> prenotaEvento(@PathVariable ("idEvento") Long idEvento){
+        return service.prenotaEvento(idEvento);
     }
 
     @GetMapping("/listaEventiDisponibili")

@@ -60,6 +60,7 @@ public class OrdineService {
         }
 
         acquirente.aggiungiAlCarrello(prodotto, dto.getQuantita());
+        aggiornaQuantita(acquirente.getCarrello());
         return ResponseEntity.status(200).body(prodotto.getNome() + " Aggiunto al carrello");
     }
 
@@ -67,6 +68,7 @@ public class OrdineService {
     public ResponseEntity<String> cancellaCarrello() {
 
         Acquirente acquirente= acquirenteRepository.findById(securityService.getAcquirenteCorrente().getId()).get();
+        ripristinaQuantita(acquirente.getCarrello());
         acquirente.cancellaCarrello();
         return ResponseEntity.status(200).body(acquirente.getNome()+"carrello cancellato");
     }
@@ -87,7 +89,6 @@ public class OrdineService {
         }
 
         Ordine o = new Ordine(acquirente, ordine.getIndirizzo());
-        aggiornaQuantita(acquirente.getCarrello());
         o.setProdottiList(o.getAcquirente().getCarrello().toString());
         ordineRepository.save(o);
         o.attach(notificheObserver);  // <- ATTACCHI L'OBSERVER
@@ -105,6 +106,15 @@ public class OrdineService {
         for (CarrelloItem o : carrello.getProdottiDaAcquistare()) {
             Prodotto p= o.getProdotto();
             p.setQuantita(p.getQuantita() - o.getQuantita());
+            prodottoRepository.save(p);
+
+        }
+    }
+
+    public void ripristinaQuantita(Carrello carrello) {
+        for (CarrelloItem o : carrello.getProdottiDaAcquistare()) {
+            Prodotto p= o.getProdotto();
+            p.setQuantita(p.getQuantita() + o.getQuantita());
             prodottoRepository.save(p);
 
         }

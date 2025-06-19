@@ -2,6 +2,7 @@ package it.unicam.cs.ids25.model.Autenticazione;
 
 import it.unicam.cs.ids25.model.Repository.UtenteRepository;
 import it.unicam.cs.ids25.model.Utenti.Acquirente;
+import it.unicam.cs.ids25.model.Utenti.Animatore;
 import it.unicam.cs.ids25.model.Utenti.Azienda;
 import it.unicam.cs.ids25.model.Utenti.Curatore;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,5 +43,16 @@ public class SecurityService {
         }
     }
 
+    public Animatore getAnimatoreCorrente() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        Utente utente = utenteRepository.findByUsername(username);
+
+        if (utente instanceof Animatore animatore) {
+            return animatore;
+        } else {
+            return null;
+        }
+    }
 
 }

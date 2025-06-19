@@ -16,11 +16,12 @@ import java.util.List;
 @Controller
 @RequestMapping("/api/animatore")
 public class AnimatoreController {
+
+    @Autowired
     private final AnimatoreService service;
 
 
 
-    @Autowired
     public AnimatoreController(AnimatoreService service) {
         this.service = service;
 
@@ -43,11 +44,10 @@ public class AnimatoreController {
         return ResponseEntity.ok(service.trovaEventi());
     }
 
-    @DeleteMapping("/eliminaAnimatore/{id}")
-    public ResponseEntity<String> eliminaAnimatore(@PathVariable Long id){
-        return service.elimina(id);
-
-    }
+//    @DeleteMapping("/eliminaAnimatore/{id}")
+//    public ResponseEntity<String> eliminaAnimatore(@PathVariable Long id){
+//        return service.elimina(id);
+//    }
 
     @PostMapping("/invitaAzienda/{idEvento}/{idAzienda}")
     public ResponseEntity<String> invitaAdEvento(@PathVariable ("idEvento") Long idEvento, @PathVariable ("idAzienda") Long idAzienda){

@@ -28,6 +28,7 @@ public class CustomUserDetailsService implements UserDetailsService {
             case Acquirente a -> "ACQUIRENTE";
             case Curatore c -> "CURATORE";
             case Gestore g -> "GESTORE";
+            case Animatore an -> "ANIMATORE";
             default -> throw new IllegalStateException("Ruolo sconosciuto");
         };
 
