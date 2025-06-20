@@ -15,11 +15,13 @@ public class Acquirente extends Utente {
     private String nome;
     @OneToOne(cascade = CascadeType.ALL)
     private Carrello carrello;
+    private double saldo;
 
     public Acquirente(String nome) {
         this.nome = nome;
         this.carrello = new Carrello();
         this.carrello.setAcquirente(this);
+        this.saldo = 0.0;
     }
 
     public Acquirente() {}
@@ -35,6 +37,13 @@ public class Acquirente extends Utente {
         return carrello;
     }
 
+    public double getSaldo() {
+        return saldo;
+    }
+
+    public void setSaldo(double saldo) {
+        this.saldo = saldo;
+    }
 
 
     public void aggiungiAlCarrello(Prodotto prodotto, int quantita){

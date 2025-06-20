@@ -26,7 +26,6 @@ public class AcquirenteService {
     private final EventoRepository eventoRepo;
     private final AnimatoreRepository animatoreRepository;
 
-
     private final PasswordEncoder passwordEncoder;
 
     private final SecurityService securityService;
@@ -73,7 +72,7 @@ public class AcquirenteService {
 //        return ResponseEntity.ok("acquirente eliminato");
 //    }
 
-//IMPLEMENTARE LA PERTE DEGLI EVENTI COLLEGATA AL LOGIN
+
     public ResponseEntity<String> prenotaEvento(Long idEvento){
 
         Acquirente acquirente = securityService.getAcquirenteCorrente();
@@ -97,8 +96,6 @@ public class AcquirenteService {
         return ResponseEntity.status(200).body("Prenotazione avvenuta con successo all'evento " + evento.getNome());
     }
 
-
-    // IMPLEMENTARE LA PERTE DEGLI EVENTI COLLEGATA AL LOGIN
     public ResponseEntity<List<EventoDTO>> trovaEventi() {
        // Acquirente acquirente = securityService.getAcquirenteCorrente();
         List<EventoDTO> eventi = new ArrayList<>();
@@ -116,4 +113,15 @@ public class AcquirenteService {
         }
         return ResponseEntity.ok(eventi);
     }
+
+    public ResponseEntity<String> ricaricaSaldo(double saldo){
+        Acquirente acquirente = securityService.getAcquirenteCorrente();
+        if(saldo <= 0){
+            ResponseEntity.badRequest().body("Saldo inserito non valido");
+        }
+        acquirente.setSaldo(acquirente.getSaldo() + saldo);
+        return ResponseEntity.ok().body("Saldo corrente: "+acquirente.getSaldo()+"€");
+
+    }
+
 }

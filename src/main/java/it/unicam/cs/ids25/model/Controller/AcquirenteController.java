@@ -38,8 +38,15 @@ public class AcquirenteController {
         return service.prenotaEvento(idEvento);
     }
 
+    @PostMapping("/ricaricaSaldo/{saldo}")
+    public ResponseEntity<String> ricaricaSaldo(@PathVariable ("saldo") double saldo){
+        return service.ricaricaSaldo(saldo);
+    }
+
     @GetMapping("/listaEventiDisponibili")
     public ResponseEntity<List<EventoDTO>> eventiDisponibili(){
         return service.trovaEventi();
     }
+
+
 }

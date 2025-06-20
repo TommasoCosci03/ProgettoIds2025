@@ -19,8 +19,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.nio.file.AccessDeniedException;
 import java.util.List;
+
+import static it.unicam.cs.ids25.model.Prodotti.Enum.Categoria.Pacchetto;
 
 @Service
 @Transactional
@@ -54,13 +55,22 @@ public class ProdottoService {
             return ResponseEntity.status(500).body(securityService.getAziendaCorrente().getNome() +
                     " Non puo' creare prodotti singoli perche' non e' un produttore");
         }
+        if(dto.getCategoria().equals(Pacchetto)) {
+            return ResponseEntity.badRequest().body("CURATORE MESSAGE:\n Solo il distributore puo creare dei pacchetti");
+        }
+        if(dto.getQuantita() < 1){
+            return ResponseEntity.badRequest().body("Quantità inserita non valida");
+        }
+        if(dto.getPrezzo() < 0.1 ){
+            return ResponseEntity.badRequest().body("Il prezzo deve essere consono al mercato");
+        }
 
         Azienda azienda = repoAzienda.findById(securityService.getAziendaCorrente().getId()).get();
         Prodotto prodotto = azienda.creaProdottoAzienda(dto.getNome(), dto.getDescrizione(), dto.getPrezzo(),
                 dto.getQuantita(), dto.getCategoria(), dto.getCertificazioni());
         repoProdotto.save(prodotto);
 
-        return ResponseEntity.ok( prodotto.getNome() + " creato con successo");
+        return ResponseEntity.ok("Prodotto singolo "+ prodotto.getNome() + " creato con successo");
     }
 
     public ResponseEntity<String> creaProdottoTrasformato(ProdottoTrasformatoDTO dto)  {
@@ -68,6 +78,15 @@ public class ProdottoService {
         if(!(securityService.getAziendaCorrente() instanceof Trasformatore)) {
             return ResponseEntity.status(500).body(repoAzienda.findById(securityService.getAziendaCorrente().getId()).get().getNome() +
                     " Non puo' creare prodotti singoli perche' non e' un produttore");
+        }
+        if(dto.getCategoria().equals(Pacchetto)) {
+            return ResponseEntity.badRequest().body("CURATORE MESSAGE:\n Solo il distributore puo creare dei pacchetti");
+        }
+        if(dto.getQuantita() <= 1){
+            return ResponseEntity.badRequest().body("Quantità inserita non valida");
+        }
+        if(dto.getPrezzo() < 0.1 ){
+            return ResponseEntity.badRequest().body("Il prezzo deve essere consono al mercato");
         }
 
         Trasformatore t = (Trasformatore) repoAzienda.findById(securityService.getAziendaCorrente().getId()).get();
@@ -85,8 +104,22 @@ public class ProdottoService {
             return ResponseEntity.status(500).body(repoAzienda.findById(securityService.getAziendaCorrente().getId()).get().getNome() +
                     " Non puo' creare prodotti singoli perche' non e' un produttore");
         }
+        if(!dto.getCategoria().equals(Pacchetto)) {
+            return ResponseEntity.badRequest().body("CURATORE MESSAGE:\n Il distributore puo solo creare dei pacchetti");
+        }
+        if(dto.getQuantita() <= 1){
+            return ResponseEntity.badRequest().body("Quantità inserita non valida");
+        }
+        if(dto.getPrezzo() < 0.1 ){
+            return ResponseEntity.badRequest().body("Il prezzo deve essere consono al mercato");
+        }
 
         Distributore d = (Distributore) repoAzienda.findById(securityService.getAziendaCorrente().getId()).get();
+
+        for(Prodotto p : repoProdotto.findAllById(dto.getPacchetto())){
+            if(!p.isApprovato()){
+                return ResponseEntity.badRequest().body("I prodotti che si inseriscono all'interno dei pacchetti devono essere approvati");}
+        }
         d.setProdotti(repoProdotto.findAllById(dto.getPacchetto()));
         Prodotto prodotto = d.creaProdottoAzienda(dto.getNome(), dto.getDescrizione(), dto.getPrezzo(),
                 dto.getQuantita(), dto.getCategoria(), dto.getCertificazioni());

@@ -28,7 +28,7 @@ public class Distributore extends Azienda {
         BuilderPacchetti builderPacchetti = new BuilderPacchetti();
         builderPacchetti.setPrezzo(prezzo);
         builderPacchetti.setQuantita(quantita);
-        builderPacchetti.setCategoria(categoria);
+        builderPacchetti.setCategoria(Categoria.Pacchetto);
         builderPacchetti.setNome(nome);
         builderPacchetti.setDescrizione(descrizione);
         builderPacchetti.setAzienda(this);

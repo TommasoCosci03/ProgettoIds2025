@@ -89,15 +89,19 @@ public class OrdineService {
         }
 
         Ordine o = new Ordine(acquirente, ordine.getIndirizzo());
+        if(acquirente.getSaldo()< o.getPrezzo()){
+            return ResponseEntity.status(404).body("Saldo insufficiente");
+        }
+        acquirente.setSaldo(acquirente.getSaldo()-o.getPrezzo());
         o.setProdottiList(o.getAcquirente().getCarrello().toString());
         ordineRepository.save(o);
         o.attach(notificheObserver);  // <- ATTACCHI L'OBSERVER
         o.notifyAziende(); // <- LO NOTIFICHI
         o.detach(notificheObserver);
-
         String prodCarrello = acquirente.getCarrello().toString();
         acquirente.cancellaCarrello();
-        return ResponseEntity.status(200).body(prodCarrello+ ": ordine effettuato con successo");
+        return ResponseEntity.status(200).body(prodCarrello + ": ordine effettuato con successo\n" +
+                "Saldo rimanente= " + acquirente.getSaldo()+"€");
 
     }
 
@@ -118,10 +122,9 @@ public class OrdineService {
             prodottoRepository.save(p);
 
         }
+
+
     }
-
-
-
 
 
 }

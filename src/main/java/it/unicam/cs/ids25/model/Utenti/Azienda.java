@@ -79,6 +79,9 @@ public abstract class Azienda extends Utente implements Observer {
             case 5 -> Categoria.Cereali;
             case 6 -> Categoria.Legumi;
             case 7 -> Categoria.Pacchetto;
+            case 8 -> Categoria.Latte;
+            case 9 -> Categoria.Formaggi;
+            case 10 -> Categoria.Uova;
             default -> throw new IllegalArgumentException("Categoria non valida");
         };
 

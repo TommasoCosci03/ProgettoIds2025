@@ -28,7 +28,7 @@ public class PacchettoDiProdotti extends Prodotto {
 
     protected PacchettoDiProdotti(String nome, String descrizione, double prezzo, int quantita,
                                   Categoria categoria, Azienda azienda, List<Certificazioni> certificazioni, List<Prodotto> pacchetto) {
-        super("pacchetto"+ nome, descrizione, prezzo, quantita, Categoria.Pacchetto, azienda, certificazioni);
+        super("pacchetto "+ nome, descrizione, prezzo, quantita, Categoria.Pacchetto, azienda, certificazioni);
         this.pacchetto = pacchetto;
     }
 

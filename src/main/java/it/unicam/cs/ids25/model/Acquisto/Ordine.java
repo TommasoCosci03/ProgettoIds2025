@@ -84,4 +84,12 @@ public class Ordine implements Subject {
     public void setSpedito() {
         this.spedito = true;
     }
+
+    public double getPrezzo() {
+        return prezzo;
+    }
+
+    public void setPrezzo(double prezzo) {
+        this.prezzo = prezzo;
+    }
 }
