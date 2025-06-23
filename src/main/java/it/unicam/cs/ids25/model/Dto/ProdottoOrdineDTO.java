@@ -5,8 +5,6 @@ public class ProdottoOrdineDTO {
     private long idProdotto;
     private int quantita;
 
-
-
     public long getIdProdotto() {
         return idProdotto;
     }
@@ -14,8 +12,6 @@ public class ProdottoOrdineDTO {
     public int getQuantita() {
         return quantita;
     }
-
-
 
     public void setIdProdotto(long idProdotto) {
         this.idProdotto = idProdotto;

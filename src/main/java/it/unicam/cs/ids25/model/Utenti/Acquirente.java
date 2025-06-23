@@ -10,7 +10,7 @@ import jakarta.persistence.*;
 @DiscriminatorValue("acquirente")
 public class Acquirente extends Utente {
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
     @OneToOne(cascade = CascadeType.ALL)
@@ -24,7 +24,9 @@ public class Acquirente extends Utente {
         this.saldo = 0.0;
     }
 
-    public Acquirente() {}
+    public Acquirente() {
+    }
+
     public Long getId() {
         return id;
     }
@@ -46,12 +48,12 @@ public class Acquirente extends Utente {
     }
 
 
-    public void aggiungiAlCarrello(Prodotto prodotto, int quantita){
+    public void aggiungiAlCarrello(Prodotto prodotto, int quantita) {
         CarrelloItem order = new CarrelloItem(prodotto, quantita);
         carrello.setProdottiDaAcquistare(order);
     }
 
-    public void cancellaCarrello(){
+    public void cancellaCarrello() {
         carrello.getProdottiDaAcquistare().clear();
 
     }

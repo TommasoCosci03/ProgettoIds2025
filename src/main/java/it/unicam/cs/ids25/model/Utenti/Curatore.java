@@ -12,7 +12,7 @@ import java.util.ArrayList;
 @DiscriminatorValue("curatore")
 public class Curatore extends Utente {
 
-    protected Curatore(){
+    protected Curatore() {
         super();
     }
 

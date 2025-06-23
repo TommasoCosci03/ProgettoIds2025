@@ -23,13 +23,17 @@ public class Trasformatore extends Azienda {
     }
 
 
-    protected Trasformatore() {super();}
+    protected Trasformatore() {
+        super();
+    }
 
 
     @Override
     public Prodotto creaProdottoAzienda(String nome, String descrizione, double prezzo, int quantita,
                                         Categoria categoria, List<Certificazioni> certificazioni) {
-        if (materiePrime == null) { throw new IllegalStateException("materie prime mancanti");}
+        if (materiePrime == null) {
+            throw new IllegalStateException("materie prime mancanti");
+        }
         BuilderProdottoTrasformato builderProdottoTrasformato = new BuilderProdottoTrasformato();
         builderProdottoTrasformato.setNome(nome);
         builderProdottoTrasformato.setDescrizione(descrizione);
@@ -55,7 +59,7 @@ public class Trasformatore extends Azienda {
 
     @Override
     public void update(Ordine ordine) {
-        System.out.println("--- L'azienda " + this.getNome()+  " ha ricevuto l'ordine ricevuto da "
+        System.out.println("--- L'azienda " + this.getNome() + " ha ricevuto l'ordine ricevuto da "
                 + ordine.getAcquirente().getNome() + " ---");
     }
 }

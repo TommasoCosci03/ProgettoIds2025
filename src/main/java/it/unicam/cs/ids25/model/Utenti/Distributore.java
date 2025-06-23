@@ -17,14 +17,19 @@ public class Distributore extends Azienda {
     @Transient
     List<Prodotto> prodotti;
 
-    public Distributore(String nome, String sede, String email, String password) {super(nome, sede, email, password);
+    public Distributore(String nome, String sede, String email, String password) {
+        super(nome, sede, email, password);
     }
 
-    protected Distributore() {super();}
+    protected Distributore() {
+        super();
+    }
 
     @Override
-    public Prodotto creaProdottoAzienda(String nome, String descrizione, double prezzo, int quantita, Categoria categoria,  List<Certificazioni> certificazioni) {
-        if (prodotti.size() < 2) { throw new IllegalStateException("il pacchetto deve essere composto da almeno due prodotti");}
+    public Prodotto creaProdottoAzienda(String nome, String descrizione, double prezzo, int quantita, Categoria categoria, List<Certificazioni> certificazioni) {
+        if (prodotti.size() < 2) {
+            throw new IllegalStateException("il pacchetto deve essere composto da almeno due prodotti");
+        }
         BuilderPacchetti builderPacchetti = new BuilderPacchetti();
         builderPacchetti.setPrezzo(prezzo);
         builderPacchetti.setQuantita(quantita);
@@ -45,7 +50,7 @@ public class Distributore extends Azienda {
 
     @Override
     public void update(Ordine ordine) {
-        System.out.println("--- L'azienda " + this.getNome()+  " ha ricevuto l'ordine ricevuto da "
+        System.out.println("--- L'azienda " + this.getNome() + " ha ricevuto l'ordine ricevuto da "
                 + ordine.getAcquirente().getNome() + " ---");
     }
 }

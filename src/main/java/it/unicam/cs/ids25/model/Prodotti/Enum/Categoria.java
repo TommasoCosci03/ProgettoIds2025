@@ -11,6 +11,4 @@ public enum Categoria {
     Latte,
     Formaggi,
     Pacchetto;
-
-
 }

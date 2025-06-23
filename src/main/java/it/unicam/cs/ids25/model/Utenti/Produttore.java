@@ -16,15 +16,17 @@ import java.util.List;
 @DiscriminatorValue("produttore")
 public class Produttore extends Azienda {
 
-    public Produttore(String nome, String sede,String email, String password) {
-        super(nome, sede,email, password);
+    public Produttore(String nome, String sede, String email, String password) {
+        super(nome, sede, email, password);
     }
 
-    protected Produttore() {super();}
+    protected Produttore() {
+        super();
+    }
 
     @Override
     public Prodotto creaProdottoAzienda(String nome, String descrizione, double prezzo, int quantita,
-                                        Categoria categoria,  List<Certificazioni> certificazioni) {
+                                        Categoria categoria, List<Certificazioni> certificazioni) {
         BuilderProdottoSingolo prodottobuilder = new BuilderProdottoSingolo();
         prodottobuilder.setNome(nome);
         prodottobuilder.setDescrizione(descrizione);
@@ -35,7 +37,6 @@ public class Produttore extends Azienda {
         prodottobuilder.setCertificazioni(certificazioni);
         return prodottobuilder.buildProdottoSingolo();
     }
-
 
 
     @Override

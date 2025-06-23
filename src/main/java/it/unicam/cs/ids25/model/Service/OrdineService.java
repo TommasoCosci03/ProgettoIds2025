@@ -40,22 +40,22 @@ public class OrdineService {
 
     public ResponseEntity<String> aggiungiAlCarrello(ProdottoOrdineDTO dto) {
 
-        if (!prodottoRepository.existsById(dto.getIdProdotto())){
+        if (!prodottoRepository.existsById(dto.getIdProdotto())) {
             return ResponseEntity.status(404).body("Prodotto non esistente");
         }
 
-        if (dto.getQuantita()<1){
+        if (dto.getQuantita() < 1) {
             return ResponseEntity.status(404).body("la quantità deve essere maggiore di 0");
         }
 
         Acquirente acquirente = acquirenteRepository.findById(securityService.getAcquirenteCorrente().getId()).get();
-        Prodotto prodotto =prodottoRepository.findById(dto.getIdProdotto()).get();
+        Prodotto prodotto = prodottoRepository.findById(dto.getIdProdotto()).get();
 
-        if (!prodotto.isApprovato()){
+        if (!prodotto.isApprovato()) {
             return ResponseEntity.status(404).body("Prodotto non esistente");
         }
 
-        if (dto.getQuantita() > prodotto.getQuantita()){
+        if (dto.getQuantita() > prodotto.getQuantita()) {
             return ResponseEntity.status(404).body("Quantità non disponibile");
         }
 
@@ -67,32 +67,32 @@ public class OrdineService {
 
     public ResponseEntity<String> cancellaCarrello() {
 
-        Acquirente acquirente= acquirenteRepository.findById(securityService.getAcquirenteCorrente().getId()).get();
+        Acquirente acquirente = acquirenteRepository.findById(securityService.getAcquirenteCorrente().getId()).get();
         ripristinaQuantita(acquirente.getCarrello());
         acquirente.cancellaCarrello();
-        return ResponseEntity.status(200).body(acquirente.getNome()+"carrello cancellato");
+        return ResponseEntity.status(200).body(acquirente.getNome() + "carrello cancellato");
     }
 
 
     public ResponseEntity<String> getCarrello() {
 
-        Acquirente acquirente= acquirenteRepository.findById(securityService.getAcquirenteCorrente().getId()).get();
+        Acquirente acquirente = acquirenteRepository.findById(securityService.getAcquirenteCorrente().getId()).get();
         return ResponseEntity.status(200).body(acquirente.getCarrello().toString());
     }
 
     public ResponseEntity<String> effettuaOrdine(OrdineDTO ordine) {
 
-        Acquirente acquirente= acquirenteRepository.findById(securityService.getAcquirenteCorrente().getId()).get();
+        Acquirente acquirente = acquirenteRepository.findById(securityService.getAcquirenteCorrente().getId()).get();
 
-        if (acquirente.getCarrello().getProdottiDaAcquistare().isEmpty()){
+        if (acquirente.getCarrello().getProdottiDaAcquistare().isEmpty()) {
             return ResponseEntity.status(404).body("Carrello vuoto");
         }
 
         Ordine o = new Ordine(acquirente, ordine.getIndirizzo());
-        if(acquirente.getSaldo()< o.getPrezzo()){
+        if (acquirente.getSaldo() < o.getPrezzo()) {
             return ResponseEntity.status(404).body("Saldo insufficiente");
         }
-        acquirente.setSaldo(acquirente.getSaldo()-o.getPrezzo());
+        acquirente.setSaldo(acquirente.getSaldo() - o.getPrezzo());
         o.setProdottiList(o.getAcquirente().getCarrello().toString());
         ordineRepository.save(o);
         o.attach(notificheObserver);  // <- ATTACCHI L'OBSERVER
@@ -101,14 +101,14 @@ public class OrdineService {
         String prodCarrello = acquirente.getCarrello().toString();
         acquirente.cancellaCarrello();
         return ResponseEntity.status(200).body(prodCarrello + ": ordine effettuato con successo\n" +
-                "Saldo rimanente= " + acquirente.getSaldo()+"€");
+                "Saldo rimanente= " + acquirente.getSaldo() + "€");
 
     }
 
 
     public void aggiornaQuantita(Carrello carrello) {
         for (CarrelloItem o : carrello.getProdottiDaAcquistare()) {
-            Prodotto p= o.getProdotto();
+            Prodotto p = o.getProdotto();
             p.setQuantita(p.getQuantita() - o.getQuantita());
             prodottoRepository.save(p);
 
@@ -117,7 +117,7 @@ public class OrdineService {
 
     public void ripristinaQuantita(Carrello carrello) {
         for (CarrelloItem o : carrello.getProdottiDaAcquistare()) {
-            Prodotto p= o.getProdotto();
+            Prodotto p = o.getProdotto();
             p.setQuantita(p.getQuantita() + o.getQuantita());
             prodottoRepository.save(p);
 

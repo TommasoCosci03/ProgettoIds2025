@@ -1,5 +1,6 @@
 package it.unicam.cs.ids25.model.Autenticazione;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -22,6 +23,8 @@ import org.springframework.security.web.SecurityFilterChain;
     @Configuration
     @EnableWebSecurity
     public class WebSecurityConfig {
+
+        @Autowired
         private final CustomUserDetailsService customUserDetailsService;
 
         public WebSecurityConfig(CustomUserDetailsService customUserDetailsService) {

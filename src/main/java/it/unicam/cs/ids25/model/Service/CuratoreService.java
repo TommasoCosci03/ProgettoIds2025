@@ -33,12 +33,12 @@ public class CuratoreService {
         this.securityService = securityService;
     }
 
-    public ResponseEntity<String> approva(Long idProdotto){
-        if(idProdotto == null){
+    public ResponseEntity<String> approva(Long idProdotto) {
+        if (idProdotto == null) {
             return ResponseEntity.status(404).body("id prodotto nullo");
         }
 
-        if(!prodottoRepository.existsById(idProdotto)){
+        if (!prodottoRepository.existsById(idProdotto)) {
             return ResponseEntity.status(404).body("Prodotto non trovato");
         }
 
@@ -48,12 +48,12 @@ public class CuratoreService {
         return ResponseEntity.ok().body("Prodotto approvato");
     }
 
-    public ResponseEntity<String> rifiuta(Long idProdotto){
-        if(idProdotto == null){
+    public ResponseEntity<String> rifiuta(Long idProdotto) {
+        if (idProdotto == null) {
             return ResponseEntity.status(404).body("id prodotto nullo");
         }
 
-        if(!prodottoRepository.existsById(idProdotto)){
+        if (!prodottoRepository.existsById(idProdotto)) {
             return ResponseEntity.status(404).body("Prodotto non trovato");
         }
 
@@ -61,30 +61,20 @@ public class CuratoreService {
         return ResponseEntity.ok().body("Prodotto rifiutato");
     }
 
-    public List<Prodotto> getRichieste(){
+    public List<Prodotto> getRichieste() {
         return prodottoRepository.findAllByApprovatoIs(false);
     }
 
     public ResponseEntity<String> approvaTutti() {
-        for(Prodotto p : prodottoRepository.findAllByApprovatoIs(false)) {
+        for (Prodotto p : prodottoRepository.findAllByApprovatoIs(false)) {
             p.setApprovato();
             prodottoRepository.save(p);
         }
 
-    return ResponseEntity.ok("Tutti i prodotti sono stati approvati");
+        return ResponseEntity.ok("Tutti i prodotti sono stati approvati");
     }
 
     public Curatore getCuratore() {
         return curatoreRepository.findByUsername("curatore");
     }
-
-    /*public ResponseEntity<String> creaCuratore() {
-        if(curatoreRepository.isEmpty()>0){
-            curatoreRepository.save(new Curatore("curatore", "password"));
-            return ResponseEntity.ok("Curatore creato con successo");
-        }
-        else{
-            return ResponseEntity.ok("Curatore " + securityService.getCuratoreCorrente().getUsername());
-        }
-    }*/
 }

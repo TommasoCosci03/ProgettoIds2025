@@ -10,11 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@DiscriminatorValue( "evento")
+@DiscriminatorValue("evento")
 @JsonIgnoreProperties("invitati")
 public class Evento {
-   @Id
-   @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
     private String descrizione;
@@ -46,7 +46,7 @@ public class Evento {
     @JoinColumn(name = "animatore_id", nullable = false)
     private Animatore animatore;
 
-    public Evento(String nome, String descrizione, String luogo, String dataEvento, List<Azienda> invitati , Animatore animatore) {
+    public Evento(String nome, String descrizione, String luogo, String dataEvento, List<Azienda> invitati, Animatore animatore) {
         this.nome = nome;
         this.descrizione = descrizione;
         this.luogo = luogo;
@@ -56,37 +56,68 @@ public class Evento {
         this.animatore = animatore;
     }
 
-    public Evento() {   }
+    public Evento() {
+    }
 
     //metodi getter
 
-    public Long getId() {return id;}
-    public String getNome() {return nome;}
+    public Long getId() {
+        return id;
+    }
 
-    public String getDescrizione() {return descrizione;}
+    public String getNome() {
+        return nome;
+    }
 
-    public String getLuogo() {return luogo;}
+    public String getDescrizione() {
+        return descrizione;
+    }
 
-    public String getDataEvento() {return dataEvento;}
+    public String getLuogo() {
+        return luogo;
+    }
 
-    public List<Long> getInvitatiId() {return invitati.stream().map(Azienda::getId).toList();}
+    public String getDataEvento() {
+        return dataEvento;
+    }
 
-    public List<Long> getPartecipantiId() {return partecipanti.stream().map(Acquirente::getId).toList();}
+    public List<Long> getInvitatiId() {
+        return invitati.stream().map(Azienda::getId).toList();
+    }
 
-    public Animatore getAnimatore() {return animatore;}
+    public List<Long> getPartecipantiId() {
+        return partecipanti.stream().map(Acquirente::getId).toList();
+    }
+
+    public Animatore getAnimatore() {
+        return animatore;
+    }
 
 //metodi setter
 
-    public void setNome(String nome) {this.nome = nome;}
-    public void setDescrizione(String descrizione) {this.descrizione = descrizione;}
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
 
-    public void setLuogo(String luogo) {this.luogo = luogo;}
+    public void setDescrizione(String descrizione) {
+        this.descrizione = descrizione;
+    }
 
-    public void setDataEvento(String dataEvento) {this.dataEvento = dataEvento;}
+    public void setLuogo(String luogo) {
+        this.luogo = luogo;
+    }
 
-    public void setAnimatore(Animatore animatore) {this.animatore = animatore;}
+    public void setDataEvento(String dataEvento) {
+        this.dataEvento = dataEvento;
+    }
 
-    public void setInvitati(List<Azienda> invitati) {this.invitati = invitati;}
+    public void setAnimatore(Animatore animatore) {
+        this.animatore = animatore;
+    }
+
+    public void setInvitati(List<Azienda> invitati) {
+        this.invitati = invitati;
+    }
 
     public void setPartecipanti(List<Acquirente> partecipanti) {
         this.partecipanti = partecipanti;

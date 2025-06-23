@@ -19,7 +19,6 @@ public class BuilderProdottoSingolo {
         this.prezzo = prezzo;
     }
 
-
     public void setQuantita(int quantita) {
         this.quantita = quantita;
     }
@@ -36,8 +35,6 @@ public class BuilderProdottoSingolo {
         this.nome = nome;
     }
 
-
-
     public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
     }
@@ -47,9 +44,6 @@ public class BuilderProdottoSingolo {
     }
 
     public ProdottoSingolo buildProdottoSingolo() {
-        /*if (nome == null || descrizione == null || categoria == null || azienda == null) {
-            throw new IllegalStateException("Campi obbligatori mancanti");
-        }*/
         return new ProdottoSingolo(nome, descrizione, prezzo, quantita, categoria, azienda, certificazioni);
     }
 }

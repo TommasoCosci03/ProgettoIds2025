@@ -1,18 +1,15 @@
 package it.unicam.cs.ids25.model.Utenti;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import it.unicam.cs.ids25.model.Autenticazione.Utente;
 import it.unicam.cs.ids25.model.Evento;
 import jakarta.persistence.*;
-
 import java.util.List;
-//import java.util.Scanner;
 
 @Entity
 @DiscriminatorValue("animatore")
 public class Animatore extends Utente {
-   @Id
-   @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
     @OneToMany(mappedBy = "animatore", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -21,25 +18,36 @@ public class Animatore extends Utente {
 
     public Animatore(String nome) {
         this.nome = nome;
-
     }
-    public Animatore() {}
 
-    public Long getId(){return id;}
+    public Animatore() {
+    }
 
-    public void setId(Long id) {this.id = id;}
+    public Long getId() {
+        return id;
+    }
 
-    public String getNome() {return nome;}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public void setNome(String nome) {this.nome = nome;}
+    public String getNome() {
+        return nome;
+    }
 
-    public List<Evento> getEventi() {return eventicrati;}
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
 
-    public Evento creaEvento(String nome, String descrizione, String luogo, String dataEvento, List<Azienda> invitati){
+    public List<Evento> getEventi() {
+        return eventicrati;
+    }
 
-         Evento evento = new Evento(nome, descrizione, luogo, dataEvento, invitati, this);
-         eventicrati.add(evento);
-         return evento;
+    public Evento creaEvento(String nome, String descrizione, String luogo, String dataEvento, List<Azienda> invitati) {
+
+        Evento evento = new Evento(nome, descrizione, luogo, dataEvento, invitati, this);
+        eventicrati.add(evento);
+        return evento;
 
     }
 

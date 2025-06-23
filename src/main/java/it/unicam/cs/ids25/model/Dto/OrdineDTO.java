@@ -6,8 +6,6 @@ public class OrdineDTO {
 
     private String indirizzo;
 
-
-
     public String getIndirizzo() {
         return indirizzo;
     }

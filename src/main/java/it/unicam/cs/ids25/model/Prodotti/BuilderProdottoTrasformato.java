@@ -20,7 +20,6 @@ public class BuilderProdottoTrasformato {
         this.prezzo = prezzo;
     }
 
-
     public void setQuantita(int quantita) {
         this.quantita = quantita;
     }
@@ -37,8 +36,6 @@ public class BuilderProdottoTrasformato {
         this.nome = nome;
     }
 
-
-
     public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
     }
@@ -52,10 +49,6 @@ public class BuilderProdottoTrasformato {
     }
 
     public ProdottoTrasformato buildProdottoTrasformato() {
-        if (nome == null || descrizione == null || categoria == null || azienda == null) {
-            throw new IllegalStateException("Campi obbligatori mancanti");
-        }
         return new ProdottoTrasformato(nome, descrizione, prezzo, quantita, categoria, azienda, materiePrime, certificazioni);
-
     }
 }

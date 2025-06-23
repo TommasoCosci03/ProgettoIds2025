@@ -36,7 +36,6 @@ public abstract class Azienda extends Utente implements Observer {
         super(email, password);
         this.nome = nome;
         this.sede = sede;
-
     }
 
     public Long getId() {

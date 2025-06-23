@@ -45,22 +45,21 @@ public class AziendaService {
             return ResponseEntity.badRequest().body("Email e Password non valido");
         }
 
-        if(dto.getNome().isEmpty() || dto.getTipoAzienda().isEmpty() || dto.getSede().isEmpty()) {
+        if (dto.getNome().isEmpty() || dto.getTipoAzienda().isEmpty() || dto.getSede().isEmpty()) {
             return ResponseEntity.badRequest().body("nome, tipologia azienda o sede non valide");
         }
 
         if (dto.getTipoAzienda().equals("produttore")) {
             azienda = new Produttore(dto.getNome(), dto.getSede(), dto.getUsername(), dto.getPassword());
-        }
-        else if (dto.getTipoAzienda().equals("trasformatore")){
-            azienda = new Trasformatore(dto.getNome(), dto.getSede(),dto.getUsername(), dto.getPassword());
-        }
-        else if (dto.getTipoAzienda().equals("distributore")){
-            azienda = new Distributore(dto.getNome(), dto.getSede(),dto.getUsername(), dto.getPassword());
+        } else if (dto.getTipoAzienda().equals("trasformatore")) {
+            azienda = new Trasformatore(dto.getNome(), dto.getSede(), dto.getUsername(), dto.getPassword());
+        } else if (dto.getTipoAzienda().equals("distributore")) {
+            azienda = new Distributore(dto.getNome(), dto.getSede(), dto.getUsername(), dto.getPassword());
         }
 
-        if (aziendaRepository.existsByUsername(dto.getUsername()))
-        {return ResponseEntity.status(HttpStatus.CONFLICT).body("Username: " + dto.getUsername() + " già in uso");}
+        if (aziendaRepository.existsByUsername(dto.getUsername())) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Username: " + dto.getUsername() + " già in uso");
+        }
 
         azienda.setUsername(dto.getUsername());
         azienda.setPassword(passwordEncoder.encode(dto.getPassword()));
@@ -78,22 +77,22 @@ public class AziendaService {
 
     @Transactional
     public ResponseEntity<String> eliminaAzienda() {
-        if(serviceUtente.getAziendaCorrente()== null){
+        if (serviceUtente.getAziendaCorrente() == null) {
             return ResponseEntity.badRequest().body("l'utente autenticato non è un azienda");
         }
 
-         Azienda azienda = aziendaRepository.findById(serviceUtente.getAziendaCorrente().getId()).orElse(null);
-         List<Long> listaIdProdotti = azienda.getIdProdottiCaricati();
+        Azienda azienda = aziendaRepository.findById(serviceUtente.getAziendaCorrente().getId()).orElse(null);
+        List<Long> listaIdProdotti = azienda.getIdProdottiCaricati();
 
-            for(Long idProdotto : listaIdProdotti){
-                if(aziendaRepository.countProdottiNelCarrello(idProdotto) > 0){
-                    return ResponseEntity.status(500).body(
-                            "Prodotto/i dell'azienda presenti in un carrello, aspetta che l'acquirente effettui l'ordine");
-                }
-
+        for (Long idProdotto : listaIdProdotti) {
+            if (aziendaRepository.countProdottiNelCarrello(idProdotto) > 0) {
+                return ResponseEntity.status(500).body(
+                        "Prodotto/i dell'azienda presenti in un carrello, aspetta che l'acquirente effettui l'ordine");
             }
 
-        for(Long idProdotto : listaIdProdotti) {
+        }
+
+        for (Long idProdotto : listaIdProdotti) {
             if (!notificheRepo.findAllByProdotto_Id(idProdotto).isEmpty()) {
                 return ResponseEntity.status(500).body("L'azienda deve effettuare tutti gli ordini prima di essere eliminata");
             }
@@ -106,13 +105,12 @@ public class AziendaService {
     }
 
 
-
     public ResponseEntity<StringBuilder> notificheById() {
         List<Notifica> notifiche = notificheRepo.findByAzienda_Id(serviceUtente.getAziendaCorrente().getId());
         Azienda azienda = aziendaRepository.findById(serviceUtente.getAziendaCorrente().getId()).orElse(null);
         if (azienda != null) {
             StringBuilder msg = new StringBuilder();
-            for(Notifica notifica: notifiche){
+            for (Notifica notifica : notifiche) {
                 msg.append(notifica.toString()).append("\n");
             }
             return ResponseEntity.ok().body(msg);
@@ -121,13 +119,13 @@ public class AziendaService {
     }
 
     public ResponseEntity<String> effettuaSpedizione(Long idNotifica) {
-       List<Notifica> notifica = notificheRepo.findByAzienda_Id(serviceUtente.getAziendaCorrente().getId());
+        List<Notifica> notifica = notificheRepo.findByAzienda_Id(serviceUtente.getAziendaCorrente().getId());
 
-           if(notifica.contains(notificheRepo.findById(idNotifica).get())){
-               ordineRepo.findById(notificheRepo.findById(idNotifica).get().getIdOrdine()).get().setSpedito();
-               notificheRepo.deleteById(idNotifica);
-               return ResponseEntity.ok().body("Spedizione effettuata");
-           }
+        if (notifica.contains(notificheRepo.findById(idNotifica).get())) {
+            ordineRepo.findById(notificheRepo.findById(idNotifica).get().getIdOrdine()).get().setSpedito();
+            notificheRepo.deleteById(idNotifica);
+            return ResponseEntity.ok().body("Spedizione effettuata");
+        }
 
         return ResponseEntity.status(404).body("Ordine non trovato");
     }

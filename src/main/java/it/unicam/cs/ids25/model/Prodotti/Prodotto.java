@@ -49,9 +49,6 @@ public abstract class  Prodotto  {
         this.certificazioni = certificazioni;
     }
 
-    //public void inviaRichiesta() {curatore.addRichiesta(this);}
-
-
     public long getId() {
         return id;
     }

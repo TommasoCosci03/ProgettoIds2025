@@ -40,14 +40,15 @@ public class AcquirenteService {
         this.customUserDetailsService = customUserDetailsService;
     }
 
-    public ResponseEntity<String> creaAcquirente(AcquirenteDTO dto){
+    public ResponseEntity<String> creaAcquirente(AcquirenteDTO dto) {
 
         if (dto.getUsername().isEmpty() || dto.getPassword().isEmpty()) {
             return ResponseEntity.badRequest().body("username o Password non valido");
         }
 
-        if (repoAcquirente.existsByUsername(dto.getUsername()))
-        {return ResponseEntity.status(HttpStatus.CONFLICT).body("Username: " + dto.getUsername() + " già in uso");}
+        if (repoAcquirente.existsByUsername(dto.getUsername())) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Username: " + dto.getUsername() + " già in uso");
+        }
 
         Acquirente acquirente = new Acquirente(dto.getNome());
         acquirente.setUsername(dto.getUsername());
@@ -59,25 +60,11 @@ public class AcquirenteService {
 
     }
 
-    public Acquirente trova(Long id){
-        return repoAcquirente.findById(id).orElse(null);
-    }
-//LO IMPLEMENTEREMO NEL PROSSIMO AGGIORNAMENTO DEL PROGRAMMA
-//    public ResponseEntity<String> elimina(){
-//        if(securityService.getAcquirenteCorrente() == null ){ return ResponseEntity.badRequest().body("l'utente autenticato non è un acquirente");}
-//        if(!repoAcquirente.existsById(securityService.getAcquirenteCorrente().getId())){
-//            return ResponseEntity.status(404).body("acquirente non trovato");
-//        }
-//        repoAcquirente.deleteById(securityService.getAcquirenteCorrente().getId());
-//        return ResponseEntity.ok("acquirente eliminato");
-//    }
-
-
-    public ResponseEntity<String> prenotaEvento(Long idEvento){
+    public ResponseEntity<String> prenotaEvento(Long idEvento) {
 
         Acquirente acquirente = securityService.getAcquirenteCorrente();
 
-        if(!eventoRepo.existsById(idEvento)){
+        if (!eventoRepo.existsById(idEvento)) {
             return ResponseEntity.status(404).body("Evento non trovato");
         }
 
@@ -97,7 +84,7 @@ public class AcquirenteService {
     }
 
     public ResponseEntity<List<EventoDTO>> trovaEventi() {
-       // Acquirente acquirente = securityService.getAcquirenteCorrente();
+        // Acquirente acquirente = securityService.getAcquirenteCorrente();
         List<EventoDTO> eventi = new ArrayList<>();
         for (Animatore animatore : animatoreRepository.findAll()) {
             for (Evento evento : animatore.getEventi()) {
@@ -114,13 +101,13 @@ public class AcquirenteService {
         return ResponseEntity.ok(eventi);
     }
 
-    public ResponseEntity<String> ricaricaSaldo(double saldo){
+    public ResponseEntity<String> ricaricaSaldo(double saldo) {
         Acquirente acquirente = securityService.getAcquirenteCorrente();
-        if(saldo <= 0){
+        if (saldo <= 0) {
             ResponseEntity.badRequest().body("Saldo inserito non valido");
         }
         acquirente.setSaldo(acquirente.getSaldo() + saldo);
-        return ResponseEntity.ok().body("Saldo corrente: "+acquirente.getSaldo()+"€");
+        return ResponseEntity.ok().body("Saldo corrente: " + acquirente.getSaldo() + "€");
 
     }
 

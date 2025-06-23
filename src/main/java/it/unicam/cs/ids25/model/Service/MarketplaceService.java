@@ -34,11 +34,11 @@ public class MarketplaceService {
                 prodottiDTO.add(prodottoDTO);
             }
         }
-       return prodottiDTO;
+        return prodottiDTO;
     }
 
     public Prodotto getProdottoById(Long id) {
-        if(prodottoRepository.findById(id).get().isApprovato())
+        if (prodottoRepository.findById(id).get().isApprovato())
             return prodottoRepository.findById(id).get();
         else
             return null;

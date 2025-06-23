@@ -22,7 +22,6 @@ public class BuilderPacchetti {
         this.prezzo = prezzo;
     }
 
-
     public void setQuantita(int quantita) {
         this.quantita = quantita;
     }

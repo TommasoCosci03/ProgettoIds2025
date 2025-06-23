@@ -51,17 +51,17 @@ public class ProdottoService {
 
 
     public ResponseEntity<String> creaProdottoSingolo(ProdottoSingoloDTO dto) {
-        if(!( securityService.getAziendaCorrente() instanceof Produttore)) {
+        if (!(securityService.getAziendaCorrente() instanceof Produttore)) {
             return ResponseEntity.status(500).body(securityService.getAziendaCorrente().getNome() +
                     " Non puo' creare prodotti singoli perche' non e' un produttore");
         }
-        if(dto.getCategoria().equals(Pacchetto)) {
+        if (dto.getCategoria().equals(Pacchetto)) {
             return ResponseEntity.badRequest().body("CURATORE MESSAGE:\n Solo il distributore puo creare dei pacchetti");
         }
-        if(dto.getQuantita() < 1){
+        if (dto.getQuantita() < 1) {
             return ResponseEntity.badRequest().body("Quantità inserita non valida");
         }
-        if(dto.getPrezzo() < 0.1 ){
+        if (dto.getPrezzo() < 0.1) {
             return ResponseEntity.badRequest().body("Il prezzo deve essere consono al mercato");
         }
 
@@ -70,22 +70,22 @@ public class ProdottoService {
                 dto.getQuantita(), dto.getCategoria(), dto.getCertificazioni());
         repoProdotto.save(prodotto);
 
-        return ResponseEntity.ok("Prodotto singolo "+ prodotto.getNome() + " creato con successo");
+        return ResponseEntity.ok("Prodotto singolo " + prodotto.getNome() + " creato con successo");
     }
 
-    public ResponseEntity<String> creaProdottoTrasformato(ProdottoTrasformatoDTO dto)  {
+    public ResponseEntity<String> creaProdottoTrasformato(ProdottoTrasformatoDTO dto) {
 
-        if(!(securityService.getAziendaCorrente() instanceof Trasformatore)) {
+        if (!(securityService.getAziendaCorrente() instanceof Trasformatore)) {
             return ResponseEntity.status(500).body(repoAzienda.findById(securityService.getAziendaCorrente().getId()).get().getNome() +
                     " Non puo' creare prodotti singoli perche' non e' un produttore");
         }
-        if(dto.getCategoria().equals(Pacchetto)) {
+        if (dto.getCategoria().equals(Pacchetto)) {
             return ResponseEntity.badRequest().body("CURATORE MESSAGE:\n Solo il distributore puo creare dei pacchetti");
         }
-        if(dto.getQuantita() <= 1){
+        if (dto.getQuantita() <= 1) {
             return ResponseEntity.badRequest().body("Quantità inserita non valida");
         }
-        if(dto.getPrezzo() < 0.1 ){
+        if (dto.getPrezzo() < 0.1) {
             return ResponseEntity.badRequest().body("Il prezzo deve essere consono al mercato");
         }
 
@@ -93,39 +93,40 @@ public class ProdottoService {
         t.setMateriePrime(dto.getMateriePrime());
         Prodotto prodotto = t.creaProdottoAzienda(dto.getNome(), dto.getDescrizione(), dto.getPrezzo(),
                 dto.getQuantita(), dto.getCategoria(), dto.getCertificazioni());
-         repoProdotto.save(prodotto);
+        repoProdotto.save(prodotto);
 
-         return ResponseEntity.ok( prodotto.getNome() + " creato con successo");
+        return ResponseEntity.ok(prodotto.getNome() + " creato con successo");
     }
 
-    public ResponseEntity<String> creaPacchetto(PacchettoProdottiDTO dto)  {
+    public ResponseEntity<String> creaPacchetto(PacchettoProdottiDTO dto) {
 
-        if(!(securityService.getAziendaCorrente() instanceof Distributore)) {
+        if (!(securityService.getAziendaCorrente() instanceof Distributore)) {
             return ResponseEntity.status(500).body(repoAzienda.findById(securityService.getAziendaCorrente().getId()).get().getNome() +
                     " Non puo' creare prodotti singoli perche' non e' un produttore");
         }
-        if(!dto.getCategoria().equals(Pacchetto)) {
+        if (!dto.getCategoria().equals(Pacchetto)) {
             return ResponseEntity.badRequest().body("CURATORE MESSAGE:\n Il distributore puo solo creare dei pacchetti");
         }
-        if(dto.getQuantita() <= 1){
+        if (dto.getQuantita() <= 1) {
             return ResponseEntity.badRequest().body("Quantità inserita non valida");
         }
-        if(dto.getPrezzo() < 0.1 ){
+        if (dto.getPrezzo() < 0.1) {
             return ResponseEntity.badRequest().body("Il prezzo deve essere consono al mercato");
         }
 
         Distributore d = (Distributore) repoAzienda.findById(securityService.getAziendaCorrente().getId()).get();
 
-        for(Prodotto p : repoProdotto.findAllById(dto.getPacchetto())){
-            if(!p.isApprovato()){
-                return ResponseEntity.badRequest().body("I prodotti che si inseriscono all'interno dei pacchetti devono essere approvati");}
+        for (Prodotto p : repoProdotto.findAllById(dto.getPacchetto())) {
+            if (!p.isApprovato()) {
+                return ResponseEntity.badRequest().body("I prodotti che si inseriscono all'interno dei pacchetti devono essere approvati");
+            }
         }
         d.setProdotti(repoProdotto.findAllById(dto.getPacchetto()));
         Prodotto prodotto = d.creaProdottoAzienda(dto.getNome(), dto.getDescrizione(), dto.getPrezzo(),
                 dto.getQuantita(), dto.getCategoria(), dto.getCertificazioni());
         repoProdotto.save(prodotto);
 
-        return ResponseEntity.ok( prodotto.getNome() + " creato con successo");
+        return ResponseEntity.ok(prodotto.getNome() + " creato con successo");
     }
 
     public List<Prodotto> trovaTutti() {
@@ -138,32 +139,31 @@ public class ProdottoService {
 
 
     public ResponseEntity<String> eliminaProdotto(Long idProdotto) {
-            if (!(repoProdotto.existsById(idProdotto) && repoAzienda.existsById(securityService.getAziendaCorrente().getId()))) {
-                return ResponseEntity.status(404).body("Prodotto azienda non esistente");
-            }
+        if (!(repoProdotto.existsById(idProdotto) && repoAzienda.existsById(securityService.getAziendaCorrente().getId()))) {
+            return ResponseEntity.status(404).body("Prodotto azienda non esistente");
+        }
 
         Azienda azienda = repoAzienda.findById(securityService.getAziendaCorrente().getId()).get();
         Prodotto prodotto = repoProdotto.findById(idProdotto).get();
 
-            if (!azienda.getListaProdotti().contains(prodotto)) {
-                return ResponseEntity.status(500).body("Non puoi eliminare un prodotto che non hai caricato tu");
-            }
+        if (!azienda.getListaProdotti().contains(prodotto)) {
+            return ResponseEntity.status(500).body("Non puoi eliminare un prodotto che non hai caricato tu");
+        }
 
-            if (pacchettoRepository.countPacchettiConProdotto(idProdotto) > 0) {
-                return ResponseEntity.status(500).body("Impossibile eliminare il prodotto: è presente in uno o più pacchetti.");
-            }
-
-
-            if(repoAzienda.countProdottiNelCarrello(idProdotto) > 0){
-                return ResponseEntity.status(500).body(
-                        "Prodotto presente in un carrello, aspetta che l'acquirente effettui l'ordine");
-            }
+        if (pacchettoRepository.countPacchettiConProdotto(idProdotto) > 0) {
+            return ResponseEntity.status(500).body("Impossibile eliminare il prodotto: è presente in uno o più pacchetti.");
+        }
 
 
+        if (repoAzienda.countProdottiNelCarrello(idProdotto) > 0) {
+            return ResponseEntity.status(500).body(
+                    "Prodotto presente in un carrello, aspetta che l'acquirente effettui l'ordine");
+        }
 
-            if (!repoNotifiche.findAllByProdotto_Id(idProdotto).isEmpty()) {
-                return ResponseEntity.status(500).body("Il prodotto e' presente in un ordine, spediscilo prima di eliminarlo");
-            }
+
+        if (!repoNotifiche.findAllByProdotto_Id(idProdotto).isEmpty()) {
+            return ResponseEntity.status(500).body("Il prodotto e' presente in un ordine, spediscilo prima di eliminarlo");
+        }
 
         azienda.getListaProdotti().remove(prodotto);
         repoAzienda.save(azienda); // aggiorna lo stato
@@ -171,8 +171,6 @@ public class ProdottoService {
         return ResponseEntity.status(200).body("Prodotto eliminato con successo");
 
     }
-
-
 
 
 }

@@ -1,9 +1,6 @@
 package it.unicam.cs.ids25.model;
 
-
-import it.unicam.cs.ids25.model.Repository.CuratoreRepository;
 import it.unicam.cs.ids25.model.Repository.UtenteRepository;
-import it.unicam.cs.ids25.model.Utenti.Curatore;
 import it.unicam.cs.ids25.model.Utenti.Gestore;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;

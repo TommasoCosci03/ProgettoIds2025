@@ -20,7 +20,6 @@ public class PacchettoDiProdotti extends Prodotto {
     )
     private List<Prodotto> pacchetto;
 
-
     public PacchettoDiProdotti() {
         super();
         this.pacchetto = new ArrayList<>();
