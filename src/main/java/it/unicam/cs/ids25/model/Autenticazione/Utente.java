@@ -3,6 +3,9 @@ package it.unicam.cs.ids25.model.Autenticazione;
 
 import jakarta.persistence.*;
 
+/**
+ * La classe Utente è un classe astratta che rappresenta un utente registrato nel sistema.
+ */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "tipo_utente")
@@ -17,11 +20,19 @@ public abstract class Utente{
     private String password;
 
 
+    /**
+     * Costruttore che crea un utente con un username e una password.
+     * @param username
+     * @param password
+     */
     public Utente(String username, String password) {
         this.username = username;
         this.password = password;
     }
 
+    /**
+     * Costruttore vuoto per Springboot.
+     */
     public Utente() {
 
     }

@@ -15,6 +15,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+/**
+ * La classe WebSecurityConfig implementa la configurazione della sicurezza del sistema.
+ * È responsabile dell'autenticazione degli utenti e della gestione delle autorizzazioni.
+ */
     @Configuration
     @EnableWebSecurity
     public class WebSecurityConfig {

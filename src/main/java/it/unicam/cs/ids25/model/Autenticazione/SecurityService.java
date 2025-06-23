@@ -13,12 +13,20 @@ import org.springframework.stereotype.Service;
 
 import java.nio.file.AccessDeniedException;
 
+/**
+ * La classe SecurityService implementa l'interfaccia SecurityService per l'autenticazione.
+ * Responsabile per la ricerca dell'utente corrente e del ruolo.
+ */
 @Service
 public class SecurityService {
 
     @Autowired
     private UtenteRepository utenteRepository;
 
+    /**
+     * Il metodo getAziendaCorrente ritorna l'azienda corrente.
+     * @return l'oggetto Azienda corrente.
+     */
     public Azienda getAziendaCorrente()  {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
@@ -31,6 +39,10 @@ public class SecurityService {
         }
     }
 
+    /**
+     * Il metodo getCuratoreCorrente ritorna il curatore corrente.
+     * @return l'oggetto Curatore corrente.
+     */
     public Acquirente getAcquirenteCorrente()  {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     String username = auth.getName();
@@ -43,6 +55,10 @@ public class SecurityService {
         }
     }
 
+    /**
+     * Il metodo getCuratoreCorrente ritorna il curatore corrente.
+     * @return l'oggetto Curatore corrente.
+     */
     public Animatore getAnimatoreCorrente() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();

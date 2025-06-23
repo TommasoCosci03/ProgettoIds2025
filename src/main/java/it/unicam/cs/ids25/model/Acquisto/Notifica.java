@@ -5,6 +5,10 @@ import it.unicam.cs.ids25.model.Utenti.Acquirente;
 import it.unicam.cs.ids25.model.Utenti.Azienda;
 import jakarta.persistence.*;
 
+/**
+ * La classe notifica rappresenta una notifica generata da un {@link Acquirente} per un {@link Prodotto}
+ * acquistato da un {@link Acquirente} all'interno di un {@link Carrello}.
+ */
 @Entity
 public class Notifica {
 
@@ -24,6 +28,9 @@ public class Notifica {
     private Long idOrdine;
 
 
+    /**
+     * Costruttore vuoto per Springboot.
+     */
     public Notifica() {
     }
 

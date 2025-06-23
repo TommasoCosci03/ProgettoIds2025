@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+/**
+ * La classe Carrello rappresenta il carrello degli acquisti di un {@link Acquirente}.
+ */
 @Entity
 public class Carrello {
 
@@ -21,6 +24,9 @@ public class Carrello {
     @JoinColumn(name= "utende_id")
     private Acquirente acquirente;
 
+    /**
+     * Costruttore vuoto per Springboot
+     */
     public Carrello() {}
 
     public List<CarrelloItem> getProdottiDaAcquistare() {
@@ -35,6 +41,10 @@ public class Carrello {
         this.acquirente = acquirente;
     }
 
+    /**
+     * Calcola il prezzo totale dei prodotti presenti nel carrello.
+     * @return totale del carrello.
+     */
     public double prezzoTotale(){
         double somma = 0;
         for(CarrelloItem p : prodottiDaAcquistare){
@@ -43,6 +53,10 @@ public class Carrello {
         return somma;
     }
 
+    /**
+     * Override del metodo toString per la visualizzazione dei prodotti presenti nel carrello.
+     * @return
+     */
     @Override
     public String toString() {
         StringBuilder ret = new StringBuilder();
