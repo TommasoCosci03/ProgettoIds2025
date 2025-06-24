@@ -1,5 +1,8 @@
 package it.unicam.cs.ids25.model.Dto;
 
+/**
+ * La classe AziendaDto è un Data Trasfer Object per la creazione di un oggetto azienda
+ */
 public class AziendaDTO {
     String nome;
     String sede;

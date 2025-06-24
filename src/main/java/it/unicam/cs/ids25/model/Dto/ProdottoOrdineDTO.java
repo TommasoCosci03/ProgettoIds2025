@@ -1,5 +1,8 @@
 package it.unicam.cs.ids25.model.Dto;
 
+/**
+ * La classe ProdottoOrdineDto è un Data Trasfer Object per la creazione di un Ordine
+ */
 public class ProdottoOrdineDTO {
 
     private long idProdotto;

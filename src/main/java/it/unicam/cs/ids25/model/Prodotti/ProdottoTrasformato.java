@@ -8,6 +8,10 @@ import jakarta.persistence.Entity;
 
 import java.util.List;
 
+/**
+ * La classe PacchettoDiProdotti estende la classe astratta {@link Prodotto}
+ * in piu ha al suo interno un campo {@param materiePrime} per la creazione di un prodotto trasformato
+ */
 @Entity
 @DiscriminatorValue("trasformato")
 public class ProdottoTrasformato extends Prodotto {
@@ -15,11 +19,26 @@ public class ProdottoTrasformato extends Prodotto {
 
     private String materiePrime;
 
+    /**
+     * Costruttore per springboot con inizializzazione del campo {@param materiePrime}
+     */
     public ProdottoTrasformato() {
         super();
         this.materiePrime = null;
     }
 
+    /**
+     * Metodo costruttore che viene richiamato dal builder per la creazione di un prodotto trasformato
+     *
+     * @param nome
+     * @param descrizione
+     * @param prezzo
+     * @param quantita
+     * @param categoria
+     * @param azienda
+     * @param materiePrime
+     * @param certificazioni
+     */
     protected ProdottoTrasformato(String nome, String descrizione, double prezzo, int quantita, Categoria categoria,
                                   Azienda azienda, String materiePrime, List<Certificazioni> certificazioni) {
 

@@ -3,6 +3,7 @@ package it.unicam.cs.ids25.model.Service;
 import it.unicam.cs.ids25.model.Autenticazione.SecurityService;
 import it.unicam.cs.ids25.model.Dto.AziendaDTO;
 import it.unicam.cs.ids25.model.Acquisto.Notifica;
+import it.unicam.cs.ids25.model.Prodotti.Prodotto;
 import it.unicam.cs.ids25.model.Repository.*;
 import it.unicam.cs.ids25.model.Utenti.*;
 import jakarta.transaction.Transactional;
@@ -26,9 +27,11 @@ public class AziendaService {
 
     private final SecurityService serviceUtente;
     private final EventoRepository eventoRepository;
+    private final SecurityService securityService;
+    private final ProdottoRepository prodottoRepository;
 
 
-    public AziendaService(AziendaRepository aziendaRepository, NotificheRepository notificheRepo, UtenteRepository utenteRepo, OrdineRepository ordineRepo, PasswordEncoder passwordEncoder, SecurityService serviceUtente, EventoRepository eventoRepository) {
+    public AziendaService(AziendaRepository aziendaRepository, NotificheRepository notificheRepo, UtenteRepository utenteRepo, OrdineRepository ordineRepo, PasswordEncoder passwordEncoder, SecurityService serviceUtente, EventoRepository eventoRepository, SecurityService securityService, ProdottoRepository prodottoRepository) {
         this.aziendaRepository = aziendaRepository;
         this.notificheRepo = notificheRepo;
         this.utenteRepo = utenteRepo;
@@ -36,6 +39,8 @@ public class AziendaService {
         this.passwordEncoder = passwordEncoder;
         this.serviceUtente = serviceUtente;
         this.eventoRepository = eventoRepository;
+        this.securityService = securityService;
+        this.prodottoRepository = prodottoRepository;
     }
 
     public ResponseEntity<String> crea(AziendaDTO dto) {
@@ -128,5 +133,26 @@ public class AziendaService {
         }
 
         return ResponseEntity.status(404).body("Ordine non trovato");
+    }
+
+    public ResponseEntity<String> aggiungiQuantità(Long idProdotto,int quantita){
+        if(quantita < 1 ){
+            return ResponseEntity.badRequest().body("Quantita inserita non valida");
+        }
+
+        if(!prodottoRepository.existsById(idProdotto)){
+            return ResponseEntity.status(404).body("Prodotto non esistente");
+        }
+
+        Azienda azienda = aziendaRepository.findById(serviceUtente.getAziendaCorrente().getId()).orElse(null);
+        Prodotto prodotto = prodottoRepository.findById(idProdotto).get();
+
+        if (azienda.getListaProdotti().contains(prodotto)){
+            prodotto.setQuantita(prodotto.getQuantita()+quantita);
+            prodottoRepository.save(prodotto);
+            return ResponseEntity.ok().body("Quantita' aggiunta con successo\n Prodotto: " + prodotto.getNome() + " quantita: " + prodotto.getQuantita());
+        }
+        return ResponseEntity.status(500).body("Il prodotto selezionato non è stato caricato dall'azienda: " + azienda.getNome() +
+                " non puoi modificarne la quantita'");
     }
 }

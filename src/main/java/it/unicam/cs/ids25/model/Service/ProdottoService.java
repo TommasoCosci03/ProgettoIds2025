@@ -121,6 +121,7 @@ public class ProdottoService {
                 return ResponseEntity.badRequest().body("I prodotti che si inseriscono all'interno dei pacchetti devono essere approvati");
             }
         }
+
         d.setProdotti(repoProdotto.findAllById(dto.getPacchetto()));
         Prodotto prodotto = d.creaProdottoAzienda(dto.getNome(), dto.getDescrizione(), dto.getPrezzo(),
                 dto.getQuantita(), dto.getCategoria(), dto.getCertificazioni());

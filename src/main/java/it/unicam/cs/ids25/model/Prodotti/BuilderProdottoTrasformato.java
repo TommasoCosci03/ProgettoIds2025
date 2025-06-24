@@ -6,6 +6,9 @@ import it.unicam.cs.ids25.model.Utenti.Azienda;
 
 import java.util.List;
 
+/**
+ * La classe BuilderPacchetti è responsabile della crazione dei {@link ProdottoTrasformato} tramite il design pattern Builder
+ */
 public class BuilderProdottoTrasformato {
     private int quantita;
     private String descrizione;
@@ -48,6 +51,10 @@ public class BuilderProdottoTrasformato {
         this.materiePrime = materiePrime;
     }
 
+    /**
+     * Metodo per la creazione di un Prodotto trasformato tramite il costruttore di {@link ProdottoTrasformato}
+     * @return new {@link ProdottoTrasformato}
+     */
     public ProdottoTrasformato buildProdottoTrasformato() {
         return new ProdottoTrasformato(nome, descrizione, prezzo, quantita, categoria, azienda, materiePrime, certificazioni);
     }

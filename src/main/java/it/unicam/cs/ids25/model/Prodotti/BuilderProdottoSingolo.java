@@ -6,6 +6,9 @@ import it.unicam.cs.ids25.model.Utenti.Azienda;
 
 import java.util.List;
 
+/**
+ * La classe BuilderPacchetti è responsabile della crazione dei {@link ProdottoSingolo} tramite il design pattern Builder
+ */
 public class BuilderProdottoSingolo {
     private int quantita;
     private String descrizione;
@@ -43,6 +46,10 @@ public class BuilderProdottoSingolo {
         this.certificazioni = certificazioni;
     }
 
+    /**
+     * Metodo per la creazione di un Prodotto singolo tramite il costruttore di {@link ProdottoSingolo}
+     * @return new {@link ProdottoSingolo}
+     */
     public ProdottoSingolo buildProdottoSingolo() {
         return new ProdottoSingolo(nome, descrizione, prezzo, quantita, categoria, azienda, certificazioni);
     }

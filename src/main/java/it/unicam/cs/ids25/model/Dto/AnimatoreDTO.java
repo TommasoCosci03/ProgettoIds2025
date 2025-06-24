@@ -1,5 +1,8 @@
 package it.unicam.cs.ids25.model.Dto;
 
+/**
+ *  La classe AnimatoreDto è un Data Trasfer Object per la creazione di un oggetto animatore
+ */
 public class AnimatoreDTO {
      String nome;
      String username;

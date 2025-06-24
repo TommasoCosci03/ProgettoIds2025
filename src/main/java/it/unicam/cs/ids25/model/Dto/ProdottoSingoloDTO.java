@@ -6,6 +6,9 @@ import it.unicam.cs.ids25.model.Prodotti.Enum.Certificazioni;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * La classe ProdottoSingoloDto è un Data Trasfer Object per la creazione di un oggetto prodotto singolo
+ */
 public class ProdottoSingoloDTO {
     String nome;
     String descrizione;

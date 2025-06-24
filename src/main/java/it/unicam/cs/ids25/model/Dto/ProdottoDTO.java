@@ -2,6 +2,9 @@ package it.unicam.cs.ids25.model.Dto;
 
 import it.unicam.cs.ids25.model.Prodotti.Prodotto;
 
+/**
+ * La classe ProdottoDto è un Data Trasfer Object per la creazione di un oggetto prodotto
+ */
 public class ProdottoDTO {
 
     private Long id;
@@ -13,9 +16,24 @@ public class ProdottoDTO {
     private Long aziendaId;
     private String aziendaNome;
 
+    /**
+     * Costruttore vuoto per Springboot.
+     */
 
     public ProdottoDTO() {}
 
+    /**
+     * Vengono passati tutti i campi per creare un ProdottoDto
+     *
+     * @param id
+     * @param nome
+     * @param descrizione
+     * @param prezzo
+     * @param quantita
+     * @param categoria
+     * @param aziendaId
+     * @param aziendaNome
+     */
     public ProdottoDTO(Long id, String nome, String descrizione,
                        double prezzo, int quantita, String categoria,
                        Long aziendaId, String aziendaNome) {
@@ -30,6 +48,11 @@ public class ProdottoDTO {
     }
 
 
+    /**
+     * viene passata un'entità prodotto per poi ritornare tutti i campi salvati all'interno del prodotto
+     * {@param p}
+     * @return new ProdottoDto
+     */
     public static ProdottoDTO fromEntity(Prodotto p) {
         return new ProdottoDTO(
                 p.getId(),

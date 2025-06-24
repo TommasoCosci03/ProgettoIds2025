@@ -7,6 +7,9 @@ import it.unicam.cs.ids25.model.Utenti.Azienda;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * La classe BuilderPacchetti è responsabile della crazione dei {@link PacchettoDiProdotti} tramite il design pattern Builder
+ */
 public class BuilderPacchetti {
     private int quantita;
     private String descrizione;
@@ -50,6 +53,10 @@ public class BuilderPacchetti {
         this.certificazioni = certificazioni;
     }
 
+    /**
+     * Metodo per la creazione di un Pacchetto di prodotti tramite il costruttore di {@link PacchettoDiProdotti}
+     * @return new {@link PacchettoDiProdotti}
+     */
     public PacchettoDiProdotti buildPacchetto() {
         if (nome == null || descrizione == null || categoria == null || prodotti.size()<2) {
             throw new IllegalStateException("Campi obbligatori mancanti");

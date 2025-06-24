@@ -8,6 +8,10 @@ import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * La classe PacchettoDiProdotti estende la classe astratta {@link Prodotto}
+ * in piu ha al suo interno una lista di prodotti per la creazione del pacchetto
+ */
 @Entity
 @DiscriminatorValue("pacchetto")
 public class PacchettoDiProdotti extends Prodotto {
@@ -20,11 +24,26 @@ public class PacchettoDiProdotti extends Prodotto {
     )
     private List<Prodotto> pacchetto;
 
+    /**
+     * Costruttore per springboot con inizializzazione della lista di parodotti
+     */
     public PacchettoDiProdotti() {
         super();
         this.pacchetto = new ArrayList<>();
     }
 
+    /**
+     * Metodo costruttore che viene richiamato dal builder per la crazione di un pacchetto tramite i parametri passati
+     *
+     * @param nome
+     * @param descrizione
+     * @param prezzo
+     * @param quantita
+     * @param categoria
+     * @param azienda
+     * @param certificazioni
+     * @param pacchetto
+     */
     protected PacchettoDiProdotti(String nome, String descrizione, double prezzo, int quantita,
                                   Categoria categoria, Azienda azienda, List<Certificazioni> certificazioni, List<Prodotto> pacchetto) {
         super("pacchetto "+ nome, descrizione, prezzo, quantita, Categoria.Pacchetto, azienda, certificazioni);

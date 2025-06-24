@@ -7,14 +7,24 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
 
+/**
+ * Repository dell'entità {@link Azienda}
+ */
 public interface AziendaRepository extends JpaRepository<Azienda, Long> {
 
+    /**
+     * Query per la conta dei prodotti caricati da parte di un azienda nella tabella carrello_item del database
+     * @param idProdotto
+     * @return un valore Long del numero di prodotti all'interno di uno o piu carrelli
+     */
     @Query(value = "SELECT COUNT(*) FROM carrello_item  WHERE prodotto_id = :idProdotto", nativeQuery = true)
     long countProdottiNelCarrello(@Param("idProdotto") Long idProdotto);
 
-
-    Optional<Azienda> findByUsername(String username);
-
+    /**
+     * Metodo per verificare, passato un username, se esiste una determinata azienda
+     * @param username
+     * @return un valore boolean
+     */
     boolean existsByUsername(String username);
 
 

@@ -1,5 +1,8 @@
 package it.unicam.cs.ids25.model.Dto;
 
+/**
+ * La classe AcquirenteDto è un Data Trasfer Object per la creazione di un oggetto acquirente
+ */
 public class AcquirenteDTO {
     String nome;
     String username;

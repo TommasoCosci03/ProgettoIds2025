@@ -50,13 +50,24 @@ public class AziendaController {
 
     /**
      * Metodo per la spedizione di un ordine
-     * @param id dellan notifica dell'ordine da spedire
-     * @return ResponseEntity<String> - Risposta HTTP con il messaggio di risultato della spedizione dell'ordine.'
+     * @param id della notifica dell'ordine da spedire
+     * @return ResponseEntity<String> - Risposta HTTP con il messaggio di risultato della spedizione dell'ordine.
      */
     @PostMapping("/spedisci/{id}")
     public ResponseEntity<String> spedisci (@PathVariable Long id) {
         return service.effettuaSpedizione(id);
 
+    }
+
+    /**
+     * Metodo per l'aggiunta di una quantita' ad un prodotto
+     * @param idProdotto del prodotto a cui si vuole aggiungere una certa quantita'
+     * @param quantita da aggiungere al rpodotto
+     * @return ResponseEntity<String> - Risposta HTTP con il messaggio di risultato dell'aggiunta della quantita' al prodotto passato.
+     */
+    @PostMapping("/aggiungiQuantita/{idProdotto}/{quantita}")
+    public ResponseEntity<String> aggiungiQuantita (@PathVariable ("idProdotto") Long idProdotto, @PathVariable("quantita") int quantita){
+        return service.aggiungiQuantità(idProdotto,quantita);
     }
 
     /**

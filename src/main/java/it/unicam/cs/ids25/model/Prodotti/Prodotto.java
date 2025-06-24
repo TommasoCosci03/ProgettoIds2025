@@ -10,6 +10,10 @@ import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Classe astratta prodotto che viene estesa da {@link ProdottoSingolo},{@link ProdottoTrasformato} e {@link PacchettoDiProdotti}
+ * che passa i campi generici di un prodotto base
+ */
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="tipo_prodotto")
@@ -35,8 +39,22 @@ public abstract class  Prodotto  {
     @JsonIgnoreProperties("prodotti")
     private Azienda azienda;
 
+    /**
+     * Costruttore vuoto per springboot
+     */
     public Prodotto() {}
 
+    /**
+     * Metodo costruttore di un Prodotto
+     *
+     * @param nome
+     * @param descrizione
+     * @param prezzo
+     * @param quantita
+     * @param categoria
+     * @param azienda
+     * @param certificazioni
+     */
     public Prodotto(String nome, String descrizione, double prezzo,
                     int quantita, Categoria categoria, Azienda azienda, List<Certificazioni> certificazioni) {
         this.nome = nome;

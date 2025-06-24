@@ -6,6 +6,9 @@ import it.unicam.cs.ids25.model.Utenti.Azienda;
 
 import java.util.List;
 
+/**
+ * La classe EventoDto è un Data Trasfer Object per la creazione di un oggetto Evento
+ */
 public class EventoDTO {
 
     private String nome;
