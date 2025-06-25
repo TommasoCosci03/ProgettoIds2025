@@ -7,6 +7,7 @@ import it.unicam.cs.ids25.model.Evento;
 import it.unicam.cs.ids25.model.Repository.AnimatoreRepository;
 import it.unicam.cs.ids25.model.Repository.AziendaRepository;
 import it.unicam.cs.ids25.model.Repository.EventoRepository;
+import it.unicam.cs.ids25.model.Utenti.Acquirente;
 import it.unicam.cs.ids25.model.Utenti.Animatore;
 import it.unicam.cs.ids25.model.Utenti.Azienda;
 import it.unicam.cs.ids25.model.Utenti.Distributore;
@@ -20,17 +21,35 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * la classe AnimatoreService è responsabile della logica per le operazioni di{@link Animatore}
+ */
 @Service
 @Transactional
-
 public class AnimatoreService {
+
+
     private final AnimatoreRepository animatoreRepository;
+
     private final EventoRepository eventoRepository;
+
     private final AziendaRepository aziendaRepository;
+
     private final SecurityService securityService;
 
     private final PasswordEncoder passwordEncoder;
 
+
+    /**
+     * Costruttore della classe service per {@link Animatore}.
+     * Inietta i repository e i servizi utilizzati per gestire gli animatori, i relativi eventi e la sicurezza.
+     *
+     * @param repo repository dell'entità {@link Animatore}
+     * @param eventoRepository repository dell'entità {@link Evento}
+     * @param aziendaRepository repository dell'entità {@link Azienda}
+     * @param securityService servizio per la gestione della sicurezza e autenticazione
+     * @param passwordEncoder componente per la codifica sicura delle password
+     */
     public AnimatoreService(AnimatoreRepository repo, EventoRepository eventoRepository, AziendaRepository aziendaRepository, SecurityService securityService, PasswordEncoder passwordEncoder) {
         this.animatoreRepository = repo;
         this.eventoRepository = eventoRepository;
@@ -39,6 +58,12 @@ public class AnimatoreService {
         this.passwordEncoder = passwordEncoder;
     }
 
+
+    /**
+     * metodo per la creazione di un animatore.
+     * @param dto json passato nella richiesta
+     * @return ResponseEntity<String> - Risposta HTTP con il messaggio di risultato della creazione dell'animatore.'
+     */
     public ResponseEntity<String> creaAnimatore(AnimatoreDTO dto) {
         if (dto.getUsername().isEmpty() || dto.getPassword().isEmpty()) {
             return ResponseEntity.badRequest().body("username o Password non valido");
@@ -57,6 +82,12 @@ public class AnimatoreService {
     }
 
 
+
+    /**
+     * metodo per la creazione di un evento.
+     * @param dto json passato nella richiesta
+     * @return ResponseEntity<String> - Risposta HTTP con il messaggio di risultato della creazione dell'evento.'
+     */
     public ResponseEntity<String> creaEvento(EventoDTO dto) {
         Animatore animatore = securityService.getAnimatoreCorrente();
 
@@ -92,6 +123,11 @@ public class AnimatoreService {
     }
 
 
+
+    /**
+     * metodo per vedere tutti gli eventi.
+     * @return ResponseEntity<List<EventoDTO> - Risposta HTTP con la lista degli eventi.'
+     */
     public List<EventoDTO> trovaEventi() {
 
         List<EventoDTO> eventi = new ArrayList<>();
@@ -119,6 +155,13 @@ public class AnimatoreService {
     }*/
 
 
+
+    /**
+     * metodo per l'invito di un'azienda ad un evento.
+     * @param idEvento evento a cui invitare l'azienda
+     * @param idAzienda id dell'azienda da invitare
+     * @return ResponseEntity<String> - Risposta HTTP con il messaggio di risultato dell'invito dell'azienda ad un evento.''
+     */
     public ResponseEntity<String> invitaAzienda(Long idEvento, Long idAzienda) {
         Animatore animatore = securityService.getAnimatoreCorrente();
 

@@ -3,34 +3,62 @@ package it.unicam.cs.ids25.model.Service;
 import it.unicam.cs.ids25.model.Autenticazione.SecurityService;
 import it.unicam.cs.ids25.model.Dto.AziendaDTO;
 import it.unicam.cs.ids25.model.Acquisto.Notifica;
+import it.unicam.cs.ids25.model.Acquisto.Ordine;
 import it.unicam.cs.ids25.model.Prodotti.Prodotto;
 import it.unicam.cs.ids25.model.Repository.*;
 import it.unicam.cs.ids25.model.Utenti.*;
+import it.unicam.cs.ids25.model.Autenticazione.Utente;
 import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import it.unicam.cs.ids25.model.Evento;
+import  it.unicam.cs.ids25.model.Prodotti.Prodotto;
 
 import java.util.List;
 
+/**
+ * la classe AziendaService è responsabile della logica per le operazioni di{@link Azienda}
+ */
 @Service
 @Transactional
 public class AziendaService {
-    private final AziendaRepository aziendaRepository;
-    private final NotificheRepository notificheRepo;
-    private final UtenteRepository utenteRepo;
-    private final OrdineRepository ordineRepo;
 
+    private final AziendaRepository aziendaRepository;
+
+    private final NotificheRepository notificheRepo;
+
+    private final UtenteRepository utenteRepo;
+
+    private final OrdineRepository ordineRepo;
 
     private final PasswordEncoder passwordEncoder;
 
     private final SecurityService serviceUtente;
+
     private final EventoRepository eventoRepository;
+
     private final SecurityService securityService;
+
     private final ProdottoRepository prodottoRepository;
 
 
+
+    /**
+     * Costruttore del service per la gestione dell'entità {@link Azienda}.
+     * Inietta tutti i repository e i servizi necessari per gestire aziende, utenti, prodotti, notifiche e sicurezza.
+     *
+     * @param aziendaRepository repository dell'entità {@link Azienda}
+     * @param notificheRepo repository per la gestione delle {@link Notifica}
+     * @param utenteRepo repository per l'accesso ai dati degli {@link Utente}
+     * @param ordineRepo repository per la gestione degli {@link Ordine}
+     * @param passwordEncoder componente per la codifica sicura delle password
+     * @param serviceUtente servizio per la gestione della sicurezza lato utente
+     * @param eventoRepository repository degli {@link Evento}
+     * @param securityService servizio per la gestione generale della sicurezza e autenticazione
+     * @param prodottoRepository repository per la gestione dei {@link Prodotto}
+     */
     public AziendaService(AziendaRepository aziendaRepository, NotificheRepository notificheRepo, UtenteRepository utenteRepo, OrdineRepository ordineRepo, PasswordEncoder passwordEncoder, SecurityService serviceUtente, EventoRepository eventoRepository, SecurityService securityService, ProdottoRepository prodottoRepository) {
         this.aziendaRepository = aziendaRepository;
         this.notificheRepo = notificheRepo;
@@ -43,6 +71,14 @@ public class AziendaService {
         this.prodottoRepository = prodottoRepository;
     }
 
+
+
+    /**
+     * metodo per la creazione di un'azienda.
+     * l'azienda viene creata in base al tipo specificato nel DTO
+     * @param dto json passato nella richiesta
+     * @return ResponseEntity<String> - Risposta HTTP con il messaggio di risultato della creazione dell'azienda.'
+     */
     public ResponseEntity<String> crea(AziendaDTO dto) {
         Azienda azienda = null;
 
@@ -72,6 +108,12 @@ public class AziendaService {
         return ResponseEntity.status(200).body(dto.getNome() + " creato con successo");
     }
 
+
+
+    /**
+     * metodo per trovare tutte le aziende
+     * @return List<Aziende> - Risposta HTTP con il messaggio di risultato della lista delle aziende.'
+     */
     public List<Azienda> trovaTutte() {
         return aziendaRepository.findAll();
     }
@@ -80,6 +122,12 @@ public class AziendaService {
         return aziendaRepository.findById(id).orElse(null);
     }
 
+
+    /**
+     * metodo per l'eliminazione di una azienda.
+     * l'azienda che ha effettuato il login verrà eliminata
+     * @return ResponseEntity<List<AziendaDTO>> - Risposta HTTP con il messaggio di risultato della visualizzazione di tutte le aziende disponibili.'
+     */
     @Transactional
     public ResponseEntity<String> eliminaAzienda() {
         if (serviceUtente.getAziendaCorrente() == null) {
@@ -110,6 +158,12 @@ public class AziendaService {
     }
 
 
+
+    /**
+     * metodo per controllare le notifiche dell'azienda
+     * l'azienda che ha effettuato il login vedrà tutte le notifiche relative ai suoi prodotti venduti
+     * @return ResponseEntity<StringBuilder> - Risposta HTTP con il messaggio di risultato delle notifiche dell'azienda.
+     */
     public ResponseEntity<StringBuilder> notificheById() {
         List<Notifica> notifiche = notificheRepo.findByAzienda_Id(serviceUtente.getAziendaCorrente().getId());
         Azienda azienda = aziendaRepository.findById(serviceUtente.getAziendaCorrente().getId()).orElse(null);
@@ -123,6 +177,14 @@ public class AziendaService {
         return ResponseEntity.notFound().build();
     }
 
+
+    /**
+     * metodo per la spedizione di un ordine
+     * l'azienda effettua la spedizione
+     * @param idNotifica della notifica dell'ordine da spedire
+     * una volta effettuata la spedizione verrà cancellata la notifica
+     * @return ResponseEntity<String> - Risposta HTTP con il messaggio di risultato della spedizione dell'ordine.
+     */
     public ResponseEntity<String> effettuaSpedizione(Long idNotifica) {
         List<Notifica> notifica = notificheRepo.findByAzienda_Id(serviceUtente.getAziendaCorrente().getId());
 
@@ -135,6 +197,13 @@ public class AziendaService {
         return ResponseEntity.status(404).body("Ordine non trovato");
     }
 
+
+    /**
+     * metodo per l'aggiunta di una quantita' ad un prodotto
+     * @param idProdotto del prodotto a cui si vuole aggiungere una certa quantita'
+     * @param quantita da aggiungere al rpodotto
+     * @return ResponseEntity<String> - Risposta HTTP con il messaggio di risultato dell'aggiunta della quantita' al prodotto passato.
+     */
     public ResponseEntity<String> aggiungiQuantità(Long idProdotto,int quantita){
         if(quantita < 1 ){
             return ResponseEntity.badRequest().body("Quantita inserita non valida");

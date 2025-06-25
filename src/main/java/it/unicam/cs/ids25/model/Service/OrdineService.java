@@ -17,7 +17,13 @@ import it.unicam.cs.ids25.model.Utenti.Acquirente;
 import jakarta.transaction.Transactional;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import it.unicam.cs.ids25.model.Utenti.Acquirente;
+import  it.unicam.cs.ids25.model.Prodotti.Prodotto;
+import it.unicam.cs.ids25.model.Acquisto.Ordine;
 
+/**
+ * la classe OrdineService è responsabile della logica per le operazioni relative agli {@link Ordine}
+ */
 @Service
 @Transactional
 public class OrdineService {
@@ -30,6 +36,17 @@ public class OrdineService {
     //Service
     private final SecurityService securityService;
 
+
+    /**
+     * Costruttore del service {@code OrdineService} per la gestione degli ordini.
+     * Inietta i repository e i servizi necessari per operazioni su acquirenti, prodotti,
+     * ordini, notifiche e sicurezza.
+     * @param acquirenteRepository repository per la gestione degli {@link Acquirente}
+     * @param prodottoRepository repository per la gestione dei {@link Prodotto}
+     * @param ordineRepository repository per la gestione degli {@link Ordine}
+     * @param notificheObserver componente per la gestione delle notifiche (observer)
+     * @param securityService servizio per la gestione della sicurezza e autenticazione
+ */
     public OrdineService(AcquirenteRepository acquirenteRepository, ProdottoRepository prodottoRepository, OrdineRepository ordineRepository, NotificheObserver notificheObserver, SecurityService securityService) {
         this.acquirenteRepository = acquirenteRepository;
         this.prodottoRepository = prodottoRepository;
@@ -38,6 +55,16 @@ public class OrdineService {
         this.securityService = securityService;
     }
 
+
+    /**
+     * Aggiunge un prodotto al carrello dell'acquirente che ha effettuato la richiesta,
+     * quindi quello che ha effettuato il login.
+     * si controlla che il prodotto esista, sia approvato e che la quantità richiesta sia disponibile.
+     *
+     * @param dto richiesta json contenente l'ID del prodotto e la quantità da aggiungere
+     * @return {@link ResponseEntity<String>} che contiene la risposta alla richiesta
+     *
+     */
     public ResponseEntity<String> aggiungiAlCarrello(ProdottoOrdineDTO dto) {
 
         if (!prodottoRepository.existsById(dto.getIdProdotto())) {
@@ -65,6 +92,12 @@ public class OrdineService {
     }
 
 
+    /**
+     * Cancella il carrello dell'acquirente attualmente autenticato,
+     * ripristinando le quantità dei prodotti presenti nel carrello prima della cancellazione.
+     *
+     * @return {@link ResponseEntity<String>} con messaggio di conferma dell'avvenuta cancellazione del carrello
+     */
     public ResponseEntity<String> cancellaCarrello() {
 
         Acquirente acquirente = acquirenteRepository.findById(securityService.getAcquirenteCorrente().getId()).get();
@@ -74,12 +107,27 @@ public class OrdineService {
     }
 
 
+    /**
+     * ottieni il carrello dell'acquirente attualmente autenticato,
+     *
+     * @return {@link ResponseEntity<String>} con il carrello
+     */
     public ResponseEntity<String> getCarrello() {
 
         Acquirente acquirente = acquirenteRepository.findById(securityService.getAcquirenteCorrente().getId()).get();
         return ResponseEntity.status(200).body(acquirente.getCarrello().toString());
     }
 
+
+    /**
+     * Effettua l'ordine per l'acquirente attualmente autenticato utilizzando i prodotti presenti nel carrello.
+     * Verifica che il carrello e che il saldo dell'utente sia sufficiente
+     * Dopo la conferma, crea un nuovo ordine, aggiorna il saldo, notifica le aziende coinvolte e svuota il carrello.
+     *
+     * @param ordine richiesta json
+     * @return {@link ResponseEntity<String>} con: il relativo messaggio
+     *
+     */
     public ResponseEntity<String> effettuaOrdine(OrdineDTO ordine) {
 
         Acquirente acquirente = acquirenteRepository.findById(securityService.getAcquirenteCorrente().getId()).get();
@@ -106,6 +154,12 @@ public class OrdineService {
     }
 
 
+
+    /**
+     * Aggiorna la quantità dei prodotti nel repository.
+     *viene utilizzato quando si aggiunge un prodotto al carrello
+     * @param carrello il {@link Carrello} contenente i prodotti e le quantità da sottrarre
+     */
     public void aggiornaQuantita(Carrello carrello) {
         for (CarrelloItem o : carrello.getProdottiDaAcquistare()) {
             Prodotto p = o.getProdotto();
@@ -115,6 +169,14 @@ public class OrdineService {
         }
     }
 
+
+    /**
+     * Ripristina la quantità dei prodotti nel repository.
+     * Utilizzato tipicamente quando si cancella un carrello
+     * la disponibilità dei prodotti allo stato precedente.
+     *
+     * @param carrello il {@link Carrello} contenente i prodotti e le quantità da ripristinare
+     */
     public void ripristinaQuantita(Carrello carrello) {
         for (CarrelloItem o : carrello.getProdottiDaAcquistare()) {
             Prodotto p = o.getProdotto();

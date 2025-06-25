@@ -1,5 +1,6 @@
 package it.unicam.cs.ids25.model.Service;
 
+import it.unicam.cs.ids25.model.Acquisto.Ordine;
 import it.unicam.cs.ids25.model.Autenticazione.SecurityService;
 import it.unicam.cs.ids25.model.Dto.PacchettoProdottiDTO;
 import it.unicam.cs.ids25.model.Dto.ProdottoSingoloDTO;
@@ -18,11 +19,16 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import it.unicam.cs.ids25.model.Utenti.Azienda;
+import it.unicam.cs.ids25.model.Acquisto.Notifica;
 
 import java.util.List;
 
 import static it.unicam.cs.ids25.model.Prodotti.Enum.Categoria.Pacchetto;
 
+/**
+ * la classe ProdottoService è responsabile della logica per le operazioni relative ai {@link Prodotto}
+ */
 @Service
 @Transactional
 public class ProdottoService {
@@ -39,6 +45,20 @@ public class ProdottoService {
     @Autowired
     private CuratoreRepository curatoreRepository;
 
+
+    /**
+     * Costruttore per l'inizializzazione del service {@link ProdottoService}.
+     * Inietta i repository necessari per la gestione dei prodotti, delle aziende,
+     * delle notifiche e i servizi di sicurezza e curatore.
+     *
+     * @param repo repository generico di prodotti (non usato nel corpo ma iniettato)
+     * @param repoProdotto repository specifico per la gestione dei {@link Prodotto}
+     * @param repoAzienda repository per la gestione delle {@link Azienda}
+     * @param repoNotifiche repository per la gestione delle {@link Notifica}
+     * @param pacchettoRepository repository per la gestione di eventuali pacchetti di prodotti
+     * @param securityService servizio per la gestione della sicurezza e autenticazione
+     * @param curatoreService servizio per la gestione dei curatori
+     */
     @Autowired
     public ProdottoService(ProdottoRepository repo, ProdottoRepository repoProdotto, AziendaRepository repoAzienda, NotificheRepository repoNotifiche, ProdottoRepository pacchettoRepository, SecurityService securityService, CuratoreService curatoreService) {
         this.repoProdotto = repoProdotto;
@@ -50,6 +70,15 @@ public class ProdottoService {
     }
 
 
+
+    /**
+     * Crea un prodotto singolo associato all'azienda corrente autenticata,
+     * che deve essere un {@link Produttore}.
+     * Se tutte le condizioni sono rispettate, viene creato e salvato il prodotto associato all'azienda.
+     *
+     * @param dto json che contiene tutti i campi relativi al prodotto da creare
+     * @return ResponseEntity<String> con relativo messaggio di successo o errore
+     */
     public ResponseEntity<String> creaProdottoSingolo(ProdottoSingoloDTO dto) {
         if (!(securityService.getAziendaCorrente() instanceof Produttore)) {
             return ResponseEntity.status(500).body(securityService.getAziendaCorrente().getNome() +
@@ -73,6 +102,15 @@ public class ProdottoService {
         return ResponseEntity.ok("Prodotto singolo " + prodotto.getNome() + " creato con successo");
     }
 
+
+    /**
+     * Crea un prodotto Trasformato associato all'azienda corrente autenticata,
+     * che deve essere un {@link Trasformatore}.
+     * Se tutte le condizioni sono rispettate, viene creato e salvato il prodotto associato all'azienda.
+     *
+     * @param dto json che contiene tutti i campi relativi al prodotto da creare
+     * @return ResponseEntity<String> con relativo messaggio di successo o errore
+     */
     public ResponseEntity<String> creaProdottoTrasformato(ProdottoTrasformatoDTO dto) {
 
         if (!(securityService.getAziendaCorrente() instanceof Trasformatore)) {
@@ -98,6 +136,18 @@ public class ProdottoService {
         return ResponseEntity.ok(prodotto.getNome() + " creato con successo");
     }
 
+
+
+    /**
+     * Crea un pacchetto di prodotti associato all'azienda corrente autenticata,
+     * che deve essere un {@link Distributore}.
+
+     * Se tutte le condizioni sono rispettate, viene creato e salvato il pacchetto di prodotti associato all'azienda.
+     *
+     * @param dto json che contiene tutti i campi relativi al prodotto da creare
+     *contiene informazioni relative ai prodotti singoli(un pacchetto è realizzato con prodotti singoli)
+     * @return ResponseEntity<String> con relativo messaggio di successo o errore
+     */
     public ResponseEntity<String> creaPacchetto(PacchettoProdottiDTO dto) {
 
         if (!(securityService.getAziendaCorrente() instanceof Distributore)) {
@@ -130,6 +180,11 @@ public class ProdottoService {
         return ResponseEntity.ok(prodotto.getNome() + " creato con successo");
     }
 
+    /**
+     * Recupera la lista di tutti i prodotti presenti nel repository.
+     *
+     * @return una lista di oggetti {@link Prodotto} contenente tutti i prodotti salvati
+     */
     public List<Prodotto> trovaTutti() {
         return repoProdotto.findAll();
     }
@@ -139,6 +194,15 @@ public class ProdottoService {
     }
 
 
+    /**
+     * Elimina un prodotto dall'azienda corrente.
+     *
+     * Controlla che il prodotto e l'azienda esistano, che il prodotto appartenga all'azienda,
+     * che il prodotto non sia presente in pacchetti, carrelli o ordini pendenti prima di eliminarlo.
+     *
+     * @param idProdotto l'id del prodotto da eliminare
+     * @return una {@link ResponseEntity} contenente il relativo messaggio di successo o di errore
+     */
     public ResponseEntity<String> eliminaProdotto(Long idProdotto) {
         if (!(repoProdotto.existsById(idProdotto) && repoAzienda.existsById(securityService.getAziendaCorrente().getId()))) {
             return ResponseEntity.status(404).body("Prodotto azienda non esistente");
