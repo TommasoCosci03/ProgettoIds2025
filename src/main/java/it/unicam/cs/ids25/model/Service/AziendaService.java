@@ -4,11 +4,14 @@ import it.unicam.cs.ids25.model.Autenticazione.SecurityService;
 import it.unicam.cs.ids25.model.Dto.AziendaDTO;
 import it.unicam.cs.ids25.model.Acquisto.Notifica;
 import it.unicam.cs.ids25.model.Acquisto.Ordine;
+import it.unicam.cs.ids25.model.Dto.SedeDTO;
+import it.unicam.cs.ids25.model.GeocodingService;
 import it.unicam.cs.ids25.model.Prodotti.Prodotto;
 import it.unicam.cs.ids25.model.Repository.*;
 import it.unicam.cs.ids25.model.Utenti.*;
 import it.unicam.cs.ids25.model.Autenticazione.Utente;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,6 +20,7 @@ import it.unicam.cs.ids25.model.Evento;
 import  it.unicam.cs.ids25.model.Prodotti.Prodotto;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * la classe AziendaService è responsabile della logica per le operazioni di{@link Azienda}
@@ -42,6 +46,9 @@ public class AziendaService {
     private final SecurityService securityService;
 
     private final ProdottoRepository prodottoRepository;
+
+    @Autowired
+    private GeocodingService geocodingService;
 
 
 
@@ -80,7 +87,7 @@ public class AziendaService {
      * @return ResponseEntity<String> - Risposta HTTP con il messaggio di risultato della creazione dell'azienda.'
      */
     public ResponseEntity<String> crea(AziendaDTO dto) {
-        Azienda azienda = null;
+        final Azienda azienda;
 
         if (dto.getUsername().isEmpty() || dto.getPassword().isEmpty()) {
             return ResponseEntity.badRequest().body("Email e Password non valido");
@@ -96,7 +103,8 @@ public class AziendaService {
             azienda = new Trasformatore(dto.getNome(), dto.getSede(), dto.getUsername(), dto.getPassword());
         } else if (dto.getTipoAzienda().equals("distributore")) {
             azienda = new Distributore(dto.getNome(), dto.getSede(), dto.getUsername(), dto.getPassword());
-        }
+        }else
+            return ResponseEntity.badRequest().body("tipologia azienda non valida");
 
         if (aziendaRepository.existsByUsername(dto.getUsername())) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Username: " + dto.getUsername() + " già in uso");
@@ -104,6 +112,13 @@ public class AziendaService {
 
         azienda.setUsername(dto.getUsername());
         azienda.setPassword(passwordEncoder.encode(dto.getPassword()));
+
+        String indirizzoCompleto = azienda.getSede();
+        geocodingService.geocode(indirizzoCompleto).ifPresent(coords -> {
+            azienda.setLatitudine(coords[0]);
+            azienda.setLongitudine(coords[1]);
+        });
+
         aziendaRepository.save(azienda);
         return ResponseEntity.status(200).body(dto.getNome() + " creato con successo");
     }
@@ -223,5 +238,18 @@ public class AziendaService {
         }
         return ResponseEntity.status(500).body("Il prodotto selezionato non è stato caricato dall'azienda: " + azienda.getNome() +
                 " non puoi modificarne la quantita'");
+    }
+
+    public List<SedeDTO> getSedi() {
+        List<Azienda> aziende = aziendaRepository.findAll();
+        return aziende.stream()
+                .filter(a -> a.getLatitudine() != null && a.getLongitudine() != null)
+                .map(a -> new SedeDTO(
+                        a.getNome(),
+                        a.getSede(),
+                        a.getLatitudine(),
+                        a.getLongitudine()
+                ))
+                .collect(Collectors.toList());
     }
 }

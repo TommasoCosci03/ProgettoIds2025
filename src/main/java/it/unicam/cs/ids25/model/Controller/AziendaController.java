@@ -1,6 +1,7 @@
 package it.unicam.cs.ids25.model.Controller;
 
 import it.unicam.cs.ids25.model.Dto.AziendaDTO;
+import it.unicam.cs.ids25.model.Dto.SedeDTO;
 import it.unicam.cs.ids25.model.Service.AziendaService;
 import it.unicam.cs.ids25.model.Utenti.Azienda;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,5 +78,10 @@ public class AziendaController {
     @GetMapping("/getNotifiche")
     public ResponseEntity<StringBuilder> getNotifiche() {
         return service.notificheById();
+    }
+
+    @GetMapping("/sedi")
+    public List<SedeDTO>  getSedi(){
+        return service.getSedi();
     }
 }

@@ -28,12 +28,15 @@ public abstract class Azienda extends Utente implements Observer {
     @ManyToMany(mappedBy = "invitati")
     private List<Evento> eventi;
 
+    private Double latitudine;
+    private Double longitudine;
+
     protected Azienda() {
         super();
     };
 
-    public Azienda(String nome, String sede,String email, String password) {
-        super(email, password);
+    public Azienda(String nome, String sede,String username, String password) {
+        super(username, password);
         this.nome = nome;
         this.sede = sede;
     }
@@ -93,6 +96,22 @@ public abstract class Azienda extends Utente implements Observer {
 
     public void setEventi(List<Evento> eventi) {
         this.eventi = eventi;
+    }
+
+    public Double getLongitudine() {
+        return longitudine;
+    }
+
+    public void setLongitudine(Double longitudine) {
+        this.longitudine = longitudine;
+    }
+
+    public Double getLatitudine() {
+        return latitudine;
+    }
+
+    public void setLatitudine(Double latitudine) {
+        this.latitudine = latitudine;
     }
 }
 

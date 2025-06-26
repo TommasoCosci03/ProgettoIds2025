@@ -35,7 +35,7 @@ import org.springframework.security.web.SecurityFilterChain;
         public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
             http
                     .authorizeHttpRequests(auth -> auth
-                            .requestMatchers(HttpMethod.POST,"/api/aziende").permitAll()
+                            .requestMatchers(HttpMethod.POST,"/api/aziende", "/api/aziende/**").permitAll()
                             .requestMatchers("/api/prodotti/**").authenticated()
                             .requestMatchers("/h2-console/**").permitAll()
                             .requestMatchers(HttpMethod.POST,"/api/acquirenti/creaAcquirente").permitAll()
@@ -46,9 +46,10 @@ import org.springframework.security.web.SecurityFilterChain;
                             .requestMatchers("/api/curatore/**").authenticated()
                             .requestMatchers(HttpMethod.POST,"/api/animatore/creaAnimatore").permitAll()
                             .requestMatchers("/api/animatore/**").authenticated()
+                            .requestMatchers("/error").permitAll()
                             .anyRequest().authenticated()
                     )
-                    .csrf(AbstractHttpConfigurer::disable)
+                    .csrf(csrf -> csrf.disable()) // ✅ così sei sicuro che sia disattivato
                     .headers(headers -> headers.frameOptions().disable())
                     .httpBasic(Customizer.withDefaults());
 
