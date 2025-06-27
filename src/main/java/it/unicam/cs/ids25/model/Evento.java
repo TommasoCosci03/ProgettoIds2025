@@ -9,6 +9,12 @@ import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Rappresenta un evento organizzato da un {@link Animatore}.
+ * Un evento è caratterizzato da nome, descrizione, luogo, data, una lista di aziende invitate
+ * e una lista di acquirenti partecipanti.
+ * Gli eventi sono creati e gestiti da un animatore.
+ */
 @Entity
 @DiscriminatorValue("evento")
 @JsonIgnoreProperties("invitati")
@@ -46,6 +52,17 @@ public class Evento {
     @JoinColumn(name = "animatore_id", nullable = false)
     private Animatore animatore;
 
+
+    /**
+     * Costruttore per creare un nuovo evento.
+     *
+     * @param nome        il nome dell'evento
+     * @param descrizione la descrizione dell'evento
+     * @param luogo       il luogo in cui si svolge l'evento
+     * @param dataEvento  la data dell'evento (es. "2025-07-12")
+     * @param invitati    la lista di aziende invitate
+     * @param animatore   l'animatore che ha creato l'evento
+     */
     public Evento(String nome, String descrizione, String luogo, String dataEvento, List<Azienda> invitati, Animatore animatore) {
         this.nome = nome;
         this.descrizione = descrizione;

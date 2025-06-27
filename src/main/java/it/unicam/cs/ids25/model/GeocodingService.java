@@ -14,11 +14,27 @@ import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
 
+/**
+ * Servizio per la geocodifica di un indirizzo tramite l'API di Nominatim di OpenStreetMap.
+ * dato un indirizzo in forma testuale,
+ * restituisce  la latitudine e la longitudine corrispondenti.
+ *
+ * Utilizza {@link RestTemplate} per effettuare richieste HTTP GET e
+ */
 @Service
 public class GeocodingService {
 
     private final RestTemplate restTemplate = new RestTemplate();
 
+
+    /**
+     * Esegue la geocodifica di un indirizzo tramite il servizio Nominatim di OpenStreetMap.
+     *
+     * @param indirizzo l'indirizzo da geocodificare
+     * @return un {@link Optional} contenente un array di due elementi
+     *         con latitudine e longitudine se la geocodifica ha successo,
+     *
+     */
     public Optional<double[]> geocode(String indirizzo) {
         try {
             String url = "https://nominatim.openstreetmap.org/search"
