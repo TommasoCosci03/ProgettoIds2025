@@ -5,6 +5,10 @@ import it.unicam.cs.ids25.model.Evento;
 import jakarta.persistence.*;
 import java.util.List;
 
+/**
+ * Rappresenta un animatore nel sistema.
+ * Un animatore è un {@link Utente} che può organizzare eventi ed invitare aziende a tale evento.
+ */
 @Entity
 @DiscriminatorValue("animatore")
 public class Animatore extends Utente {
@@ -43,6 +47,17 @@ public class Animatore extends Utente {
         return eventicrati;
     }
 
+
+    /**
+     * Crea un nuovo evento associato a questo animatore e lo aggiunge alla lista degli eventi creati.
+     *
+     * @param nome        il nome dell'evento
+     * @param descrizione la descrizione dell'evento
+     * @param luogo       il luogo in cui si svolgerà l'evento
+     * @param dataEvento  la data in cui si terrà l'evento
+     * @param invitati    la lista delle aziende invitate all'evento
+     * @return l'evento creato
+     */
     public Evento creaEvento(String nome, String descrizione, String luogo, String dataEvento, List<Azienda> invitati) {
 
         Evento evento = new Evento(nome, descrizione, luogo, dataEvento, invitati, this);

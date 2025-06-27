@@ -12,6 +12,18 @@ import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Rappresenta un'entità aziendale all'interno del sistema.
+ * Una {@code Azienda} è un {@link Utente} che può caricare prodotti, partecipare a eventi.
+ * Questa classe è astratta e viene estesa da specifici tipi di azienda.
+ * L'ereditarietà è gestita tramite una tabella unica con una colonna discriminatore {@code tipo_azienda}.
+ * l'azienda può essere:
+ * {@link Produttore } può inserire nel marketplace solamente prodotti singoli
+ * {@link Trasformatore } può inserire nel marketplace solamente prodotti trasformati, specificando le materie prime,
+ * le materie prime non devono essere necessariamente presenti nel marketplace; possono dunque essere reperite al di fuori di esso
+ * {@link Distributore} può inserire nel marketplace solamente pacchetti di prodotti, specificando i prodotti
+ * i prodotti del pacchetto devono essere necessariamente presenti nel marketplace
+ */
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="tipo_azienda")
@@ -35,6 +47,14 @@ public abstract class Azienda extends Utente implements Observer {
         super();
     };
 
+    /**
+     * Costruttore per inizializzare una nuova azienda.
+     *
+     * @param nome     il nome dell'azienda
+     * @param sede     la sede dell'azienda
+     * @param username lo username dell'utente associato
+     * @param password la password dell'utente associato
+     */
     public Azienda(String nome, String sede,String username, String password) {
         super(username, password);
         this.nome = nome;
@@ -62,15 +82,45 @@ public abstract class Azienda extends Utente implements Observer {
         return prodottiCaricati.stream().map(Prodotto::getId).toList();
     }
 
+
+    /**
+     * Metodo astratto che consente alle sottoclassi di creare un prodotto specifico per l'azienda.
+     * la  tipologia del prodotto dipende dalla tipologia dell'azienda
+     * @param nome           il nome del prodotto
+     * @param descrizione    la descrizione del prodotto
+     * @param prezzo         il prezzo unitario del prodotto
+     * @param quantita       la quantità disponibile
+     * @param categoria      la categoria del prodotto
+     * @param certificazioni eventuali certificazioni del prodotto
+     * @return il prodotto creato
+     */
     public abstract Prodotto creaProdottoAzienda(String nome, String descrizione, double prezzo, int quantita,
                                                  Categoria categoria, List<Certificazioni> certificazioni);
+
+    /**
+     * Visualizza i prodotti caricati dall'azienda.
+     * Metodo vuoto da implementare o sovrascrivere se necessario per estensioni future.
+     */
     public void vediProdottiCaricati(){}
 
+
+    /**
+     * Rimuove un prodotto dalla lista dei prodotti caricati.
+     *
+     * @param prodotto il prodotto da eliminare
+     */
     public void eliminaProdotto(Prodotto prodotto){
         prodottiCaricati.remove(prodotto);
     }
 
 
+    /**
+     * Restituisce la categoria corrispondente al codice numerico passato.
+     *
+     * @param categoria codice numerico della categoria
+     * @return la categoria associata
+     * @throws IllegalArgumentException se il codice non è valido
+     */
     public Categoria creazioneCategoria(int categoria){
 
         return switch (categoria) {

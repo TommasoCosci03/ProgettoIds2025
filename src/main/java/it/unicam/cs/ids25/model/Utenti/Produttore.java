@@ -11,11 +11,25 @@ import jakarta.persistence.Entity;
 
 import java.util.List;
 
-
+/**
+ * Rappresenta un'azienda di tipo produttore.
+ * Un {@code Produttore} è una {@link Azienda} che può creare prodotti singoli,
+ * specificandone tutti gli attributi.
+ * Implementa anche l'interfaccia {@code Observer} per ricevere notifiche sugli ordini
+ * nel momento in cui un proprio prodotto viene acquistato
+ */
 @Entity
 @DiscriminatorValue("produttore")
 public class Produttore extends Azienda {
 
+    /**
+     * Crea un produttore con i dati specificati.
+     *
+     * @param nome     il nome dell'azienda produttrice
+     * @param sede     la sede dell'azienda
+     * @param email    l'email usata come username
+     * @param password la password per l'autenticazione
+     */
     public Produttore(String nome, String sede, String email, String password) {
         super(nome, sede, email, password);
     }
@@ -24,6 +38,18 @@ public class Produttore extends Azienda {
         super();
     }
 
+
+    /**
+     * Crea un prodotto singolo associato al produttore corrente.
+     *
+     * @param nome           il nome del prodotto
+     * @param descrizione    la descrizione del prodotto
+     * @param prezzo         il prezzo unitario del prodotto
+     * @param quantita       la quantità disponibile
+     * @param categoria      la categoria del prodotto
+     * @param certificazioni eventuali certificazioni associate
+     * @return il prodotto creato
+     */
     @Override
     public Prodotto creaProdottoAzienda(String nome, String descrizione, double prezzo, int quantita,
                                         Categoria categoria, List<Certificazioni> certificazioni) {
